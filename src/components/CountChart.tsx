@@ -21,6 +21,7 @@ const data = [
 ];
 
 function CountChart() {
+  // Returned JSX
   return (
     <div className="bg-white rounded-xl w-full h-full p-4">
       {/* TITLE */}
@@ -30,6 +31,7 @@ function CountChart() {
       </div>
       {/* CHART */}
       <div className="relative w-full h-[75%]">
+        {/* Chart component */}
         <ResponsiveContainer>
           <RadialBarChart
             cx="50%"
