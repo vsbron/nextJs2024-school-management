@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ weight: ["400"], subsets: ["latin"] });
+// Importing font
+const openSans = Open_Sans({ subsets: ["latin"] });
 
+// Meta data for the page
 export const metadata: Metadata = {
   title: "Management Dashboard",
   description: "Next.js School Management System",
@@ -16,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={openSans.className}>{children}</body>
     </html>
   );
 }

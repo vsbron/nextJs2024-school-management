@@ -6,7 +6,7 @@ School management App.
 
 - Admin dashboard that divided to two sections: Center and Right;
 - Center Admin dashboard shows number of Charts based on a various school data;
-- Right Admin dashboard displays a calendar and an event list for a chosen date;
+- Right Admin dashboard displays a calendar and an event list for a chosen date and announcements;
 
 ## Details
 

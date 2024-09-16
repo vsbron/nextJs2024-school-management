@@ -50,7 +50,7 @@ function EventCalendar() {
             key={event.id}
           >
             <div className="flex items-center justify-between">
-              <h2 className="font-semibold text-gray-600">{event.title}</h2>
+              <h3 className="font-semibold text-gray-600">{event.title}</h3>
               <span className="text-gray-300 text-xs">{event.time}</span>
             </div>
             <p className="mt-2 text-gray-400 text-sm">{event.description}</p>
