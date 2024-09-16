@@ -147,14 +147,3 @@ function Menu() {
 }
 
 export default Menu;
-
-// {menuItems.map(menuItem => {
-//   <div className="" key={menuItem.title}>
-//     <span>{menuItem.title}</span>
-//     {menuItem.items.map(item => (
-//       <Link item={item.href} key={item.label}>
-//         <Image src={item.icon} alt={item.title} alt="" width={20} height={20} />
-//       </Link>
-//     ))
-//   </div>
-// }})}
