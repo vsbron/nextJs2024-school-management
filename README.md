@@ -4,7 +4,9 @@ School management App.
 
 ## Features
 
-- Admin dashboard that showcases Charts based on various school data;
+- Admin dashboard that divided to two sections: Center and Right;
+- Center Admin dashboard shows number of Charts based on a various school data;
+- Right Admin dashboard displays a calendar and an event list for a chosen date;
 
 ## Details
 
