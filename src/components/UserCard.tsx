@@ -10,8 +10,8 @@ function UserCard({ type }: { type: string }) {
         </span>
         <Image src="/more.png" width={20} height={20} alt="More" />
       </div>
-      <h1 className="text-2xl font-semibold my-4">1,234</h1>
-      <h2 className="capitalize text-sm font-medium text-gray-500">{type}</h2>
+      <h3 className="text-2xl font-semibold my-4">1,234</h3>
+      <h4 className="capitalize text-sm font-medium text-gray-500">{type}</h4>
     </div>
   );
 }
