@@ -7,10 +7,10 @@ function AdminPage() {
     {/* LEFT */}
     <div className="w-full lg:w-2/3">
       {/* USER CARDS */}
-      <div className="flex gap-4 justify-between">
-        <UserCard type="student" />
-        <UserCard type="teacher" />
-        <UserCard type="parent" />
+      <div className="flex gap-4 justify-between flex-wrap">
+        <UserCard type="students" />
+        <UserCard type="teachers" />
+        <UserCard type="parents" />
         <UserCard type="staff" />
       </div>
     </div>
