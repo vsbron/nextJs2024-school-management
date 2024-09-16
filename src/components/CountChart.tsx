@@ -5,17 +5,17 @@ import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 const data = [
   {
     name: "Total",
-    count: 2000,
+    count: 200,
     fill: "white",
   },
   {
     name: "Girls",
-    count: 900,
+    count: 90,
     fill: "#fae27c",
   },
   {
     name: "Boys",
-    count: 1100,
+    count: 110,
     fill: "#c3ebfa",
   },
 ];
