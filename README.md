@@ -14,3 +14,5 @@ School management App.
 - Styles are handled via Tailwind CSS;
 
 ### Live version
+
+https://vsbron-react2024-school-management.netlify.app
