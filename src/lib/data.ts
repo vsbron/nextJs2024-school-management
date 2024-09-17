@@ -9,7 +9,7 @@ export const teachersData = [
     name: "John Doe",
     email: "john@doe.com",
     photo:
-      "https://images.pexels.com/photos/2888150/pexels-photo-2888150.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a752dbfb2186598946bfe7_Phoenix%20Baker-p-500.jpg",
     phone: "1234567890",
     subjects: ["Math", "Geometry"],
     classes: ["1B", "2A", "3C"],
@@ -21,7 +21,7 @@ export const teachersData = [
     name: "Jane Doe",
     email: "jane@doe.com",
     photo:
-      "https://images.pexels.com/photos/936126/pexels-photo-936126.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a752b0fec11d8c4c9beaf7_Olivia%20Rhye-p-500.jpg",
     phone: "1234567890",
     subjects: ["Physics", "Chemistry"],
     classes: ["5A", "4B", "3C"],
@@ -33,7 +33,7 @@ export const teachersData = [
     name: "Mike Geller",
     email: "mike@geller.com",
     photo:
-      "https://images.pexels.com/photos/428328/pexels-photo-428328.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a74f49e4ae12986f0d9e75_Drew%20Cano-p-500.jpg",
     phone: "1234567890",
     subjects: ["Biology"],
     classes: ["5A", "4B", "3C"],
@@ -45,7 +45,7 @@ export const teachersData = [
     name: "Jay French",
     email: "jay@gmail.com",
     photo:
-      "https://images.pexels.com/photos/1187765/pexels-photo-1187765.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a752c0767a906d4eb8ae7a_Orlando%20Diggs-p-500.jpg",
     phone: "1234567890",
     subjects: ["History"],
     classes: ["5A", "4B", "3C"],
@@ -57,7 +57,7 @@ export const teachersData = [
     name: "Jane Smith",
     email: "jane@gmail.com",
     photo:
-      "https://images.pexels.com/photos/1102341/pexels-photo-1102341.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a751741ddf78d3cc798f24_Lana%20Steiner-p-500.jpg",
     phone: "1234567890",
     subjects: ["Music", "History"],
     classes: ["5A", "4B", "3C"],
@@ -69,7 +69,7 @@ export const teachersData = [
     name: "Anna Santiago",
     email: "anna@gmail.com",
     photo:
-      "https://images.pexels.com/photos/712513/pexels-photo-712513.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a74f1cff8b6bcbeae3ba6f_Demi%20Wilkinson-p-500.jpg",
     phone: "1234567890",
     subjects: ["Physics"],
     classes: ["5A", "4B", "3C"],
@@ -81,7 +81,7 @@ export const teachersData = [
     name: "Allen Black",
     email: "allen@black.com",
     photo:
-      "https://images.pexels.com/photos/1438081/pexels-photo-1438081.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a75165b39daf6f3044671e_Koray%20Okumus-p-500.jpg",
     phone: "1234567890",
     subjects: ["English", "Spanish"],
     classes: ["5A", "4B", "3C"],
@@ -93,7 +93,7 @@ export const teachersData = [
     name: "Ophelia Castro",
     email: "ophelia@castro.com",
     photo:
-      "https://images.pexels.com/photos/1036623/pexels-photo-1036623.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a74ee6e1c4fb9187e6f56a_Candice%20Wu-p-500.jpg",
     phone: "1234567890",
     subjects: ["Math", "Geometry"],
     classes: ["5A", "4B", "3C"],
@@ -105,7 +105,7 @@ export const teachersData = [
     name: "Derek Briggs",
     email: "derek@briggs.com",
     photo:
-      "https://images.pexels.com/photos/842980/pexels-photo-842980.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a753a9decb088f60f282bc_Zahir%20Mays-p-500.jpg",
     phone: "1234567890",
     subjects: ["Literature", "English"],
     classes: ["5A", "4B", "3C"],
@@ -117,7 +117,7 @@ export const teachersData = [
     name: "John Glover",
     email: "john@glover.com",
     photo:
-      "https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a750f54c3ecedd4611ec4b_Joshua%20Wilson-p-500.jpg",
     phone: "1234567890",
     subjects: ["Biology"],
     classes: ["5A", "4B", "3C"],
