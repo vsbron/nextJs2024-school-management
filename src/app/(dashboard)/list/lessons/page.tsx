@@ -1,41 +1,48 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { role, subjectsData } from "@/lib/data";
+import { role, lessonsData } from "@/lib/data";
 
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 
-type Subject = {
+type Lesson = {
   id: number;
-  name: string;
-  teachers: string[];
+  subject: string;
+  class: string;
+  teacher: string;
 };
 
 const columns = [
   {
-    header: "Subject Names",
+    header: "Subject",
     accessor: "subject",
     className: "px-4",
   },
   {
-    header: "Teachers",
-    accessor: "teachers",
+    header: "Class",
+    accessor: "class",
+    className: "hidden md:table-cell",
+  },
+  {
+    header: "Teacher",
+    accessor: "teacher",
     className: "hidden md:table-cell",
   },
 ];
 
-function SubjectsList() {
-  const renderRow = (item: Subject) => (
+function LessonsList() {
+  const renderRow = (item: Lesson) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.name}</h3>
+        <h3 className="font-semibold">{item.subject}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.teachers.join(", ")}</td>
+      <td className="hidden md:table-cell">{item.class}</td>
+      <td className="hidden md:table-cell">{item.teacher}</td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>
@@ -77,10 +84,10 @@ function SubjectsList() {
         </div>
       </div>
       {/* LIST */}
-      <Table<Subject>
+      <Table<Lesson>
         columns={columns}
         renderRow={renderRow}
-        data={subjectsData}
+        data={lessonsData}
       />
       {/* PAGINATION */}
       <Pagination />
@@ -88,4 +95,4 @@ function SubjectsList() {
   );
 }
 
-export default SubjectsList;
+export default LessonsList;

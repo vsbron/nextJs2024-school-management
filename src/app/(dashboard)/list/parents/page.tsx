@@ -48,7 +48,7 @@ const columns = [
   },
 ];
 
-function TeacherList() {
+function ParentsList() {
   const renderRow = (item: Parent) => (
     <tr
       key={item.id}
@@ -116,4 +116,4 @@ function TeacherList() {
   );
 }
 
-export default TeacherList;
+export default ParentsList;
