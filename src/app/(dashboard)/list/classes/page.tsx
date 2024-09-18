@@ -24,7 +24,6 @@ const columns = [
   {
     header: "Capacity",
     accessor: "capacity",
-    className: "hidden md:table-cell",
   },
   {
     header: "Grade",
@@ -34,6 +33,7 @@ const columns = [
   {
     header: "Supervisor",
     accessor: "supervisor",
+    className: "hidden md:table-cell",
   },
 ];
 
@@ -46,9 +46,9 @@ function TeacherList() {
       <td className="flex items-center gap-4 p-4">
         <h3 className="font-semibold">{item.name}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.capacity}</td>
+      <td>{item.capacity}</td>
       <td className="hidden md:table-cell">{item.grade}</td>
-      <td>{item.supervisor}</td>
+      <td className="hidden md:table-cell">{item.supervisor}</td>
       <td>
         <div className="flex items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>
