@@ -1,23 +1,11 @@
-type Teacher = {
-  id: number;
-  teacherId: string;
-  name: string;
-  email?: string;
-  photo: string;
-  phone: string;
-  subjects: string[];
-  classes: string[];
-  address: string;
-};
-
-function Table({
+function Table<T>({
   columns,
   renderRow,
   data,
 }: {
   columns: { header: string; accessor: string; className?: string }[];
-  renderRow: (item: Teacher) => React.ReactNode;
-  data: Teacher[];
+  renderRow: (item: T) => React.ReactNode;
+  data: T[];
 }) {
   // Returned JSX
   return (
