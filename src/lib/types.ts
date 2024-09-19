@@ -1,3 +1,11 @@
+// Data type for Announcement
+export type Announcement = {
+  id: number;
+  title: string;
+  class: string;
+  date: string;
+};
+
 // Data type for Assignment
 export type Assignment = {
   id: number;

@@ -1,6 +1,8 @@
 import {
+  Announcement,
   Assignment,
   Class,
+  Event,
   Exam,
   Lesson,
   Parent,
@@ -780,7 +782,7 @@ export const resultsData: Result[] = [
   },
 ];
 
-export const eventsData = [
+export const eventsData: Event[] = [
   {
     id: 1,
     title: "Lake Trip",
@@ -863,7 +865,7 @@ export const eventsData = [
   },
 ];
 
-export const announcementsData = [
+export const announcementsData: Announcement[] = [
   {
     id: 1,
     title: "About 4A Math Test",

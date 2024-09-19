@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { role, assignmentsData } from "@/lib/data";
-import { Assignment } from "@/lib/types";
+import { role, announcementsData } from "@/lib/data";
+import { Announcement } from "@/lib/types";
 
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -20,13 +20,9 @@ const columns = [
     className: "hidden md:table-cell",
   },
   {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  {
     header: "Due date",
     accessor: "dueDate",
+    className: "hidden md:table-cell",
   },
   {
     header: "Actions",
@@ -34,21 +30,20 @@ const columns = [
   },
 ];
 
-function AssignmentsList() {
-  const renderRow = (item: Assignment) => (
+function AnnouncementsList() {
+  const renderRow = (item: Announcement) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.subject}</h3>
+        <h3 className="font-semibold">{item.title}</h3>
       </td>
       <td className="hidden md:table-cell">{item.class}</td>
-      <td className="hidden md:table-cell">{item.teacher}</td>
-      <td>{item.dueDate}</td>
+      <td className="hidden md:table-cell">{item.date}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/assignments/${item.id}`}>
+          <Link href={`/list/announcements/${item.id}`}>
             <button className="rounded-full w-7 h-7 flex items-center justify-center bg-schoolSky">
               <Image src="/view.png" width={16} height={16} alt="" />
             </button>
@@ -69,7 +64,7 @@ function AssignmentsList() {
       {/* TOP */}
       <div className="flex items-center justify-between">
         <h2 className="hidden md:block text-lg font-semibold">
-          All Assignments
+          All Announcements
         </h2>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
@@ -89,10 +84,10 @@ function AssignmentsList() {
         </div>
       </div>
       {/* LIST */}
-      <Table<Assignment>
+      <Table<Announcement>
         columns={columns}
         renderRow={renderRow}
-        data={assignmentsData}
+        data={announcementsData}
       />
       {/* PAGINATION */}
       <Pagination />
@@ -100,4 +95,4 @@ function AssignmentsList() {
   );
 }
 
-export default AssignmentsList;
+export default AnnouncementsList;
