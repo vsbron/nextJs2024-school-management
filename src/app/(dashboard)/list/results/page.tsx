@@ -2,21 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { role, resultsData } from "@/lib/data";
+import { Result } from "@/lib/types";
 
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-
-export type Result = {
-  id: number;
-  subject: string;
-  class: string;
-  teacher: string;
-  student: string;
-  date: string;
-  type: string;
-  score: number
-};
 
 const columns = [
   {
@@ -96,9 +86,7 @@ function ResultsList() {
     <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
       {/* TOP */}
       <div className="flex items-center justify-between">
-        <h2 className="hidden md:block text-lg font-semibold">
-          All Results
-        </h2>
+        <h2 className="hidden md:block text-lg font-semibold">All Results</h2>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">

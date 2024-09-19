@@ -2,16 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { role, subjectsData } from "@/lib/data";
+import { Subject } from "@/lib/types";
 
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-
-type Subject = {
-  id: number;
-  name: string;
-  teachers: string[];
-};
 
 const columns = [
   {

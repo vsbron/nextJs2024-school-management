@@ -2,19 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { role, parentsData } from "@/lib/data";
+import { Parent } from "@/lib/types";
 
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-
-type Parent = {
-  id: number;
-  name: string;
-  students: string[];
-  email?: string;
-  phone: string;
-  address: string;
-};
 
 const columns = [
   {

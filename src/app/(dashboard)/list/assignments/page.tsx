@@ -2,18 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { role, assignmentsData } from "@/lib/data";
+import { Assignment } from "@/lib/types";
 
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-
-type Assignment = {
-  id: number;
-  subject: string;
-  class: string;
-  teacher: string;
-  dueDate: string;
-};
 
 const columns = [
   {

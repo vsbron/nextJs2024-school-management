@@ -2,22 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { role, teachersData } from "@/lib/data";
+import { Teacher } from "@/lib/types";
 
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-
-type Teacher = {
-  id: number;
-  teacherId: string;
-  name: string;
-  email?: string;
-  photo: string;
-  phone: string;
-  subjects: string[];
-  classes: string[];
-  address: string;
-};
 
 const columns = [
   {

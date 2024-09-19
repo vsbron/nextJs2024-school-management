@@ -2,18 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { role, classesData } from "@/lib/data";
+import { Class } from "@/lib/types";
 
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-
-type Class = {
-  id: number;
-  name: string;
-  capacity: number;
-  grade: number;
-  supervisor: string;
-};
 
 const columns = [
   {
