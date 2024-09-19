@@ -72,12 +72,16 @@
   font-size: 14px !important;
 }
 
+.rbc-events-container {
+  margin-right: 20px !important;
+}
+
 .rbc-event {
   border: none !important;
   color: black !important;
   padding: 10px !important;
   margin: 10px !important;
-  width: 99%;
+  width: 100%;
 }
 
 .rbc-event:nth-child(1) {

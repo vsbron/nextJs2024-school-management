@@ -1,5 +1,8 @@
+import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalendar";
+import PerformanceChart from "@/components/PerformanceChart";
 import Image from "next/image";
+import Link from "next/link";
 
 function SingleTeacherPage() {
   return (
@@ -132,7 +135,35 @@ function SingleTeacherPage() {
       </div>
 
       {/* RIGHT */}
-      <div className="w-full xl:w-1/3">Right</div>
+      <div className="w-full xl:w-1/3 flex flex-col gap-4">
+        {/* SHORTCUTS */}
+        <div className="bg-white p-4 rounded-xl">
+          <h2 className="text-xl font-semibold mb-4">Shortcuts</h2>
+          <div className="flex gap-2 flex-wrap text-xs text-gray-500">
+            <Link href="" className="p-2 rounded-md bg-schoolSkyLight">
+              Teacher&apos;s classes
+            </Link>
+            <Link href="" className="p-2 rounded-md bg-schoolPurpleLight">
+              Teacher&apos;s students
+            </Link>
+            <Link href="" className="p-2 rounded-md bg-schoolYellowLight">
+              Teacher&apos;s lessons
+            </Link>
+            <Link href="" className="p-2 rounded-md bg-pink-50">
+              Teacher&apos;s exams
+            </Link>
+            <Link href="" className="p-2 rounded-md bg-schoolSkyLight">
+              Teacher&apos;s assignments
+            </Link>
+          </div>
+        </div>
+
+        {/* PERFORMANCE */}
+        <PerformanceChart />
+
+        {/* ANNOUNCEMENTS */}
+        <Announcements />
+      </div>
     </div>
   );
 }
