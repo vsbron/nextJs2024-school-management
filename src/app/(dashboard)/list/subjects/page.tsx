@@ -19,6 +19,10 @@ const columns = [
     accessor: "teachers",
     className: "hidden md:table-cell",
   },
+  {
+    header: "Actions",
+    accessor: "action",
+  },
 ];
 
 function SubjectsList() {

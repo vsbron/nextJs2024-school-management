@@ -16,6 +16,16 @@ export type Class = {
   supervisor: string;
 };
 
+// Data type for Event
+export type Event = {
+  id: number;
+  title: string;
+  class: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+};
+
 // Data type for Exam
 export type Exam = {
   id: number;

@@ -28,6 +28,10 @@ const columns = [
     accessor: "supervisor",
     className: "hidden md:table-cell",
   },
+  {
+    header: "Actions",
+    accessor: "action",
+  },
 ];
 
 function ClassesList() {
