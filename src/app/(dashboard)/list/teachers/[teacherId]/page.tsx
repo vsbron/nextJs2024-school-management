@@ -1,3 +1,4 @@
+import BigCalendar from "@/components/BigCalendar";
 import Image from "next/image";
 
 function SingleTeacherPage() {
@@ -8,7 +9,7 @@ function SingleTeacherPage() {
         {/* TOP */}
         <div className="flex flex-col lg:flex-row gap-4">
           {/* USER INFO CARD */}
-          <div className="bg-schoolSky py-6 px-4 rounded-xl flex-1 flex flex-col sm:flex-row gap-4">
+          <div className="bg-schoolSky py-6 px-4 rounded-xl flex-1 flex flex-col xs:flex-row gap-4">
             <div className="basis-1/3">
               <Image
                 src="https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a752b0fec11d8c4c9beaf7_Olivia%20Rhye-p-500.jpg"
@@ -64,10 +65,70 @@ function SingleTeacherPage() {
             </div>
           </div>
           {/* SMALL CARDS */}
-          <div className="flex-1"></div>
+          <div className="flex-1 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-4 justify-between flex-wrap">
+            {/* CARD */}
+            <div className="bg-white p-4 rounded-xl flex gap-4">
+              <Image
+                src="/singleAttendance.png"
+                className="w-6 h-6"
+                width={24}
+                height={24}
+                alt=""
+              />
+              <div className="flex flex-col">
+                <h3 className="text-xl font-semibold">90%</h3>
+                <span className="text-sm text-gray-400">Attendance</span>
+              </div>
+            </div>
+            {/* CARD */}
+            <div className="bg-white p-4 rounded-xl flex gap-4">
+              <Image
+                src="/singleBranch.png"
+                className="w-6 h-6"
+                width={24}
+                height={24}
+                alt=""
+              />
+              <div className="flex flex-col">
+                <h3 className="text-xl font-semibold">2</h3>
+                <span className="text-sm text-gray-400">Branches</span>
+              </div>
+            </div>
+            {/* CARD */}
+            <div className="bg-white p-4 rounded-xl flex gap-4">
+              <Image
+                src="/singleLesson.png"
+                className="w-6 h-6"
+                width={24}
+                height={24}
+                alt=""
+              />
+              <div className="flex flex-col">
+                <h3 className="text-xl font-semibold">6</h3>
+                <span className="text-sm text-gray-400">Lessons</span>
+              </div>
+            </div>
+            {/* CARD */}
+            <div className="bg-white p-4 rounded-xl flex gap-4">
+              <Image
+                src="/singleClass.png"
+                className="w-6 h-6"
+                width={24}
+                height={24}
+                alt=""
+              />
+              <div className="flex flex-col">
+                <h3 className="text-xl font-semibold">6</h3>
+                <span className="text-sm text-gray-400">Classes</span>
+              </div>
+            </div>
+          </div>
         </div>
         {/* BOTTOM */}
-        <div className="">Schedule</div>
+        <div className="mt-4 bg-white rounded-md p-4 h-[800px]">
+          <h2>Teacher&apos;s schedule</h2>
+          <BigCalendar />
+        </div>
       </div>
 
       {/* RIGHT */}

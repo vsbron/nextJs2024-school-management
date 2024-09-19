@@ -11,7 +11,8 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
         schoolSky: "#c3ebfa",
@@ -20,6 +21,9 @@ const config: Config = {
         schoolPurpleLight: "#f1f0ff",
         schoolYellow: "#fae27c",
         schoolYellowLight: "#fefce8",
+      },
+      screens: {
+        xs: "500px",
       },
     },
   },
