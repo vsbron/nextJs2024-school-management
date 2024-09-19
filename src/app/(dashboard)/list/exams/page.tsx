@@ -51,7 +51,7 @@ function ExamsList() {
       <td>{item.date}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/teachers/${item.id}`}>
+          <Link href={`/list/exams/${item.id}`}>
             <button className="rounded-full w-7 h-7 flex items-center justify-center bg-schoolSky">
               <Image src="/view.png" width={16} height={16} alt="" />
             </button>
