@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 
 import { role, examsData } from "@/lib/data";
@@ -49,12 +48,12 @@ function ExamsList() {
       <td>{item.date}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/exams/${item.id}`}>
-            <button className="rounded-full w-7 h-7 flex items-center justify-center bg-schoolSky">
-              <Image src="/view.png" width={16} height={16} alt="" />
-            </button>
-          </Link>
-          {role === "admin" && <FormModal table="exam" type="delete" id={item.id} />}
+          {role === "admin" && (
+            <>
+              <FormModal table="exam" type="update" data={item} />
+              <FormModal table="exam" type="delete" id={item.id} />
+            </>
+          )}
         </div>
       </td>
     </tr>

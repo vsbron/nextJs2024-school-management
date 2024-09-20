@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 
 import { role, announcementsData } from "@/lib/data";
@@ -44,12 +43,12 @@ function AnnouncementsList() {
       <td className="hidden md:table-cell">{item.date}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/announcements/${item.id}`}>
-            <button className="rounded-full w-7 h-7 flex items-center justify-center bg-schoolSky">
-              <Image src="/view.png" width={16} height={16} alt="" />
-            </button>
-          </Link>
-          {role === "admin" && <FormModal table="announcement" type="delete" id={item.id} />}
+          {role === "admin" && (
+            <>
+              <FormModal table="announcement" type="update" data={item} />
+              <FormModal table="announcement" type="delete" id={item.id} />
+            </>
+          )}
         </div>
       </td>
     </tr>
@@ -72,7 +71,9 @@ function AnnouncementsList() {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && <FormModal table="announcement" type="create" />}
+            {role === "admin" && (
+              <FormModal table="announcement" type="create" />
+            )}
           </div>
         </div>
       </div>
