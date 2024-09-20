@@ -105,3 +105,11 @@ export type Teacher = {
   classes: string[];
   address: string;
 };
+
+// Prop types for Form modal
+export type FormModalProps = {
+  table: "teacher" | "student" | "subject" | "result" | "parent" | "lesson" | "exam" | "event" | "class" | "assignment" | "announcement";
+  type: "create" | "update" | "delete";
+  data?: string[];
+  id?: number;
+};

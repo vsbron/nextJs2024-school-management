@@ -1,12 +1,7 @@
 "use client"
 import Image from "next/image";
 
-type FormModalProps = {
-  table: "teacher" | "student";
-  type: "create" | "update" | "delete";
-  data?: string[];
-  id: number;
-};
+import { FormModalProps } from "@/lib/types";
 
 function FormModal({table, type, data, id}: FormModalProps){
 

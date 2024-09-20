@@ -4,6 +4,7 @@ import Image from "next/image";
 import { role, studentsData } from "@/lib/data";
 import { Student } from "@/lib/types";
 
+import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -70,11 +71,7 @@ function StudentList() {
               <Image src="/view.png" width={16} height={16} alt="" />
             </button>
           </Link>
-          {role === "admin" && (
-            <button className="rounded-full w-7 h-7 flex items-center justify-center bg-schoolPurple">
-              <Image src="/delete.png" width={16} height={16} alt="" />
-            </button>
-          )}
+          {role === "admin" && <FormModal table="student" type="delete" id={item.id} />}
         </div>
       </td>
     </tr>
@@ -95,11 +92,7 @@ function StudentList() {
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && (
-              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
-                <Image src="/plus.png" width={14} height={14} alt="" />
-              </button>
-            )}
+            {role === "admin" && <FormModal table="student" type="create" />}
           </div>
         </div>
       </div>
