@@ -27,6 +27,10 @@ function TeacherForm({
   const onSubmit: SubmitHandler<TeacherFormInputs> = (data) =>
     console.log(data);
 
+  // DELETE LATER
+  console.log(type);
+  console.log(data);
+
   // Returned JSX
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="">

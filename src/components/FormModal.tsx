@@ -17,6 +17,9 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
       ? "bg-schoolSky"
       : "bg-schoolPurple";
 
+  // DELETE LATER
+  console.log(data);
+
   // Returned JSX
   return (
     <>
