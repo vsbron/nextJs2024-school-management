@@ -80,7 +80,7 @@ function ExamsList() {
             </button>
             {role === "admin" && (
               <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
-                <Image src="/create.png" width={14} height={14} alt="" />
+                <Image src="/plus.png" width={14} height={14} alt="" />
               </button>
             )}
           </div>
