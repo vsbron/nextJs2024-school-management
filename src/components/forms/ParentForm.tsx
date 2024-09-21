@@ -1,0 +1,113 @@
+"use client";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import InputField from "../InputField";
+
+// Zod schema
+const schema = z.object({
+  username: z
+    .string()
+    .min(3, { message: "Username must be at least 3 characters long!" })
+    .max(20, { message: "Username must be at most 20 characters long!" }),
+  email: z.string().email({ message: "Invalid email address!" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 8 characters long!" }),
+  name: z.string().min(1, { message: "Name is required!" }),
+  students: z.string().min(1, { message: "Students are required!" }),
+  phone: z.string().min(1, { message: "Phone is required!" }),
+  address: z.string().min(1, { message: "Address is required!" }),
+});
+
+type Inputs = z.infer<typeof schema>;
+
+function ParentForm({ type, data }: { type: "create" | "update"; data?: any }) {
+  // Getting the form functions from React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>({ resolver: zodResolver(schema) });
+
+  // Submit handler
+  const submitHandler = handleSubmit((data) => {
+    console.log(data);
+  });
+
+  // Returned JSX
+  return (
+    <form onSubmit={submitHandler} className="flex flex-col gap-8">
+      <h2 className="text-lg font-semibold">
+        {type === "create" ? "Create a new" : "Update the"} Parent
+      </h2>
+      <span className="text-sm text-gray-400 font-medium">
+        Authentication Information
+      </span>
+      <div className="flex justify-between flex-wrap gap-4">
+        <InputField
+          label="Username"
+          register={register}
+          name="username"
+          defaultValue={data?.username}
+          error={errors?.username}
+        />
+        <InputField
+          label="Email"
+          register={register}
+          name="email"
+          defaultValue={data?.email}
+          error={errors?.email}
+        />
+        <InputField
+          label="Password"
+          register={register}
+          type="password"
+          name="password"
+          defaultValue={data?.password}
+          error={errors?.password}
+        />
+      </div>
+      <span className="text-sm text-gray-400 font-medium">
+        Personal Information
+      </span>
+
+      <div className="flex justify-between flex-wrap gap-4">
+        <InputField
+          label="Name"
+          register={register}
+          name="name"
+          defaultValue={data?.name}
+          error={errors?.name}
+        />
+        <InputField
+          label="Phone"
+          register={register}
+          name="phone"
+          defaultValue={data?.phone}
+          error={errors?.phone}
+        />
+        <InputField
+          label="Students"
+          register={register}
+          name="students"
+          defaultValue={data?.students}
+          error={errors?.students}
+        />
+        <InputField
+          label="Address"
+          register={register}
+          name="address"
+          defaultValue={data?.address}
+          error={errors?.address}
+        />
+      </div>
+      <button className="bg-blue-400 text-white p-2 rounded-md">
+        {type === "create" ? "Create" : "Update"}
+      </button>
+    </form>
+  );
+}
+
+export default ParentForm;

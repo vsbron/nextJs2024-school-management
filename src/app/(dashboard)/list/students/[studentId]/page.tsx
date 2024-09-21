@@ -14,6 +14,8 @@ const tempData = {
   password: "password",
   firstName: "Jane",
   lastName: "Doe",
+  grade: "5",
+  cass: "1A",
   phone: "+1 234 567 89",
   address: "2345 Main St, Anycity, USA",
   bloodType: "B+",

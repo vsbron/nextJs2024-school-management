@@ -1,10 +1,10 @@
 "use client";
-import { useForm } from "react-hook-form";
-
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import InputField from "../InputField";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import InputField from "../InputField";
 
 // Zod schema
 const schema = z.object({
@@ -51,7 +51,7 @@ function TeacherForm({
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-8">
       <h2 className="text-lg font-semibold">
-        {type === "create" ? "Create a new" : "Update a"} Teacher
+        {type === "create" ? "Create a new" : "Update the"} Teacher
       </h2>
       <span className="text-sm text-gray-400 font-medium">
         Authentication Information

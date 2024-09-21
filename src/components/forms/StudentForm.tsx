@@ -1,10 +1,10 @@
 "use client";
-import { useForm } from "react-hook-form";
-
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import InputField from "../InputField";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+import InputField from "../InputField";
 
 // Zod schema
 const schema = z.object({
@@ -18,6 +18,8 @@ const schema = z.object({
     .min(6, { message: "Password must be at least 8 characters long!" }),
   firstName: z.string().min(1, { message: "First name is required!" }),
   lastName: z.string().min(1, { message: "Last name is required!" }),
+  grade: z.number().min(1, { message: "Grade is required!" }),
+  class: z.string().min(1, { message: "Class is required!" }),
   phone: z.string().min(1, { message: "Phone is required!" }),
   address: z.string().min(1, { message: "Address is required!" }),
   bloodType: z.string().min(1, { message: "Blood Type is required" }),
@@ -51,7 +53,7 @@ function StudentForm({
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-8">
       <h2 className="text-lg font-semibold">
-        {type === "create" ? "Create a new" : "Update a"} Student
+        {type === "create" ? "Create a new" : "Update the"} Student
       </h2>
       <span className="text-sm text-gray-400 font-medium">
         Authentication Information
@@ -83,7 +85,6 @@ function StudentForm({
       <span className="text-sm text-gray-400 font-medium">
         Personal Information
       </span>
-
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
           label="First Name"
@@ -98,6 +99,20 @@ function StudentForm({
           name="lastName"
           defaultValue={data?.lastName}
           error={errors?.lastName}
+        />
+        <InputField
+          label="Class"
+          register={register}
+          name="class"
+          defaultValue={data?.class}
+          error={errors?.class}
+        />
+        <InputField
+          label="Grade"
+          register={register}
+          name="grade"
+          defaultValue={data?.grade}
+          error={errors?.grade}
         />
         <InputField
           label="Phone"

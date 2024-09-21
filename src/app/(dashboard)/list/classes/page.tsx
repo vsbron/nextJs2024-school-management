@@ -41,7 +41,7 @@ function ClassesList() {
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.name}</h3>
+        <h3 className="font-semibold">{item.class}</h3>
       </td>
       <td>{item.capacity}</td>
       <td className="hidden md:table-cell">{item.grade}</td>

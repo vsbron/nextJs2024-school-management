@@ -18,7 +18,7 @@ export type Assignment = {
 // Data type for Class
 export type Class = {
   id: number;
-  name: string;
+  class: string;
   capacity: number;
   grade: number;
   supervisor: string;

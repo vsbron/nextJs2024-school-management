@@ -12,6 +12,33 @@ const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
 const StudentForm = dynamic(() => import("./forms/StudentForm"), {
   loading: () => <h4>Loading form...</h4>,
 });
+const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const ClassForm = dynamic(() => import("./forms/ClassForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const EventForm = dynamic(() => import("./forms/EventForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const ExamForm = dynamic(() => import("./forms/ExamForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const LessonForm = dynamic(() => import("./forms/LessonForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const ParentForm = dynamic(() => import("./forms/ParentForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const ResultForm = dynamic(() => import("./forms/ResultForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const SubjectForm = dynamic(() => import("./forms/SubjectForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
 
 // Declaring the types for the various forms
 const forms: {
@@ -19,6 +46,15 @@ const forms: {
 } = {
   teacher: (type, data) => <TeacherForm type={type} data={data} />,
   student: (type, data) => <StudentForm type={type} data={data} />,
+  announcement: (type, data) => <AnnouncementForm type={type} data={data} />,
+  assignment: (type, data) => <AssignmentForm type={type} data={data} />,
+  class: (type, data) => <ClassForm type={type} data={data} />,
+  event: (type, data) => <EventForm type={type} data={data} />,
+  exam: (type, data) => <ExamForm type={type} data={data} />,
+  lesson: (type, data) => <LessonForm type={type} data={data} />,
+  parent: (type, data) => <ParentForm type={type} data={data} />,
+  result: (type, data) => <ResultForm type={type} data={data} />,
+  subject: (type, data) => <SubjectForm type={type} data={data} />,
 };
 
 function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
