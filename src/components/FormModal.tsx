@@ -1,9 +1,25 @@
 "use client";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 
 import { FormModalProps } from "@/lib/types";
-import TeacherForm from "./forms/TeacherForm";
+
+// Dynamic imports
+const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+const StudentForm = dynamic(() => import("./forms/StudentForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
+
+// Declaring the types for the various forms
+const forms: {
+  [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
+} = {
+  teacher: (type, data) => <TeacherForm type={type} data={data} />,
+  student: (type, data) => <StudentForm type={type} data={data} />,
+};
 
 function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
   // Creating a state for the Modal window
@@ -53,7 +69,8 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
                 </button>
               </form>
             ) : (
-              <TeacherForm type={type} data={data} />
+              (type === "create" || type === "update") &&
+              forms[table](type, data)
             )}
           </div>
         </div>

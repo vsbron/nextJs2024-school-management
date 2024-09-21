@@ -6,6 +6,7 @@ import BigCalendar from "@/components/BigCalendar";
 import FormModal from "@/components/FormModal";
 import PerformanceChart from "@/components/PerformanceChart";
 
+// Temp teacher data
 const tempData = {
   id: 1,
   username: "danaguerrero",

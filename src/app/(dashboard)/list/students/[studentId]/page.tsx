@@ -1,8 +1,27 @@
+import Link from "next/link";
+import Image from "next/image";
+
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalendar";
+import FormModal from "@/components/FormModal";
 import PerformanceChart from "@/components/PerformanceChart";
-import Image from "next/image";
-import Link from "next/link";
+
+// Temp student data
+const tempData = {
+  id: 1,
+  username: "janedoe",
+  email: "janedoe@gmail.com",
+  password: "password",
+  firstName: "Jane",
+  lastName: "Doe",
+  phone: "+1 234 567 89",
+  address: "2345 Main St, Anycity, USA",
+  bloodType: "B+",
+  birthday: "2001-01-01",
+  sex: "female",
+  avatar:
+    "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a750d45d3eb7b8e754a48c_Jessie%20Meyton-p-500.jpg",
+};
 
 function SingleStudentPage() {
   return (
@@ -15,7 +34,7 @@ function SingleStudentPage() {
           <div className="bg-schoolSky py-6 px-4 rounded-xl flex-1 flex flex-col xs:flex-row gap-4">
             <div className="basis-1/3">
               <Image
-                src="https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a750d45d3eb7b8e754a48c_Jessie%20Meyton-p-500.jpg "
+                src="https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a750d45d3eb7b8e754a48c_Jessie%20Meyton-p-500.jpg"
                 className="rounded-full object-cover"
                 alt="Student name"
                 width={144}
@@ -23,7 +42,11 @@ function SingleStudentPage() {
               />
             </div>
             <div className="basis-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold">Jane Doe</h1>
+              <h1 className="text-xl font-semibold"></h1>
+              <div className="flex items-center gap-4">
+                <h1 className="text-xl font-semibold">Jane Doe</h1>
+                <FormModal table="student" type="update" data={tempData} />
+              </div>
               <p className="text-sm text-gray-500">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </p>
