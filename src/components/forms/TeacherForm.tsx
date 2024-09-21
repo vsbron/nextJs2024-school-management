@@ -46,9 +46,6 @@ function TeacherForm({
     console.log(data);
   });
 
-  // DELETE LATER
-  console.log(type);
-
   // Returned JSX
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-8">
@@ -78,32 +75,53 @@ function TeacherForm({
         defaultValue={data?.password}
         error={errors?.password}
       />
-      {/* <span className="text-sm text-gray-400 font-medium">
+      <span className="text-sm text-gray-400 font-medium">
         Personal Information
       </span>
-      <label>First Name</label>
-      <input type="text" {...register("firstName")} />
-      {errors.firstName?.message && (
-        <p>{errors.firstName?.message.toString()}</p>
-      )}
-      <label>Last Name</label>
-      <input type="text" {...register("lastName")} />
-      {errors.lastName?.message && <p>{errors.lastName?.message.toString()}</p>}
-      <label>Phone</label>
-      <input type="text" {...register("phone")} />
-      {errors.phone?.message && <p>{errors.phone?.message.toString()}</p>}
-      <label>Address</label>
-      <input type="text" {...register("address")} />
-      {errors.address?.message && <p>{errors.address?.message.toString()}</p>}
-      <label>Blood Type</label>
-      <input type="text" {...register("bloodType")} />
-      {errors.bloodType?.message && (
-        <p>{errors.bloodType?.message.toString()}</p>
-      )}
-      <label>Date of Birth</label>
-      <input type="text" {...register("birthday")} />
-      {errors.birthday?.message && <p>{errors.birthday?.message.toString()}</p>}
-      <label>Sex</label>
+      <InputField
+        label="First Name"
+        register={register}
+        name="firstName"
+        defaultValue={data?.firstName}
+        error={errors?.firstName}
+      />
+      <InputField
+        label="Last Name"
+        register={register}
+        name="lastName"
+        defaultValue={data?.lastName}
+        error={errors?.lastName}
+      />
+      <InputField
+        label="Phone"
+        register={register}
+        name="phone"
+        defaultValue={data?.phone}
+        error={errors?.phone}
+      />
+      <InputField
+        label="Address"
+        register={register}
+        name="address"
+        defaultValue={data?.address}
+        error={errors?.address}
+      />
+      <InputField
+        label="Blood Type"
+        register={register}
+        name="bloodType"
+        defaultValue={data?.bloodType}
+        error={errors?.bloodType}
+      />
+      <InputField
+        label="Date of Birth"
+        register={register}
+        name="birthday"
+        type="date"
+        defaultValue={data?.birthday}
+        error={errors?.birthday}
+      />
+      {/* <label>Sex</label>
       <select {...register("sex")}>
         <option value="male">Male</option>
         <option value="female">Female</option>
