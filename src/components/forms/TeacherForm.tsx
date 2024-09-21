@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputField from "../InputField";
+import Image from "next/image";
 
 // Zod schema
 const schema = z.object({
@@ -125,16 +126,50 @@ function TeacherForm({
           defaultValue={data?.birthday}
           error={errors?.birthday}
         />
+
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Sex</label>
+          <select
+            {...register("sex")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.sex}
+          >
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          {errors.sex?.message && (
+            <p className="text-xs text-red-400">
+              {errors.sex?.message.toString()}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+          <label
+            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+            htmlFor="avatar"
+          >
+            <Image
+              src="/upload.png"
+              width={28}
+              height={28}
+              alt="Upload an avatar"
+            />
+            <span>Upload a photo</span>
+          </label>
+          <input
+            type="file"
+            {...register("avatar")}
+            className="hidden"
+            id="avatar"
+          />
+          {errors.avatar?.message && (
+            <p className="text-xs text-red-400">
+              {errors.avatar?.message.toString()}
+            </p>
+          )}
+        </div>
       </div>
-      {/* <label>Sex</label>
-      <select {...register("sex")}>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-      </select>
-      {errors.sex?.message && <p>{errors.sex?.message.toString()}</p>}
-      <label></label>
-      <input type="file" {...register("avatar")} />
-      {errors.avatar?.message && <p>{errors.avatar?.message.toString()}</p>} */}
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>

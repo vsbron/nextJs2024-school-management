@@ -27,7 +27,7 @@ function InputField({
       <input
         type={type}
         {...register(name)}
-        className="ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+        className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
         {...inputAttrs}
         value={defaultValue}
       />
