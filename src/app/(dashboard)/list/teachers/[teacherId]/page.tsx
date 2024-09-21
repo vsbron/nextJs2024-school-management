@@ -1,8 +1,26 @@
+import Link from "next/link";
+import Image from "next/image";
+
 import Announcements from "@/components/Announcements";
 import BigCalendar from "@/components/BigCalendar";
+import FormModal from "@/components/FormModal";
 import PerformanceChart from "@/components/PerformanceChart";
-import Image from "next/image";
-import Link from "next/link";
+
+const tempData = {
+  id: 1,
+  username: "danaguerrero",
+  email: "danaguerrero@gmail.com",
+  password: "password",
+  firstName: "Dana",
+  lastName: "Guerrero",
+  phone: "+1 234 567 89",
+  address: "1234 Main St, Anytown, USA",
+  bloodType: "A+",
+  birthday: "2000-01-01",
+  sex: "female",
+  avatar:
+    "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a752b0fec11d8c4c9beaf7_Olivia%20Rhye-p-500.jpg",
+};
 
 function SingleTeacherPage() {
   return (
@@ -23,7 +41,10 @@ function SingleTeacherPage() {
               />
             </div>
             <div className="basis-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold">Dana Guerrero</h1>
+              <div className="flex items-center gap-4">
+                <h1 className="text-xl font-semibold">Dana Guerrero</h1>
+                <FormModal table="teacher" type="update" data={tempData} />
+              </div>
               <p className="text-sm text-gray-500">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </p>

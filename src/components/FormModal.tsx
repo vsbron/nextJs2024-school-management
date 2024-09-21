@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
+import { useState } from "react";
 
 import { FormModalProps } from "@/lib/types";
-import { useState } from "react";
 import TeacherForm from "./forms/TeacherForm";
 
 function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
@@ -17,9 +17,6 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
       : type === "update"
       ? "bg-schoolSky"
       : "bg-schoolPurple";
-
-  // DELETE LATER
-  console.log(data);
 
   // Returned JSX
   return (
@@ -56,7 +53,7 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
                 </button>
               </form>
             ) : (
-              <TeacherForm type="create" />
+              <TeacherForm type={type} data={data} />
             )}
           </div>
         </div>

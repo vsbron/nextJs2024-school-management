@@ -32,7 +32,7 @@ function TeacherForm({
   type,
   data,
 }: {
-  type: "create" | "update";
+  type: "create" | "update" | "delete";
   data?: any;
 }) {
   // Getting the form functions from React Hook Form
