@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { FormModalProps } from "@/lib/types";
 import { useState } from "react";
+import TeacherForm from "./forms/TeacherForm";
 
 function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
   // Creating a state for the Modal window
@@ -55,7 +56,7 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
                 </button>
               </form>
             ) : (
-              "Create or Update Form"
+              <TeacherForm type="create" />
             )}
           </div>
         </div>
