@@ -53,74 +53,79 @@ function TeacherForm({
       <span className="text-sm text-gray-400 font-medium">
         Authentication Information
       </span>
-      <InputField
-        label="Username"
-        register={register}
-        name="username"
-        defaultValue={data?.username}
-        error={errors?.username}
-      />
-      <InputField
-        label="Email"
-        register={register}
-        name="email"
-        defaultValue={data?.email}
-        error={errors?.email}
-      />
-      <InputField
-        label="Password"
-        register={register}
-        type="password"
-        name="password"
-        defaultValue={data?.password}
-        error={errors?.password}
-      />
+      <div className="flex justify-between flex-wrap gap-4">
+        <InputField
+          label="Username"
+          register={register}
+          name="username"
+          defaultValue={data?.username}
+          error={errors?.username}
+        />
+        <InputField
+          label="Email"
+          register={register}
+          name="email"
+          defaultValue={data?.email}
+          error={errors?.email}
+        />
+        <InputField
+          label="Password"
+          register={register}
+          type="password"
+          name="password"
+          defaultValue={data?.password}
+          error={errors?.password}
+        />
+      </div>
       <span className="text-sm text-gray-400 font-medium">
         Personal Information
       </span>
-      <InputField
-        label="First Name"
-        register={register}
-        name="firstName"
-        defaultValue={data?.firstName}
-        error={errors?.firstName}
-      />
-      <InputField
-        label="Last Name"
-        register={register}
-        name="lastName"
-        defaultValue={data?.lastName}
-        error={errors?.lastName}
-      />
-      <InputField
-        label="Phone"
-        register={register}
-        name="phone"
-        defaultValue={data?.phone}
-        error={errors?.phone}
-      />
-      <InputField
-        label="Address"
-        register={register}
-        name="address"
-        defaultValue={data?.address}
-        error={errors?.address}
-      />
-      <InputField
-        label="Blood Type"
-        register={register}
-        name="bloodType"
-        defaultValue={data?.bloodType}
-        error={errors?.bloodType}
-      />
-      <InputField
-        label="Date of Birth"
-        register={register}
-        name="birthday"
-        type="date"
-        defaultValue={data?.birthday}
-        error={errors?.birthday}
-      />
+
+      <div className="flex justify-between flex-wrap gap-4">
+        <InputField
+          label="First Name"
+          register={register}
+          name="firstName"
+          defaultValue={data?.firstName}
+          error={errors?.firstName}
+        />
+        <InputField
+          label="Last Name"
+          register={register}
+          name="lastName"
+          defaultValue={data?.lastName}
+          error={errors?.lastName}
+        />
+        <InputField
+          label="Phone"
+          register={register}
+          name="phone"
+          defaultValue={data?.phone}
+          error={errors?.phone}
+        />
+        <InputField
+          label="Address"
+          register={register}
+          name="address"
+          defaultValue={data?.address}
+          error={errors?.address}
+        />
+        <InputField
+          label="Blood Type"
+          register={register}
+          name="bloodType"
+          defaultValue={data?.bloodType}
+          error={errors?.bloodType}
+        />
+        <InputField
+          label="Date of Birth"
+          register={register}
+          name="birthday"
+          type="date"
+          defaultValue={data?.birthday}
+          error={errors?.birthday}
+        />
+      </div>
       {/* <label>Sex</label>
       <select {...register("sex")}>
         <option value="male">Male</option>
