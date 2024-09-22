@@ -4,16 +4,17 @@ School management App.
 
 ## Features
 
-- Admin dashboard that divided to two sections: Center and Right;
-- Center Admin dashboard shows number of Charts based on a various school data;
-- Right Admin dashboard displays a calendar and an event list for a chosen date and announcements;
-- Left navigation has links to a various lists including Teachers, Students, Parents, Subjects, Classes etc;
+- Dashboard that displays multiple components on various School activities data;
+- App contains various lists of the data like Teachers, Students, Parents, Exams etc;
+- Teachers and Students are having separate page for each person with personal details;
+- Lists and single pages contain form triggers for adding or updating the data;
 
 ## Details
 
 - App is written using NEXT.js framework with a TypeScript;
 - Styles are handled via Tailwind CSS;
+- Forms are handled via React Hook Form and validated via Zod;
 
 ### Live version
 
-https://vsbron-react2024-school-management.netlify.app
+https://vsbron-nextjs2024-school-management.vercel.app/
