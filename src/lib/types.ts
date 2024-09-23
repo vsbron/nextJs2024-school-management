@@ -73,19 +73,6 @@ export type Result = {
   score: number;
 };
 
-// Data type for Student
-export type Student = {
-  id: number;
-  studentId: string;
-  name: string;
-  email?: string;
-  photo: string;
-  phone?: string;
-  grade: number;
-  class: string;
-  address: string;
-};
-
 // Data type for Subject
 export type Subject = {
   id: number;
