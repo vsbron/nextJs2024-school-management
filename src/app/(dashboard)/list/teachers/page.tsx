@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { role } from "@/lib/data";
-import { Class, Subject, Teacher } from "@prisma/client";
+import { Class, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
@@ -57,17 +57,37 @@ async function TeacherList({
   searchParams: { [key: string]: string | undefined };
 }) {
   // Destructuring the searchParams and setting our current page
-  const { page } = searchParams;
+  const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
+
+  // URL PARAMS CONDITIONS
+  const query: Prisma.TeacherWhereInput = {};
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      // Guard clause
+      if (!value) return;
+
+      // Switch statement to cover all available search params
+      switch (key) {
+        case "classId":
+          query.lessons = {
+            some: {
+              classId: parseInt(value),
+            },
+          };
+      }
+    }
+  }
 
   // Fetching the data from the database and setting the pagination constants
   const [data, count] = await prisma.$transaction([
     prisma.teacher.findMany({
+      where: query,
       include: { subjects: true, classes: true },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),
-    prisma.teacher.count(),
+    prisma.teacher.count({ where: query }),
   ]);
 
   // Creating the function that renders a data row in the table
