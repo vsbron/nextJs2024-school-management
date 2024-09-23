@@ -9,8 +9,9 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import prisma from "@/lib/prisma";
+import { ITEMS_PER_PAGE } from "@/lib/settings";
 
-// Type for teh teacher list with data from different tables
+// Type for the teacher list with data from different tables
 type TeacherList = Teacher & { subjects: Subject[]; classes: Class[] };
 
 const columns = [
@@ -50,7 +51,26 @@ const columns = [
   },
 ];
 
-async function TeacherList() {
+async function TeacherList({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  // Destructuring the searchParams and setting our current page
+  const { page } = searchParams;
+  const p = page ? parseInt(page) : 1;
+
+  // Fetching the data from the database and setting the pagination constants
+  const [data, count] = await prisma.$transaction([
+    prisma.teacher.findMany({
+      include: { subjects: true, classes: true },
+      take: ITEMS_PER_PAGE,
+      skip: ITEMS_PER_PAGE * (p - 1),
+    }),
+    prisma.teacher.count(),
+  ]);
+
+  // Creating the function that renders a data row in the table
   const renderRow = (item: TeacherList) => (
     <tr
       key={item.id}
@@ -93,11 +113,6 @@ async function TeacherList() {
     </tr>
   );
 
-  // Fetching the data from the database
-  const data = await prisma.teacher.findMany({
-    include: { subjects: true, classes: true },
-  });
-
   // Returned JSX
   return (
     <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
@@ -120,7 +135,7 @@ async function TeacherList() {
       {/* LIST */}
       <Table<TeacherList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   );
 }
