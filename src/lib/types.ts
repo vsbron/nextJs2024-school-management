@@ -94,17 +94,17 @@ export type Subject = {
 };
 
 // Data type for Teacher
-export type Teacher = {
-  id: number;
-  teacherId: string;
-  name: string;
-  email?: string;
-  photo: string;
-  phone: string;
-  subjects: string[];
-  classes: string[];
-  address: string;
-};
+// export type Teacher = {
+//   id: number;
+//   teacherId: string;
+//   name: string;
+//   email?: string;
+//   photo: string;
+//   phone: string;
+//   subjects: string[];
+//   classes: string[];
+//   address: string;
+// };
 
 // Prop types for Form modal
 export type FormModalProps<T> = {
@@ -122,5 +122,5 @@ export type FormModalProps<T> = {
     | "announcement";
   type: "create" | "update" | "delete";
   data?: T;
-  id?: number;
+  id?: string;
 };

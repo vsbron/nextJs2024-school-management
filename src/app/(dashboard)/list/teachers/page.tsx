@@ -1,13 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { role, teachersData } from "@/lib/data";
-import { Teacher } from "@/lib/types";
+import { role } from "@/lib/data";
+import { Class, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import prisma from "@/lib/prisma";
+
+// Type for teh teacher list with data from different tables
+type TeacherList = Teacher & { subjects: Subject[]; classes: Class[] };
 
 const columns = [
   {
@@ -46,15 +50,15 @@ const columns = [
   },
 ];
 
-function TeacherList() {
-  const renderRow = (item: Teacher) => (
+async function TeacherList() {
+  const renderRow = (item: TeacherList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
         <Image
-          src={item.photo}
+          src={item.img || "/noAvatar.png"}
           className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
           width={40}
           height={40}
@@ -65,9 +69,13 @@ function TeacherList() {
           <p className="text-sm text-gray-500">{item.email}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.teacherId}</td>
-      <td className="hidden md:table-cell">{item.subjects.join(", ")}</td>
-      <td className="hidden md:table-cell">{item.classes.join(", ")}</td>
+      <td className="hidden md:table-cell">{item.username}</td>
+      <td className="hidden md:table-cell">
+        {item.subjects.map((subject) => subject.name).join(", ")}
+      </td>
+      <td className="hidden md:table-cell">
+        {item.classes.map((classItem) => classItem.name).join(", ")}
+      </td>
       <td className="hidden lg:table-cell">{item.phone}</td>
       <td className="hidden lg:table-cell">{item.address}</td>
       <td>
@@ -78,14 +86,17 @@ function TeacherList() {
             </button>
           </Link>
           {role === "admin" && (
-            <>
-              <FormModal table="teacher" type="delete" id={item.id} />
-            </>
+            <FormModal table="teacher" type="delete" id={item.id} />
           )}
         </div>
       </td>
     </tr>
   );
+
+  // Fetching the data from the database
+  const data = await prisma.teacher.findMany({
+    include: { subjects: true, classes: true },
+  });
 
   // Returned JSX
   return (
@@ -107,11 +118,7 @@ function TeacherList() {
         </div>
       </div>
       {/* LIST */}
-      <Table<Teacher>
-        columns={columns}
-        renderRow={renderRow}
-        data={teachersData}
-      />
+      <Table<TeacherList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
       <Pagination />
     </div>
