@@ -1,12 +1,17 @@
 import Image from "next/image";
+import { Parent, Prisma, Student } from "@prisma/client";
 
-import { role, parentsData } from "@/lib/data";
-import { Parent } from "@/lib/types";
+import { role } from "@/lib/data";
+import prisma from "@/lib/prisma";
+import { ITEMS_PER_PAGE } from "@/lib/settings";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+
+// Type for the student list with data from different tables
+type ParentList = Parent & { students: Student[] };
 
 const columns = [
   {
@@ -40,8 +45,55 @@ const columns = [
   },
 ];
 
-function ParentsList() {
-  const renderRow = (item: Parent) => (
+async function ParentList({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  // Destructuring the searchParams and setting our current page
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+
+  // URL PARAMS CONDITIONS
+  const query: Prisma.ParentWhereInput = {};
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      // Guard clause
+      if (!value) return;
+
+      // Switch statement to cover all available search params
+      switch (key) {
+        // Filtering by class id
+        case "parentId":
+          query.students = {
+            some: {
+              parentId: value,
+            },
+          };
+          break;
+        // Filtering by search input
+        case "search":
+          query.name = {
+            contains: value,
+            mode: "insensitive",
+          };
+      }
+    }
+  }
+
+  // Fetching the data from the database and setting the pagination constants
+  const [data, count] = await prisma.$transaction([
+    prisma.parent.findMany({
+      where: query,
+      include: { students: true },
+      take: ITEMS_PER_PAGE,
+      skip: ITEMS_PER_PAGE * (p - 1),
+    }),
+    prisma.parent.count({ where: query }),
+  ]);
+
+  // Creating the function that renders a data row in the table
+  const renderRow = (item: ParentList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
@@ -52,7 +104,9 @@ function ParentsList() {
           <p className="text-sm text-gray-500">{item.email}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.students.join(", ")}</td>
+      <td className="hidden md:table-cell">
+        {item.students.map((studentItem) => studentItem.name).join(", ")}
+      </td>
       <td className="hidden lg:table-cell">{item.email}</td>
       <td className="hidden lg:table-cell">{item.phone}</td>
       <td className="hidden lg:table-cell">{item.address}</td>
@@ -89,15 +143,11 @@ function ParentsList() {
         </div>
       </div>
       {/* LIST */}
-      <Table<Parent>
-        columns={columns}
-        renderRow={renderRow}
-        data={parentsData}
-      />
+      <Table<ParentList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   );
 }
 
-export default ParentsList;
+export default ParentList;

@@ -44,7 +44,6 @@ function SingleStudentPage() {
               />
             </div>
             <div className="basis-2/3 flex flex-col justify-between gap-4">
-              <h1 className="text-xl font-semibold"></h1>
               <div className="flex items-center gap-4">
                 <h1 className="text-xl font-semibold">Jane Doe</h1>
                 <FormModal table="student" type="update" data={tempData} />
@@ -169,10 +168,16 @@ function SingleStudentPage() {
               Student&apos;s lessons
             </Link>
             <Link
-              href="/list/teachers?teacherId=teacher1"
+              href="/list/teachers?classId=2"
               className="p-2 rounded-md bg-schoolPurpleLight"
             >
               Student&apos;s teachers
+            </Link>
+            <Link
+              href="/list/parents?parentId=parentId1"
+              className="p-2 rounded-md bg-pink-50"
+            >
+              Student&apos;s parents
             </Link>
             <Link href="" className="p-2 rounded-md bg-pink-50">
               Student&apos;s exams
