@@ -16,7 +16,7 @@ function TableSearch() {
 
     // Setting the search params with the new search value
     const params = new URLSearchParams(window.location.search);
-    params.set("search", value);
+    value !== "" ? params.set("search", value) : params.delete("search");
     router.push(`${window.location.pathname}?${params}`);
   };
 
