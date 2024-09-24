@@ -182,7 +182,10 @@ function SingleStudentPage() {
             >
               Student&apos;s parents
             </Link>
-            <Link href="" className="p-2 rounded-md bg-pink-50">
+            <Link
+              href={`/list/lessons?classId=${"2"}`}
+              className="p-2 rounded-md bg-pink-50"
+            >
               Student&apos;s exams
             </Link>
             <Link href="" className="p-2 rounded-md bg-schoolSkyLight">
