@@ -63,7 +63,7 @@ async function ParentList({
 
       // Switch statement to cover all available search params
       switch (key) {
-        // Filtering by class id
+        // Filtering by parent id
         case "parentId":
           query.students = {
             some: {

@@ -10,6 +10,7 @@ import {
   Lesson,
   Prisma,
   Student,
+  Teacher,
 } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -17,12 +18,13 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 
-// Type for the teacher list with data from different tables
+// Type for the class list with data from different tables
 type ClassList = Class & {
   lessons: Lesson[];
   students: Student[];
   events: Event[];
   announcements: Announcement[];
+  supervisor: Teacher | null;
 };
 
 const columns = [
@@ -71,10 +73,7 @@ async function ClassList({
       switch (key) {
         // Filtering by class id
         case "teacherId":
-          query.supervisorId = {
-            contains: value,
-            mode: "insensitive",
-          };
+          query.supervisorId = value;
           break;
         // Filtering by search input
         case "search":
@@ -95,6 +94,7 @@ async function ClassList({
         students: true,
         events: true,
         announcements: true,
+        supervisor: true,
       },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
@@ -112,8 +112,8 @@ async function ClassList({
         <h3 className="font-semibold">{item.name}</h3>
       </td>
       <td>{item.capacity}</td>
-      <td className="hidden md:table-cell">{item.gradeId}</td>
-      <td className="hidden md:table-cell">{item.supervisorId}</td>
+      <td className="hidden md:table-cell">{item.name[0]}</td>
+      <td className="hidden md:table-cell">{item.supervisor?.name}</td>
       <td>
         <div className="flex items-center gap-2">
           {role === "admin" && (

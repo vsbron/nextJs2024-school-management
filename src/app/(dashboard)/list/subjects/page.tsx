@@ -53,7 +53,7 @@ async function SubjectList({
 
       // Switch statement to cover all available search params
       switch (key) {
-        // Filtering by class id
+        // Filtering by teacher id
         case "teacherId":
           query.teachers = {
             some: {
