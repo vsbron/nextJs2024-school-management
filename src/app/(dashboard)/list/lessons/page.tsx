@@ -3,14 +3,7 @@ import Image from "next/image";
 import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import {
-  Assignment,
-  Attendance,
-  Exam,
-  Lesson,
-  Prisma,
-  Teacher,
-} from "@prisma/client";
+import { Class, Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
@@ -19,10 +12,9 @@ import TableSearch from "@/components/TableSearch";
 
 // Type for the lesson list with data from different tables
 type LessonList = Lesson & {
-  exams: Exam[];
   teacher: Teacher;
-  assignments: Assignment[];
-  attendances: Attendance[];
+  class: Class;
+  subject: Subject;
 };
 
 const columns = [
@@ -69,12 +61,16 @@ async function LessonList({
         case "teacherId":
           query.teacherId = value;
           break;
+        // Filtering by class id
+        case "classId":
+          query.classId = parseInt(value);
+          break;
         // Filtering by search input
         case "search":
-          query.name = {
-            contains: value,
-            mode: "insensitive",
-          };
+          query.OR = [
+            { subject: { name: { contains: value, mode: "insensitive" } } },
+            { teacher: { name: { contains: value, mode: "insensitive" } } },
+          ];
       }
     }
   }
@@ -84,9 +80,8 @@ async function LessonList({
     prisma.lesson.findMany({
       where: query,
       include: {
-        exams: true,
-        assignments: true,
-        attendances: true,
+        subject: true,
+        class: true,
         teacher: true,
       },
       take: ITEMS_PER_PAGE,
@@ -102,10 +97,12 @@ async function LessonList({
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.name}</h3>
+        <h3 className="font-semibold">{item.subject.name}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.classId}</td>
-      <td className="hidden md:table-cell">{item.teacher.name}</td>
+      <td className="hidden md:table-cell">{item.class.name}</td>
+      <td className="hidden md:table-cell">
+        {item.teacher.name + " " + item.teacher.surname}
+      </td>
       <td>
         <div className="flex items-center gap-2">
           {role === "admin" && (
