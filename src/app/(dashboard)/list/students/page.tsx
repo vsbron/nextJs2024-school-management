@@ -1,17 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Class, Prisma, Student } from "@prisma/client";
 
 import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { Class, Prisma, Student } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 
-// Type for the teacher list with data from different tables
+// Type for the student list with data from different tables
 type StudentList = Student & { class: Class };
 
 const columns = [

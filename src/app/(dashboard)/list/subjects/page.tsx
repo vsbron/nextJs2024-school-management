@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 
 import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";

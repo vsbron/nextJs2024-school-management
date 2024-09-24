@@ -162,7 +162,10 @@ function SingleTeacherPage() {
         <div className="bg-white p-4 rounded-xl">
           <h2 className="text-xl font-semibold mb-4">Shortcuts</h2>
           <div className="flex gap-2 flex-wrap text-xs text-gray-500">
-            <Link href="" className="p-2 rounded-md bg-schoolSkyLight">
+            <Link
+              href={`/list/classes?teacherId=${"teacher12"}`}
+              className="p-2 rounded-md bg-schoolSkyLight"
+            >
               Teacher&apos;s classes
             </Link>
             <Link

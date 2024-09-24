@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { role } from "@/lib/data";
-import { ITEMS_PER_PAGE } from "@/lib/settings";
 import prisma from "@/lib/prisma";
+import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { Class, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
