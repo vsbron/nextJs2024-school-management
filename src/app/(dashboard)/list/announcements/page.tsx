@@ -1,12 +1,17 @@
 import Image from "next/image";
 
-import { role, announcementsData } from "@/lib/data";
-import { Announcement } from "@/lib/types";
+import { role } from "@/lib/data";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import { Announcement, Class, Prisma } from "@prisma/client";
+import prisma from "@/lib/prisma";
+import { ITEMS_PER_PAGE } from "@/lib/settings";
+
+// Type for the announcement list with data from different tables
+type AnnouncementList = Announcement & { class: Class | null };
 
 const columns = [
   {
@@ -30,8 +35,47 @@ const columns = [
   },
 ];
 
-function AnnouncementsList() {
-  const renderRow = (item: Announcement) => (
+async function AnnouncementList({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  // Destructuring the searchParams and setting our current page
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+
+  // URL PARAMS CONDITIONS
+  const query: Prisma.AnnouncementWhereInput = {};
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      // Guard clause
+      if (!value) return;
+
+      // Switch statement to cover all available search params
+      switch (key) {
+        // Filtering by search input
+        case "search":
+          query.title = {
+            contains: value,
+            mode: "insensitive",
+          };
+      }
+    }
+  }
+
+  // Fetching the data from the database and setting the pagination constants
+  const [data, count] = await prisma.$transaction([
+    prisma.announcement.findMany({
+      where: query,
+      include: { class: true },
+      take: ITEMS_PER_PAGE,
+      skip: ITEMS_PER_PAGE * (p - 1),
+    }),
+    prisma.announcement.count({ where: query }),
+  ]);
+
+  // Creating the function that renders a data row in the table
+  const renderRow = (item: AnnouncementList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
@@ -39,8 +83,10 @@ function AnnouncementsList() {
       <td className="flex items-center gap-4 p-4">
         <h3 className="font-semibold">{item.title}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.class}</td>
-      <td className="hidden md:table-cell">{item.date}</td>
+      <td className="hidden md:table-cell">{item.class?.name || "None"}</td>
+      <td className="hidden md:table-cell">
+        {new Intl.DateTimeFormat("en-US").format(item.date)}
+      </td>
       <td>
         <div className="flex items-center gap-2">
           {role === "admin" && (
@@ -78,15 +124,15 @@ function AnnouncementsList() {
         </div>
       </div>
       {/* LIST */}
-      <Table<Announcement>
+      <Table<AnnouncementList>
         columns={columns}
         renderRow={renderRow}
-        data={announcementsData}
+        data={data}
       />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   );
 }
 
-export default AnnouncementsList;
+export default AnnouncementList;
