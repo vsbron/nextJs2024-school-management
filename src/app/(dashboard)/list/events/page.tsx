@@ -1,12 +1,17 @@
 import Image from "next/image";
 
-import { role, eventsData } from "@/lib/data";
-import { Event } from "@/lib/types";
+import { role } from "@/lib/data";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import { Class, Event, Prisma } from "@prisma/client";
+import prisma from "@/lib/prisma";
+import { ITEMS_PER_PAGE } from "@/lib/settings";
+
+// Type for the event list with data from different tables
+type EventList = Event & { class: Class | null };
 
 const columns = [
   {
@@ -39,8 +44,47 @@ const columns = [
   },
 ];
 
-function EventsList() {
-  const renderRow = (item: Event) => (
+async function EventList({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  // Destructuring the searchParams and setting our current page
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+
+  // URL PARAMS CONDITIONS
+  const query: Prisma.EventWhereInput = {};
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      // Guard clause
+      if (!value) return;
+
+      // Switch statement to cover all available search params
+      switch (key) {
+        // Filtering by search input
+        case "search":
+          query.title = {
+            contains: value,
+            mode: "insensitive",
+          };
+      }
+    }
+  }
+
+  // Fetching the data from the database and setting the pagination constants
+  const [data, count] = await prisma.$transaction([
+    prisma.event.findMany({
+      where: query,
+      include: { class: true },
+      take: ITEMS_PER_PAGE,
+      skip: ITEMS_PER_PAGE * (p - 1),
+    }),
+    prisma.event.count({ where: query }),
+  ]);
+
+  // Creating the function that renders a data row in the table
+  const renderRow = (item: EventList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
@@ -48,10 +92,24 @@ function EventsList() {
       <td className="flex items-center gap-4 p-4">
         <h3 className="font-semibold">{item.title}</h3>
       </td>
-      <td>{item.class}</td>
-      <td className="hidden md:table-cell">{item.date}</td>
-      <td className="hidden md:table-cell">{item.startTime}</td>
-      <td className="hidden md:table-cell">{item.endTime}</td>
+      <td>{item.class?.name || "None"}</td>
+      <td className="hidden md:table-cell">
+        {new Intl.DateTimeFormat("en-US").format(item.startTime)}
+      </td>
+      <td className="hidden md:table-cell">
+        {item.startTime.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}
+      </td>
+      <td className="hidden md:table-cell">
+        {item.endTime.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })}
+      </td>
       <td>
         <div className="flex items-center gap-2">
           {role === "admin" && (
@@ -85,11 +143,11 @@ function EventsList() {
         </div>
       </div>
       {/* LIST */}
-      <Table<Event> columns={columns} renderRow={renderRow} data={eventsData} />
+      <Table<EventList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   );
 }
 
-export default EventsList;
+export default EventList;
