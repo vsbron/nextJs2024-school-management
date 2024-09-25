@@ -1,14 +1,14 @@
 import Image from "next/image";
 
 import { role } from "@/lib/data";
+import prisma from "@/lib/prisma";
+import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { Class, Exam, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import prisma from "@/lib/prisma";
-import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { Class, Exam, Prisma, Subject, Teacher } from "@prisma/client";
 
 // Type for the exam list with data from different tables
 type ExamList = Exam & {

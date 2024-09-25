@@ -1,12 +1,19 @@
 import Image from "next/image";
 
-import { role, assignmentsData } from "@/lib/data";
-import { Assignment } from "@/lib/types";
+import { role } from "@/lib/data";
+import prisma from "@/lib/prisma";
+import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+
+// Type for the assignment list with data from different tables
+type AssignmentList = Assignment & {
+  lesson: { subject: Subject; class: Class; teacher: Teacher };
+};
 
 const columns = [
   {
@@ -34,18 +41,73 @@ const columns = [
   },
 ];
 
-function AssignmentsList() {
-  const renderRow = (item: Assignment) => (
+async function AssignmentList({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) {
+  // Destructuring the searchParams and setting our current page
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+
+  // URL PARAMS CONDITIONS
+  const query: Prisma.AssignmentWhereInput = {};
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      // Guard clause
+      if (!value) return;
+
+      // Switch statement to cover all available search params
+      switch (key) {
+        // Filtering by teacher id
+        case "teacherId":
+          query.lesson = { teacherId: value };
+          break;
+        // Filtering by class id
+        case "classId":
+          query.lesson = { classId: parseInt(value) };
+          break;
+        // Filtering by search input
+        case "search":
+          query.OR = [
+            { lesson: {subject: { name: { contains: value, mode: "insensitive" } } }},
+            { lesson: {teacher: { name: { contains: value, mode: "insensitive" } } }},
+          ];
+      }
+    }
+  }
+
+  // Fetching the data from the database and setting the pagination constants
+  const [data, count] = await prisma.$transaction([
+    prisma.assignment.findMany({
+      where: query,
+      include: {
+        lesson: {
+          select: {
+            subject: true,
+            teacher: true,
+            class: true,
+          },
+        },
+      },
+      take: ITEMS_PER_PAGE,
+      skip: ITEMS_PER_PAGE * (p - 1),
+    }),
+    prisma.assignment.count({ where: query }),
+  ]);
+
+  // Creating the function that renders a data row in the table
+  const renderRow = (item: AssignmentList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.subject}</h3>
+        <h3 className="font-semibold">{item.lesson.subject.name}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.class}</td>
-      <td className="hidden md:table-cell">{item.teacher}</td>
-      <td>{item.dueDate}</td>
+      <td className="hidden md:table-cell">{item.lesson.class.name}</td>
+      <td className="hidden md:table-cell">{item.lesson.teacher.name + " " + item.lesson.teacher.surname}</td>
+      <td>{new Intl.DateTimeFormat("en-US").format(item.dueDate)}</td>
       <td>
         <div className="flex items-center gap-2">
           {role === "admin" && (
@@ -81,15 +143,15 @@ function AssignmentsList() {
         </div>
       </div>
       {/* LIST */}
-      <Table<Assignment>
+      <Table<AssignmentList>
         columns={columns}
         renderRow={renderRow}
-        data={assignmentsData}
+        data={data}
       />
       {/* PAGINATION */}
-      <Pagination />
+      <Pagination page={p} count={count} />
     </div>
   );
 }
 
-export default AssignmentsList;
+export default AssignmentList;

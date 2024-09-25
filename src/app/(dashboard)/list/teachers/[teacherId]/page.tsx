@@ -186,7 +186,7 @@ function SingleTeacherPage() {
             >
               Teacher&apos;s exams
             </Link>
-            <Link href="" className="p-2 rounded-md bg-schoolSkyLight">
+            <Link href={`/list/assignments?teacherId=${"teacher2"}`} className="p-2 rounded-md bg-schoolSkyLight">
               Teacher&apos;s assignments
             </Link>
             <Link
