@@ -70,9 +70,19 @@ async function AssignmentList({
         // Filtering by search input
         case "search":
           query.OR = [
-            { lesson: {subject: { name: { contains: value, mode: "insensitive" } } }},
-            { lesson: {teacher: { name: { contains: value, mode: "insensitive" } } }},
+            {
+              lesson: {
+                subject: { name: { contains: value, mode: "insensitive" } },
+              },
+            },
+            {
+              lesson: {
+                teacher: { name: { contains: value, mode: "insensitive" } },
+              },
+            },
           ];
+        default:
+          break;
       }
     }
   }
@@ -106,7 +116,9 @@ async function AssignmentList({
         <h3 className="font-semibold">{item.lesson.subject.name}</h3>
       </td>
       <td className="hidden md:table-cell">{item.lesson.class.name}</td>
-      <td className="hidden md:table-cell">{item.lesson.teacher.name + " " + item.lesson.teacher.surname}</td>
+      <td className="hidden md:table-cell">
+        {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
+      </td>
       <td>{new Intl.DateTimeFormat("en-US").format(item.dueDate)}</td>
       <td>
         <div className="flex items-center gap-2">

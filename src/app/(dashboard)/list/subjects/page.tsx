@@ -67,6 +67,8 @@ async function SubjectList({
             contains: value,
             mode: "insensitive",
           };
+        default:
+          break;
       }
     }
   }

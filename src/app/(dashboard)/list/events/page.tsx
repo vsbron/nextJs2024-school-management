@@ -68,6 +68,8 @@ async function EventList({
             contains: value,
             mode: "insensitive",
           };
+        default:
+          break;
       }
     }
   }

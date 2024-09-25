@@ -82,6 +82,8 @@ async function ExamList({
               },
             },
           };
+        default:
+          break;
       }
     }
   }

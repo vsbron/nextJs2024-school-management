@@ -59,6 +59,8 @@ async function AnnouncementList({
             contains: value,
             mode: "insensitive",
           };
+        default:
+          break;
       }
     }
   }

@@ -88,6 +88,8 @@ async function ResultsList({
             { assignment: { title: { contains: value, mode: "insensitive" } } },
             { student: { name: { contains: value, mode: "insensitive" } } },
           ];
+        default:
+          break;
       }
     }
   }

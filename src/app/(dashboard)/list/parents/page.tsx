@@ -77,6 +77,8 @@ async function ParentList({
             contains: value,
             mode: "insensitive",
           };
+        default:
+          break;
       }
     }
   }

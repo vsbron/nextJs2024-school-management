@@ -81,6 +81,8 @@ async function ClassList({
             contains: value,
             mode: "insensitive",
           };
+        default:
+          break;
       }
     }
   }

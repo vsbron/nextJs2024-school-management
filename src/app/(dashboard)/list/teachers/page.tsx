@@ -83,6 +83,8 @@ async function TeacherList({
             contains: value,
             mode: "insensitive",
           };
+        default:
+          break;
       }
     }
   }

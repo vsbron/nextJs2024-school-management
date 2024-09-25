@@ -80,6 +80,8 @@ async function StudentList({
             contains: value,
             mode: "insensitive",
           };
+        default:
+          break;
       }
     }
   }

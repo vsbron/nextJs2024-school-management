@@ -71,6 +71,8 @@ async function LessonList({
             { subject: { name: { contains: value, mode: "insensitive" } } },
             { teacher: { name: { contains: value, mode: "insensitive" } } },
           ];
+        default:
+          break;
       }
     }
   }
