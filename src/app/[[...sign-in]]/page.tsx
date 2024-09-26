@@ -8,7 +8,8 @@ import { useEffect } from "react";
 
 function SignInPage() {
   // Getting the user info from Clerk
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { user } = useUser();
+  // const { isLoaded, isSignedIn, user } = useUser();
 
   // Getting the router object
   const router = useRouter();

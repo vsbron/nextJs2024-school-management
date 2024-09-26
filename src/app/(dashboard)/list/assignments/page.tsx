@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { currentUserId, role } from "@/lib/utils";
 import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -35,10 +35,14 @@ const columns = [
     header: "Due date",
     accessor: "dueDate",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin" || role === "teacher"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 async function AssignmentList({
@@ -52,6 +56,8 @@ async function AssignmentList({
 
   // URL PARAMS CONDITIONS
   const query: Prisma.AssignmentWhereInput = {};
+  query.lesson = {};
+
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -61,11 +67,11 @@ async function AssignmentList({
       switch (key) {
         // Filtering by teacher id
         case "teacherId":
-          query.lesson = { teacherId: value };
+          query.lesson.teacherId = value;
           break;
         // Filtering by class id
         case "classId":
-          query.lesson = { classId: parseInt(value) };
+          query.lesson.classId = parseInt(value);
           break;
         // Filtering by search input
         case "search":
@@ -85,6 +91,35 @@ async function AssignmentList({
           break;
       }
     }
+  }
+
+  // ROLE CONDITIONS
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.lesson.teacherId = currentUserId!;
+      break;
+    case "student":
+      query.lesson.class = {
+        students: {
+          some: {
+            id: currentUserId!,
+          },
+        },
+      };
+      break;
+    case "parent":
+      query.lesson.class = {
+        students: {
+          some: {
+            parentId: currentUserId!,
+          },
+        },
+      };
+      break;
+    default:
+      break;
   }
 
   // Fetching the data from the database and setting the pagination constants
@@ -120,16 +155,14 @@ async function AssignmentList({
         {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
       </td>
       <td>{new Intl.DateTimeFormat("en-US").format(item.dueDate)}</td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal table="assignment" type="update" data={item} />
-              <FormModal table="assignment" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
+      {(role === "admin" || role === "teacher") && (
+        <td>
+          <div className="flex items-center gap-2">
+            <FormModal table="assignment" type="update" data={item} />
+            <FormModal table="assignment" type="delete" id={item.id} />
+          </div>
+        </td>
+      )}
     </tr>
   );
 
@@ -150,7 +183,9 @@ async function AssignmentList({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && <FormModal table="assignment" type="create" />}
+            {(role === "admin" || role === "teacher") && (
+              <FormModal table="assignment" type="create" />
+            )}
           </div>
         </div>
       </div>

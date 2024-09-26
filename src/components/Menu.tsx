@@ -1,6 +1,6 @@
-import { role } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
+import { currentUser } from "@clerk/nextjs/server";
 
 export const menuItems = [
   {
@@ -117,7 +117,11 @@ export const menuItems = [
   },
 ];
 
-function Menu() {
+async function Menu() {
+  // Getting the current user from the Clerk and the role from it
+  const user = await currentUser();
+  const role = user?.publicMetadata.role as string;
+
   // Returned JSX
   return (
     <div className="mt-4 text-sm">

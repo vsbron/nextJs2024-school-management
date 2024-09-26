@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { role } from "@/lib/utils";
 import { Announcement, Class, Prisma } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -29,10 +29,14 @@ const columns = [
     accessor: "dueDate",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 async function AnnouncementList({
@@ -89,16 +93,16 @@ async function AnnouncementList({
       <td className="hidden md:table-cell">
         {new Intl.DateTimeFormat("en-US").format(item.date)}
       </td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
+      {role === "admin" && (
+        <td>
+          <div className="flex items-center gap-2">
             <>
               <FormModal table="announcement" type="update" data={item} />
               <FormModal table="announcement" type="delete" id={item.id} />
             </>
-          )}
-        </div>
-      </td>
+          </div>
+        </td>
+      )}
     </tr>
   );
 
