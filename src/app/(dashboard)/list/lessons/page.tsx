@@ -33,10 +33,14 @@ const columns = [
     accessor: "teacher",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 async function LessonList({
@@ -105,16 +109,14 @@ async function LessonList({
       <td className="hidden md:table-cell">
         {item.teacher.name + " " + item.teacher.surname}
       </td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal table="lesson" type="update" data={item} />
-              <FormModal table="lesson" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
+      {role === "admin" && (
+        <td>
+          <div className="flex items-center gap-2">
+            <FormModal table="lesson" type="update" data={item} />
+            <FormModal table="lesson" type="delete" id={item.id} />
+          </div>
+        </td>
+      )}
     </tr>
   );
 

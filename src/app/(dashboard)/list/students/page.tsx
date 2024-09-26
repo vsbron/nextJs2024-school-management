@@ -40,10 +40,14 @@ const columns = [
     accessor: "address",
     className: "hidden lg:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin" || role === "teacher"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 async function StudentList({
@@ -127,9 +131,7 @@ async function StudentList({
             </button>
           </Link>
           {role === "admin" && (
-            <>
-              <FormModal table="student" type="delete" id={item.id} />
-            </>
+            <FormModal table="student" type="delete" id={item.id} />
           )}
         </div>
       </td>

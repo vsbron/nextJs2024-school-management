@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { role } from "@/lib/utils";
+import { currentUserId, role } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -53,10 +53,14 @@ const columns = [
     accessor: "date",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin" || role === "teacher"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 async function ResultsList({
@@ -70,6 +74,7 @@ async function ResultsList({
 
   // URL PARAMS CONDITIONS
   const query: Prisma.ResultWhereInput = {};
+
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -92,6 +97,27 @@ async function ResultsList({
           break;
       }
     }
+  }
+  // ROLE CONDITIONS
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.OR = [
+        { exam: { lesson: { teacherId: currentUserId! } } },
+        { assignment: { lesson: { teacherId: currentUserId! } } },
+      ];
+      break;
+    case "student":
+      query.studentId = currentUserId!;
+      break;
+    case "parent":
+      query.student = {
+        parentId: currentUserId!,
+      };
+      break;
+    default:
+      break;
   }
 
   // Fetching the data from the database and setting the pagination constants
@@ -151,16 +177,14 @@ async function ResultsList({
       <td className="hidden md:table-cell">
         {new Intl.DateTimeFormat("en-US").format(item.startTime)}
       </td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal table="result" type="update" data={item} />
-              <FormModal table="result" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
+      {(role === "admin" || role === "teacher") && (
+        <td>
+          <div className="flex items-center gap-2">
+            <FormModal table="result" type="update" data={item} />
+            <FormModal table="result" type="delete" id={item.id} />
+          </div>
+        </td>
+      )}
     </tr>
   );
 
