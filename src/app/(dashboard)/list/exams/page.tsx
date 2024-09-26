@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { role } from "@/lib/data";
+import { currentUserId, role } from "@/lib/utils";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { Class, Exam, Prisma, Subject, Teacher } from "@prisma/client";
@@ -40,10 +40,14 @@ const columns = [
     accessor: "endTime",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin" || role === "teacher"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 async function ExamList({
@@ -57,6 +61,8 @@ async function ExamList({
 
   // URL PARAMS CONDITIONS
   const query: Prisma.ExamWhereInput = {};
+  query.lesson = {};
+
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -66,26 +72,53 @@ async function ExamList({
       switch (key) {
         // Filtering by teacher id
         case "teacherId":
-          query.lesson = { teacherId: value };
+          query.lesson.teacherId = value;
           break;
         // Filtering by class id
         case "classId":
-          query.lesson = { classId: parseInt(value) };
+          query.lesson.classId = parseInt(value);
           break;
         // Filtering by search input
         case "search":
-          query.lesson = {
-            subject: {
-              name: {
-                contains: value,
-                mode: "insensitive",
-              },
+          query.lesson.subject = {
+            name: {
+              contains: value,
+              mode: "insensitive",
             },
           };
         default:
           break;
       }
     }
+  }
+
+  // ROLE CONDITIONS
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.lesson.teacherId = currentUserId!;
+      break;
+    case "student":
+      query.lesson.class = {
+        students: {
+          some: {
+            id: currentUserId!,
+          },
+        },
+      };
+      break;
+    case "parent":
+      query.lesson.class = {
+        students: {
+          some: {
+            parentId: currentUserId!,
+          },
+        },
+      };
+      break;
+    default:
+      break;
   }
 
   // Fetching the data from the database and setting the pagination constants
@@ -116,26 +149,24 @@ async function ExamList({
       <td className="flex items-center gap-4 p-4">
         <h3 className="font-semibold">{item.lesson.subject.name}</h3>
       </td>
-      <h3 className="hidden md:table-cell">{item.lesson.class.name}</h3>
-      <h3 className="hidden md:table-cell">
-        {item.lesson.teacher.name + " " + item.lesson.teacher.surname}{" "}
-      </h3>
-      <h3 className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("en-US").format(item.startTime)}
-      </h3>
-      <h3 className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("en-US").format(item.endTime)}
-      </h3>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal table="exam" type="update" data={item} />
-              <FormModal table="exam" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
+      <td className="hidden md:table-cell">{item.lesson.class.name}</td>
+      <td className="hidden md:table-cell">
+        {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
       </td>
+      <td className="hidden md:table-cell">
+        {new Intl.DateTimeFormat("en-US").format(item.startTime)}
+      </td>
+      <td className="hidden md:table-cell">
+        {new Intl.DateTimeFormat("en-US").format(item.endTime)}
+      </td>
+      {(role === "admin" || role === "teacher") && (
+        <td>
+          <div className="flex items-center gap-2">
+            <FormModal table="exam" type="update" data={item} />
+            <FormModal table="exam" type="delete" id={item.id} />
+          </div>
+        </td>
+      )}
     </tr>
   );
 
@@ -154,7 +185,9 @@ async function ExamList({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && <FormModal table="exam" type="create" />}
+            {(role === "admin" || role === "teacher") && (
+              <FormModal table="exam" type="create" />
+            )}
           </div>
         </div>
       </div>

@@ -110,7 +110,6 @@ async function EventList({
     student: { students: { some: { id: currentUserId! } } },
     parent: { students: { some: { parentId: currentUserId! } } },
   };
-
   query.OR = [
     { classId: null },
     { class: roleConditions[role as keyof typeof roleConditions] || {} },
