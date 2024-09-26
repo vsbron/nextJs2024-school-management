@@ -15,6 +15,7 @@ School management App.
 
 - App is written using NEXT.js framework with a TypeScript;
 - Styles are handled via Tailwind CSS;
+- Authentication is handled via Clerk;
 - Forms are handled via React Hook Form and validated via Zod;
 
 ### Live version
