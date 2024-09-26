@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { currentUserId, role } from "@/lib/utils";
 import { Class, Event, Prisma } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -38,10 +38,14 @@ const columns = [
     accessor: "endTime",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin" || role === "teacher"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 async function EventList({
@@ -74,6 +78,44 @@ async function EventList({
     }
   }
 
+  // // ROLE CONDITIONS - switch version
+  // switch (role) {
+  //   case "admin":
+  //     break;
+  //   case "teacher":
+  //     query.OR = [
+  //       { classId: null },
+  //       { class: { lessons: { some: { teacherId: currentUserId! } } } },
+  //     ];
+  //     break;
+  //   case "student":
+  //     query.OR = [
+  //       { classId: null },
+  //       { class: { students: { some: { id: currentUserId! } } } },
+  //     ];
+  //     break;
+  //   case "parent":
+  //     query.OR = [
+  //       { classId: null },
+  //       { class: { students: { some: { parentId: currentUserId! } } } },
+  //     ];
+  //     break;
+  //   default:
+  //     break;
+  // }
+
+  // ROLE CONDITIONS - Object keys version
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: currentUserId! } } },
+    student: { students: { some: { id: currentUserId! } } },
+    parent: { students: { some: { parentId: currentUserId! } } },
+  };
+
+  query.OR = [
+    { classId: null },
+    { class: roleConditions[role as keyof typeof roleConditions] || {} },
+  ];
+
   // Fetching the data from the database and setting the pagination constants
   const [data, count] = await prisma.$transaction([
     prisma.event.findMany({
@@ -94,7 +136,7 @@ async function EventList({
       <td className="flex items-center gap-4 p-4">
         <h3 className="font-semibold">{item.title}</h3>
       </td>
-      <td>{item.class?.name || "None"}</td>
+      <td>{item.class?.name || "-"}</td>
       <td className="hidden md:table-cell">
         {new Intl.DateTimeFormat("en-US").format(item.startTime)}
       </td>

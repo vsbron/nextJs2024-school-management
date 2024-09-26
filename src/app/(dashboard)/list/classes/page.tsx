@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import { role } from "@/lib/data";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { role } from "@/lib/utils";
 import {
   Announcement,
   Class,
@@ -47,10 +47,14 @@ const columns = [
     accessor: "supervisor",
     className: "hidden md:table-cell",
   },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
+  ...(role === "admin"
+    ? [
+        {
+          header: "Actions",
+          accessor: "action",
+        },
+      ]
+    : []),
 ];
 
 async function ClassList({
@@ -116,16 +120,14 @@ async function ClassList({
       <td>{item.capacity}</td>
       <td className="hidden md:table-cell">{item.name[0]}</td>
       <td className="hidden md:table-cell">{item.supervisor?.name}</td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal table="class" type="update" data={item} />
-              <FormModal table="class" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
+      {role === "admin" && (
+        <td>
+          <div className="flex items-center gap-2">
+            <FormModal table="class" type="update" data={item} />
+            <FormModal table="class" type="delete" id={item.id} />
+          </div>
+        </td>
+      )}
     </tr>
   );
 
