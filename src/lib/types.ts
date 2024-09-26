@@ -16,3 +16,8 @@ export type FormModalProps<T> = {
   data?: T;
   id?: string | number;
 };
+
+// Object type for Route Access Map
+export type RouteAccessMap = {
+  [key: string]: string[];
+};
