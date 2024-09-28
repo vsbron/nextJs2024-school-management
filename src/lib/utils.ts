@@ -14,12 +14,13 @@ const currentWorkWeek = () => {
   const startOfWeek = new Date(today);
   startOfWeek.setHours(0, 0, 0, 0);
   switch (dayOfWeek) {
-    // case 0:
-    //   startOfWeek.setDate(today.getDate() + 1);
-    //   break;
-    // case 6:
-    //   startOfWeek.setDate(today.getDate() + 2);
-    //   break;
+    // Leaving this here in case I'll need to move all lessons to next week when data is loaded during weekend
+    case 0:
+      startOfWeek.setDate(today.getDate() + 1);
+      break;
+    case 6:
+      startOfWeek.setDate(today.getDate() + 2);
+      break;
     default:
       startOfWeek.setDate(today.getDate() - (dayOfWeek - 1));
   }
@@ -50,17 +51,17 @@ export const adjustScheduleToCurrentWeek = (
     const adjustedStartDate = new Date(startOfWeek);
     adjustedStartDate.setDate(startOfWeek.getDate() + daysFromMonday);
     adjustedStartDate.setHours(
-      lesson.start.getHours(),
-      lesson.start.getMilliseconds(),
-      lesson.start.getSeconds()
+      lesson.start.getUTCHours(),
+      lesson.start.getUTCMinutes(),
+      lesson.start.getUTCSeconds()
     );
 
     // Adjust end day for a current work week
     const adjustedEndDate = new Date(adjustedStartDate);
     adjustedEndDate.setHours(
-      lesson.end.getHours(),
-      lesson.end.getMilliseconds(),
-      lesson.end.getSeconds()
+      lesson.end.getUTCHours(),
+      lesson.end.getUTCMinutes(),
+      lesson.end.getUTCSeconds()
     );
 
     // Return the lesson with updated dates
