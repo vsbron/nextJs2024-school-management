@@ -1,3 +1,6 @@
+// SearchParams type
+export type SearchParamsType = { [keys: string]: string | undefined };
+
 // Prop types for Form modal
 export type FormModalProps<T> = {
   table:

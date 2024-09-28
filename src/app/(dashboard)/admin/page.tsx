@@ -1,11 +1,13 @@
+import { SearchParamsType } from "@/lib/types";
+
 import Announcements from "@/components/Announcements";
 import AttendanceChartContainer from "@/components/AttendanceChartContainer";
 import CountChartContainer from "@/components/CountChartContainer";
-import EventCalendar from "@/components/EventCalendar";
+import EventCalendarContainer from "@/components/EventCalendarContainer";
 import FinanceChart from "@/components/FinanceChart";
 import UserCard from "@/components/UserCard";
 
-function AdminPage() {
+function AdminPage({ searchParams }: { searchParams: SearchParamsType }) {
   // Returned JSX
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4">
@@ -38,7 +40,7 @@ function AdminPage() {
 
       {/* RIGHT */}
       <div className="w-full lg:w-1/3 flex flex-col gap-8">
-        <EventCalendar />
+        <EventCalendarContainer searchParams={searchParams} />
         <Announcements />
       </div>
     </div>

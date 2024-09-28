@@ -46,11 +46,9 @@ async function AttendanceChartContainer() {
       const dayName = daysOfWeek[dayOfWeek - 1];
 
       // Assigning to the map under present or absent category
-      if (item.present) {
-        attendanceMap[dayName].present += 1;
-      } else {
-        attendanceMap[dayName].absent += 1;
-      }
+      item.present
+        ? (attendanceMap[dayName].present += 1)
+        : (attendanceMap[dayName].absent += 1);
     }
   });
 
