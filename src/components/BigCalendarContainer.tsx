@@ -1,10 +1,10 @@
-import { BigCalendarType } from "@/lib/types";
-
-import BigCalendar from "./BigCalendar";
 import prisma from "@/lib/prisma";
+import { BigCalendarContainerType } from "@/lib/types";
 import { adjustScheduleToCurrentWeek } from "@/lib/utils";
 
-async function BigCalendarContainer({ type, id }: BigCalendarType) {
+import BigCalendar from "./BigCalendar";
+
+async function BigCalendarContainer({ type, id }: BigCalendarContainerType) {
   // Fetching the data bases on a type
   const dataRes = await prisma.lesson.findMany({
     where: {
