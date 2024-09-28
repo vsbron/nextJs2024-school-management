@@ -24,3 +24,11 @@ export type RouteAccessMap = {
 
 // Prop types for the UserCard component
 export type UserCardType = "admins" | "teachers" | "students" | "parents";
+
+// Types for the chart components
+export type CountChartType = { boys: number; girls: number };
+export type AttendanceChartType = {
+  name: string;
+  present: number;
+  absent: number;
+}[];

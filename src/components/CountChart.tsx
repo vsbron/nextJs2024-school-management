@@ -2,7 +2,10 @@
 import Image from "next/image";
 import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 
-function CountChart({ boys, girls }: { boys: number; girls: number }) {
+import { CountChartType } from "@/lib/types";
+
+function CountChart({ boys, girls }: CountChartType) {
+  // Preparing data for the chart
   const data = [
     {
       name: "Total",
