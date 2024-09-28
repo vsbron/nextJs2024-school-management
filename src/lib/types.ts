@@ -21,3 +21,6 @@ export type FormModalProps<T> = {
 export type RouteAccessMap = {
   [key: string]: string[];
 };
+
+// Prop types for the UserCard component
+export type UserCardType = "admins" | "teachers" | "students" | "parents";

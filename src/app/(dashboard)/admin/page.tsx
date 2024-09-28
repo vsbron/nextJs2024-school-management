@@ -16,7 +16,7 @@ function AdminPage() {
           <UserCard type="students" />
           <UserCard type="teachers" />
           <UserCard type="parents" />
-          <UserCard type="staff" />
+          <UserCard type="admins" />
         </div>
 
         {/* MIDDLE CHARTS */}
