@@ -10,6 +10,7 @@ async function EventCalendarContainer({
 }: {
   searchParams: SearchParamsType;
 }) {
+  // Getting the date from search params
   const { date } = searchParams;
 
   // Returned JSX

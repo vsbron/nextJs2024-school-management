@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 
 async function EventList({ dateParam }: { dateParam: string | undefined }) {
-  // Creating the date bases on the passed date parameter
+  // Creating the date based on the passed date parameter
   const date = dateParam ? new Date(dateParam) : new Date();
 
   // Fetching the data for the calculated day
@@ -14,18 +14,8 @@ async function EventList({ dateParam }: { dateParam: string | undefined }) {
     },
   });
 
-  // Display "No events" message if there's no data
-  if (data.length === 0)
-    return (
-      <div>
-        No events for{" "}
-        {date.toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </div>
-    );
+  // Guard clause
+  if (data.length === 0) return <div>No events for this date</div>;
 
   return data.map((event) => (
     <div

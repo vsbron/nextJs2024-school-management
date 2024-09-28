@@ -1,6 +1,6 @@
 import { SearchParamsType } from "@/lib/types";
 
-import Announcements from "@/components/Announcements";
+import AnnouncementsContainer from "@/components/AnnouncementsContainer";
 import AttendanceChartContainer from "@/components/AttendanceChartContainer";
 import CountChartContainer from "@/components/CountChartContainer";
 import EventCalendarContainer from "@/components/EventCalendarContainer";
@@ -41,7 +41,7 @@ function AdminPage({ searchParams }: { searchParams: SearchParamsType }) {
       {/* RIGHT */}
       <div className="w-full lg:w-1/3 flex flex-col gap-8">
         <EventCalendarContainer searchParams={searchParams} />
-        <Announcements />
+        <AnnouncementsContainer />
       </div>
     </div>
   );

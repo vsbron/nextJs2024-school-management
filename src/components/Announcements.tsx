@@ -1,50 +1,43 @@
-function Announcements() {
-  return (
-    <div className="bg-white p-4 rounded-md">
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold">Announcements</h2>
-        <span className="text-xs text-gray-400 cursor-pointer">View all</span>
+import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
+
+async function Announcements() {
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: userId! } } },
+    student: { students: { some: { id: userId! } } },
+    parent: { students: { some: { parentId: userId! } } },
+  };
+
+  // Fetching the data for the calculated day
+  const data = await prisma.announcement.findMany({
+    where: {
+      ...(role !== "admin" && {
+        OR: [
+          { classId: null },
+          { class: roleConditions[role as keyof typeof roleConditions] || {} },
+        ],
+      }),
+    },
+  });
+
+  // Guard clause
+  if (data.length === 0) return <div>No announcements for this date</div>;
+
+  // Returned JSX
+  return data.map((announcement) => (
+    <div className="bg-schoolSkyLight rounded-xl p-4" key={announcement.id}>
+      <div className="flex items-center justify-between">
+        <h2 className="font-semibold">{announcement.title}</h2>
+        <span className="text-sm text-gray-400 bg-white rounded-md p-1">
+          {new Intl.DateTimeFormat("en-US").format(announcement.date)}
+        </span>
       </div>
-      <div className="flex flex-col gap-4 mt-4">
-        <div className="bg-schoolSkyLight rounded-xl p-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Lorem ipsum dolor sit</h2>
-            <span className="text-sm text-gray-400 bg-white rounded-md p-1">
-              2025-01-01
-            </span>
-          </div>
-          <p className="text-sm text-gray-400 mt-1">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
-            voluptatum velit autem nisi?
-          </p>
-        </div>
-        <div className="bg-schoolPurpleLight rounded-xl p-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Lorem ipsum dolor sit</h2>
-            <span className="text-sm text-gray-400 bg-white rounded-md p-1">
-              2025-01-01
-            </span>
-          </div>
-          <p className="text-sm text-gray-400 mt-1">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
-            voluptatum velit autem nisi?
-          </p>
-        </div>
-        <div className="bg-schoolYellowLight rounded-xl p-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-semibold">Lorem ipsum dolor sit</h2>
-            <span className="text-sm text-gray-400 bg-white rounded-md p-1">
-              2025-01-01
-            </span>
-          </div>
-          <p className="text-sm text-gray-400 mt-1">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt
-            voluptatum velit autem nisi?
-          </p>
-        </div>
-      </div>
+      <p className="text-sm text-gray-400 mt-1">{announcement.description}</p>
     </div>
-  );
+  ));
 }
 
 export default Announcements;
