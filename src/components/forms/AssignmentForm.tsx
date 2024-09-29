@@ -1,19 +1,10 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { AssignmentInputs, assignmentSchema } from "@/lib/formSchemas";
+
 import InputField from "../InputField";
-
-// Zod schema
-const schema = z.object({
-  subject: z.string().min(1, { message: "Subject is required!" }),
-  class: z.string().min(1, { message: "Class is required!" }),
-  teacher: z.string().min(1, { message: "Teacher is required!" }),
-  dueDate: z.string().min(1, { message: "Due date is required!" }),
-});
-
-type Inputs = z.infer<typeof schema>;
 
 function AssignmentForm({
   type,
@@ -27,7 +18,7 @@ function AssignmentForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ resolver: zodResolver(schema) });
+  } = useForm<AssignmentInputs>({ resolver: zodResolver(assignmentSchema) });
 
   // Submit handler
   const submitHandler = handleSubmit((data) => {

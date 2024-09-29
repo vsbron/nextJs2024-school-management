@@ -1,27 +1,10 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+
+import { ParentInputs, parentSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
-
-// Zod schema
-const schema = z.object({
-  username: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters long!" })
-    .max(20, { message: "Username must be at most 20 characters long!" }),
-  email: z.string().email({ message: "Invalid email address!" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 8 characters long!" }),
-  name: z.string().min(1, { message: "Name is required!" }),
-  students: z.string().min(1, { message: "Students are required!" }),
-  phone: z.string().min(1, { message: "Phone is required!" }),
-  address: z.string().min(1, { message: "Address is required!" }),
-});
-
-type Inputs = z.infer<typeof schema>;
 
 function ParentForm({ type, data }: { type: "create" | "update"; data?: any }) {
   // Getting the form functions from React Hook Form
@@ -29,7 +12,7 @@ function ParentForm({ type, data }: { type: "create" | "update"; data?: any }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ resolver: zodResolver(schema) });
+  } = useForm<ParentInputs>({ resolver: zodResolver(parentSchema) });
 
   // Submit handler
   const submitHandler = handleSubmit((data) => {

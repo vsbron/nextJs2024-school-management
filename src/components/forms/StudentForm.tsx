@@ -2,33 +2,10 @@
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+
+import { StudentInputs, studentSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
-
-// Zod schema
-const schema = z.object({
-  username: z
-    .string()
-    .min(3, { message: "Username must be at least 3 characters long!" })
-    .max(20, { message: "Username must be at most 20 characters long!" }),
-  email: z.string().email({ message: "Invalid email address!" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 8 characters long!" }),
-  firstName: z.string().min(1, { message: "First name is required!" }),
-  lastName: z.string().min(1, { message: "Last name is required!" }),
-  grade: z.number().min(1, { message: "Grade is required!" }),
-  class: z.string().min(1, { message: "Class is required!" }),
-  phone: z.string().min(1, { message: "Phone is required!" }),
-  address: z.string().min(1, { message: "Address is required!" }),
-  bloodType: z.string().min(1, { message: "Blood Type is required" }),
-  birthday: z.date({ message: "Birthday is required!" }),
-  sex: z.enum(["male", "female"], { message: "Sex is required" }),
-  avatar: z.instanceof(File, { message: "Image is required" }),
-});
-
-type Inputs = z.infer<typeof schema>;
 
 function StudentForm({
   type,
@@ -42,7 +19,7 @@ function StudentForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ resolver: zodResolver(schema) });
+  } = useForm<StudentInputs>({ resolver: zodResolver(studentSchema) });
 
   // Submit handler
   const submitHandler = handleSubmit((data) => {

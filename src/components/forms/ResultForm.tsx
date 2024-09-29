@@ -1,22 +1,12 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { ResultInputs, resultSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
 
 // Zod schema
-const schema = z.object({
-  subject: z.string().min(1, { message: "Subject is required!" }),
-  student: z.string().min(1, { message: "Student name is required!" }),
-  score: z.string().min(1, { message: "Score is required!" }),
-  teacher: z.string().min(1, { message: "Teacher name is required!" }),
-  class: z.string().min(1, { message: "Class is required!" }),
-  date: z.string().min(1, { message: "Date is required" }),
-  type: z.date({ message: "Type is required!" }),
-});
-
-type Inputs = z.infer<typeof schema>;
 
 function ResultForm({ type, data }: { type: "create" | "update"; data?: any }) {
   // Getting the form functions from React Hook Form
@@ -24,7 +14,7 @@ function ResultForm({ type, data }: { type: "create" | "update"; data?: any }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ resolver: zodResolver(schema) });
+  } = useForm<ResultInputs>({ resolver: zodResolver(resultSchema) });
 
   // Submit handler
   const submitHandler = handleSubmit((data) => {

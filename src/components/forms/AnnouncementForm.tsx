@@ -1,18 +1,12 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { AnnouncementInputs, announcementSchema } from "@/lib/formSchemas";
+
 import InputField from "../InputField";
 
-// Zod schema
-const schema = z.object({
-  title: z.string().min(1, { message: "Subject is required!" }),
-  class: z.string().min(1, { message: "Class is required!" }),
-  date: z.string().min(1, { message: "Due date is required!" }),
-});
-
-type Inputs = z.infer<typeof schema>;
+// Declaring the input types based on a Schema
 
 function AnnouncementForm({
   type,
@@ -26,7 +20,9 @@ function AnnouncementForm({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ resolver: zodResolver(schema) });
+  } = useForm<AnnouncementInputs>({
+    resolver: zodResolver(announcementSchema),
+  });
 
   // Submit handler
   const submitHandler = handleSubmit((data) => {
