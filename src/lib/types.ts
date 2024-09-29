@@ -48,3 +48,21 @@ export type FormModalProps<T> = {
   data?: T;
   id?: string | number;
 };
+// Prop types for Form modal container
+export type FormContainerProps<T> = {
+  table:
+    | "teacher"
+    | "student"
+    | "subject"
+    | "result"
+    | "parent"
+    | "lesson"
+    | "exam"
+    | "event"
+    | "class"
+    | "assignment"
+    | "announcement";
+  type: "create" | "update" | "delete";
+  data?: T;
+  id?: string | number;
+};

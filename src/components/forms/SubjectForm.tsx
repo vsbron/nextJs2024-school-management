@@ -15,10 +15,12 @@ function SubjectForm({
   setOpen,
   type,
   data,
+  relatedData,
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
+  relatedData?: any;
 }) {
   // Getting the form functions from React Hook Form
   const {
@@ -65,14 +67,10 @@ function SubjectForm({
 
   // Submit handler
   const submitHandler = handleSubmit((formData) => {
-    if (type === "update" && data?.id) {
-      // Call updateSubject with the subject ID and form data
-      formAction({ ...formData, id: data.id });
-    } else {
-      // Call createSubject if creating a new subject
-      formAction(formData);
-    }
+    formAction(formData);
   });
+
+  const { teachers } = relatedData;
 
   // Returned JSX
   return (
@@ -92,6 +90,40 @@ function SubjectForm({
           defaultValue={data?.name}
           error={errors?.name}
         />
+        {data && (
+          <InputField
+            label="ID"
+            name="id"
+            register={register}
+            defaultValue={data?.id}
+            error={errors?.id}
+            hidden
+          />
+        )}
+
+        {/* Select field for the Teachers */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Teachers</label>
+          <select
+            multiple
+            {...register("teachers")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.teachers}
+          >
+            {teachers.map(
+              (teacher: { id: string; name: string; surname: string }) => (
+                <option value={teacher.id} key={teacher.id}>
+                  {teacher.name + " " + teacher.name}
+                </option>
+              )
+            )}
+          </select>
+          {errors.teachers?.message && (
+            <p className="text-xs text-red-400">
+              {errors.teachers?.message.toString()}
+            </p>
+          )}
+        </div>
       </div>
 
       {/* Error message */}

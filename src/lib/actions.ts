@@ -1,8 +1,8 @@
 "use server";
 import prisma from "./prisma";
-
 import { SubjectInputs } from "./formSchemas";
 
+// Type for the current state
 type CurrentStateType = { success: boolean; error: boolean };
 
 // Server action for creating a new Subject
@@ -13,7 +13,12 @@ export const createSubject = async (
   try {
     // Adding the new data to the database
     await prisma.subject.create({
-      data: { name: data.name },
+      data: {
+        name: data.name,
+        teachers: {
+          connect: data.teachers.map((teacherId) => ({ id: teacherId })),
+        },
+      },
     });
 
     // Return success state
@@ -25,7 +30,6 @@ export const createSubject = async (
     return { success: false, error: true };
   }
 };
-
 // Server action for updating existing Subject
 export const updateSubject = async (
   currentState: CurrentStateType,
@@ -37,7 +41,12 @@ export const updateSubject = async (
       where: {
         id: data.id,
       },
-      data: { name: data.name },
+      data: {
+        name: data.name,
+        teachers: {
+          set: data.teachers.map((teacherId) => ({ id: teacherId })),
+        },
+      },
     });
 
     // Return success state
@@ -73,7 +82,7 @@ export const deleteSubject = async (
   }
 };
 
-// Server action for delete placeholder
+// Delete server actions placeholder for different forms
 export const deleteClass = async () => ({ success: true, error: false });
 export const deleteTeacher = async () => ({ success: true, error: false });
 export const deleteStudent = async () => ({ success: true, error: false });

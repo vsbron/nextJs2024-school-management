@@ -22,6 +22,7 @@ import {
   deleteTeacher,
 } from "@/lib/actions";
 
+// Creating a map with all delete server actions
 const deleteActionMap = {
   subject: deleteSubject,
   class: deleteClass,
@@ -77,45 +78,107 @@ const forms: {
   [key: string]: (
     setOpen: Dispatch<SetStateAction<boolean>>,
     type: "create" | "update",
-    data?: any
+    data?: any,
+    relatedData?: any
   ) => JSX.Element;
 } = {
-  teacher: (setOpenModal, type, data) => (
-    <TeacherForm setOpen={setOpenModal} type={type} data={data} />
+  teacher: (setOpenModal, type, data, relatedData) => (
+    <TeacherForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  student: (setOpenModal, type, data) => (
-    <StudentForm setOpen={setOpenModal} type={type} data={data} />
+  student: (setOpenModal, type, data, relatedData) => (
+    <StudentForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  announcement: (setOpenModal, type, data) => (
-    <AnnouncementForm setOpen={setOpenModal} type={type} data={data} />
+  announcement: (setOpenModal, type, data, relatedData) => (
+    <AnnouncementForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  assignment: (setOpenModal, type, data) => (
-    <AssignmentForm setOpen={setOpenModal} type={type} data={data} />
+  assignment: (setOpenModal, type, data, relatedData) => (
+    <AssignmentForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  class: (setOpenModal, type, data) => (
-    <ClassForm setOpen={setOpenModal} type={type} data={data} />
+  class: (setOpenModal, type, data, relatedData) => (
+    <ClassForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  event: (setOpenModal, type, data) => (
-    <EventForm setOpen={setOpenModal} type={type} data={data} />
+  event: (setOpenModal, type, data, relatedData) => (
+    <EventForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  exam: (setOpenModal, type, data) => (
-    <ExamForm setOpen={setOpenModal} type={type} data={data} />
+  exam: (setOpenModal, type, data, relatedData) => (
+    <ExamForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  lesson: (setOpenModal, type, data) => (
-    <LessonForm setOpen={setOpenModal} type={type} data={data} />
+  lesson: (setOpenModal, type, data, relatedData) => (
+    <LessonForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  parent: (setOpenModal, type, data) => (
-    <ParentForm setOpen={setOpenModal} type={type} data={data} />
+  parent: (setOpenModal, type, data, relatedData) => (
+    <ParentForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  result: (setOpenModal, type, data) => (
-    <ResultForm setOpen={setOpenModal} type={type} data={data} />
+  result: (setOpenModal, type, data, relatedData) => (
+    <ResultForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
-  subject: (setOpenModal, type, data) => (
-    <SubjectForm setOpen={setOpenModal} type={type} data={data} />
+  subject: (setOpenModal, type, data, relatedData) => (
+    <SubjectForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
   ),
 };
 
-function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
+function FormModal<T>({
+  table,
+  type,
+  data,
+  id,
+  relatedData,
+}: FormModalProps<T> & { relatedData?: any[] }) {
   // Creating a state for the Modal window
   const [openModal, setOpenModal] = useState(false);
 
@@ -193,7 +256,7 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
               </form>
             ) : (
               (type === "create" || type === "update") &&
-              forms[table](setOpenModal, type, data)
+              forms[table](setOpenModal, type, data, relatedData)
             )}
           </div>
         </div>

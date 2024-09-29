@@ -7,16 +7,16 @@ import { ExamInputs, examSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
 
-// Zod schema
-
 function ExamForm({
   setOpen,
   type,
   data,
+  relatedData,
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
+  relatedData?: any;
 }) {
   // Getting the form functions from React Hook Form
   const {

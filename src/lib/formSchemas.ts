@@ -109,6 +109,7 @@ export type StudentInputs = z.infer<typeof studentSchema>;
 export const subjectSchema = z.object({
   id: z.coerce.number().optional(),
   name: z.string().min(1, { message: "Subject is required!" }),
+  teachers: z.array(z.string()), // Teacher IDs
 });
 export type SubjectInputs = z.infer<typeof subjectSchema>;
 

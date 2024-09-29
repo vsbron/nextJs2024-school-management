@@ -11,10 +11,12 @@ function ParentForm({
   setOpen,
   type,
   data,
+  relatedData,
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
+  relatedData?: any;
 }) {
   // Getting the form functions from React Hook Form
   const {

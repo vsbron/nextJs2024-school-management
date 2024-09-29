@@ -7,16 +7,16 @@ import { AnnouncementInputs, announcementSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
 
-// Declaring the input types based on a Schema
-
 function AnnouncementForm({
   setOpen,
   type,
   data,
+  relatedData,
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
+  relatedData?: any;
 }) {
   // Getting the form functions from React Hook Form
   const {

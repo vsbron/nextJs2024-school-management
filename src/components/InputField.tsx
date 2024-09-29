@@ -8,6 +8,7 @@ type InputProps = {
   name: string;
   defaultValue?: string;
   error?: FieldError;
+  hidden?: boolean;
   inputAttrs?: React.InputHTMLAttributes<HTMLInputElement>;
 };
 
@@ -18,11 +19,12 @@ function InputField({
   name,
   defaultValue,
   error,
+  hidden,
   inputAttrs,
 }: InputProps) {
   // Returned JSX
   return (
-    <div className="flex flex-col gap-2 w-full md:w-1/4">
+    <div className={hidden ? "hidden" : "flex flex-col gap-2 w-full md:w-1/4"}>
       <label className="text-xs text-gray-500">{label}</label>
       <input
         type={type}

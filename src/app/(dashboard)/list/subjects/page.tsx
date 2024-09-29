@@ -3,15 +3,15 @@ import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { role } from "@/lib/utils";
-import { Lesson, Prisma, Subject, Teacher } from "@prisma/client";
+import { Prisma, Subject, Teacher } from "@prisma/client";
 
-import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import FormContainer from "@/components/FormContainer";
 
 // Type for the subject list with data from different tables
-type SubjectList = Subject & { teachers: Teacher[]; lessons: Lesson[] };
+type SubjectList = Subject & { teachers: Teacher[] };
 
 const columns = [
   {
@@ -22,11 +22,6 @@ const columns = [
   {
     header: "Teachers",
     accessor: "teachers",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Lessons",
-    accessor: "lessons",
     className: "hidden md:table-cell",
   },
   {
@@ -96,13 +91,10 @@ async function SubjectList({
       <td className="hidden md:table-cell">
         {item.teachers.map((teacherItem) => teacherItem.name).join(", ")}
       </td>
-      <td className="hidden md:table-cell">
-        {item.lessons.map((lessonItem) => lessonItem.name).join(", ")}
-      </td>
       <td>
         <div className="flex items-center gap-2">
-          <FormModal table="subject" type="update" data={item} />
-          <FormModal table="subject" type="delete" id={item.id} />
+          <FormContainer table="subject" type="update" data={item} />
+          <FormContainer table="subject" type="delete" id={item.id} />
         </div>
       </td>
     </tr>
@@ -123,7 +115,9 @@ async function SubjectList({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && <FormModal table="subject" type="create" />}
+            {role === "admin" && (
+              <FormContainer table="subject" type="create" />
+            )}
           </div>
         </div>
       </div>
