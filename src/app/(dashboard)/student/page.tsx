@@ -12,13 +12,16 @@ async function StudentPage({
 }: {
   searchParams: SearchParamsType;
 }) {
+  // Getting the user ID
   const { userId } = auth();
 
+  // Fetching the class ID using user ID
   const classItem = await prisma.class.findMany({
     where: {
       students: { some: { id: userId! } },
     },
   });
+
   // Returned JSX
   return (
     <div className="p-4 flex gap-4 flex-col xl:flex-row">
