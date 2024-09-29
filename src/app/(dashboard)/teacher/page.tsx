@@ -1,8 +1,10 @@
 import AnnouncementsContainer from "@/components/AnnouncementsContainer";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
+import EventCalendarContainer from "@/components/EventCalendarContainer";
+import { SearchParamsType } from "@/lib/types";
 import { auth } from "@clerk/nextjs/server";
 
-function TeacherPage() {
+function TeacherPage({ searchParams }: { searchParams: SearchParamsType }) {
   const { userId } = auth();
   // Returned JSX
   return (
@@ -16,6 +18,7 @@ function TeacherPage() {
       </div>
       {/* RIGHT */}
       <div className="w-full xl:w-1/3 flex flex-col gap-8">
+        <EventCalendarContainer searchParams={searchParams} />
         <AnnouncementsContainer />
       </div>
     </div>
