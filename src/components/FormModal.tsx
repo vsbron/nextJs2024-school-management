@@ -1,9 +1,41 @@
 "use client";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useFormState } from "react-dom";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 import { FormModalProps } from "@/lib/types";
+import {
+  deleteAnnouncement,
+  deleteAssignment,
+  deleteAttendance,
+  deleteClass,
+  deleteEvent,
+  deleteExam,
+  deleteLesson,
+  deleteParent,
+  deleteResult,
+  deleteStudent,
+  deleteSubject,
+  deleteTeacher,
+} from "@/lib/actions";
+
+const deleteActionMap = {
+  subject: deleteSubject,
+  class: deleteClass,
+  teacher: deleteTeacher,
+  student: deleteStudent,
+  parent: deleteParent,
+  lesson: deleteLesson,
+  exam: deleteExam,
+  assignment: deleteAssignment,
+  result: deleteResult,
+  attendance: deleteAttendance,
+  event: deleteEvent,
+  announcement: deleteAnnouncement,
+};
 
 // Dynamic imports
 const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
@@ -96,6 +128,34 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
       ? "bg-schoolSky"
       : "bg-schoolPurple";
 
+  const [state, formAction] = useFormState(deleteActionMap[table], {
+    success: false,
+    error: false,
+  });
+
+  // Getting the router
+  const router = useRouter();
+
+  // Use effect to trigger the toast message
+  useEffect(() => {
+    if (state.success || state.error) {
+      if (state.success) {
+        toast("Subject has been successfully deleted");
+        // Close the modal
+        setOpenModal(false);
+
+        // Refresh the page
+        router.refresh();
+      } else {
+        toast(
+          `There was some kind of error while ${
+            type === "create" ? "creating" : "updating"
+          } the subject`
+        );
+      }
+    }
+  }, [state, type, router, setOpenModal]);
+
   // Returned JSX
   return (
     <>
@@ -121,7 +181,8 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
             </div>
 
             {type === "delete" && id ? (
-              <form action="" className="p-4 flex flex-col gap-4">
+              <form action={formAction} className="p-4 flex flex-col gap-4">
+                <input type="text | number" name="id" value={id} hidden />
                 <div className="text-center font-medium">
                   All data will be lost. Are you sure you want to delete this{" "}
                   {table}

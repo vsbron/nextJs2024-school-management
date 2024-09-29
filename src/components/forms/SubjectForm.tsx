@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { createSubject } from "@/lib/actions";
+import { createSubject, updateSubject } from "@/lib/actions";
 import { SubjectInputs, subjectSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
@@ -28,10 +28,13 @@ function SubjectForm({
   } = useForm<SubjectInputs>({ resolver: zodResolver(subjectSchema) });
 
   // Getting the state and action from the useFormState
-  const [state, formAction] = useFormState(createSubject, {
-    success: false,
-    error: false,
-  });
+  const [state, formAction] = useFormState(
+    type === "create" ? createSubject : updateSubject,
+    {
+      success: false,
+      error: false,
+    }
+  );
 
   // Getting the router
   const router = useRouter();
@@ -61,8 +64,14 @@ function SubjectForm({
   }, [state, type, router, setOpen]);
 
   // Submit handler
-  const submitHandler = handleSubmit((data) => {
-    formAction(data);
+  const submitHandler = handleSubmit((formData) => {
+    if (type === "update" && data?.id) {
+      // Call updateSubject with the subject ID and form data
+      formAction({ ...formData, id: data.id });
+    } else {
+      // Call createSubject if creating a new subject
+      formAction(formData);
+    }
   });
 
   // Returned JSX
