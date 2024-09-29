@@ -1,8 +1,10 @@
+import { auth } from "@clerk/nextjs/server";
+
+import { SearchParamsType } from "@/lib/types";
+
 import AnnouncementsContainer from "@/components/AnnouncementsContainer";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
 import EventCalendarContainer from "@/components/EventCalendarContainer";
-import { SearchParamsType } from "@/lib/types";
-import { auth } from "@clerk/nextjs/server";
 
 function TeacherPage({ searchParams }: { searchParams: SearchParamsType }) {
   const { userId } = auth();

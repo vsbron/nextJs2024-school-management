@@ -2,16 +2,18 @@ import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
 async function Announcements() {
+  // Getting the user ID and the Role
   const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
 
+  // Defining the user roles for the fetch
   const roleConditions = {
     teacher: { lessons: { some: { teacherId: userId! } } },
     student: { students: { some: { id: userId! } } },
     parent: { students: { some: { parentId: userId! } } },
   };
 
-  // Fetching the data for the calculated day
+  // Fetching the appropriate data for the calculated day
   const data = await prisma.announcement.findMany({
     where: {
       ...(role !== "admin" && {

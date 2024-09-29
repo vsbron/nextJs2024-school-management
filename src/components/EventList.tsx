@@ -1,16 +1,34 @@
 import prisma from "@/lib/prisma";
+import { auth } from "@clerk/nextjs/server";
 
 async function EventList({ dateParam }: { dateParam: string | undefined }) {
+  // Getting the user ID and the Role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  // Defining the user roles for the fetch
+  const roleConditions = {
+    teacher: { lessons: { some: { teacherId: userId! } } },
+    student: { students: { some: { id: userId! } } },
+    parent: { students: { some: { parentId: userId! } } },
+  };
+
   // Creating the date based on the passed date parameter
   const date = dateParam ? new Date(dateParam) : new Date();
 
-  // Fetching the data for the calculated day
+  // Fetching the data for the calculated day and role-based conditions
   const data = await prisma.event.findMany({
     where: {
       startTime: {
         gte: new Date(date.setHours(0, 0, 0, 0)),
         lte: new Date(date.setHours(23, 59, 59, 999)),
       },
+      ...(role !== "admin" && {
+        OR: [
+          { classId: null }, // Events without specific class
+          { class: roleConditions[role as keyof typeof roleConditions] || {} }, // Role-based conditions
+        ],
+      }),
     },
   });
 

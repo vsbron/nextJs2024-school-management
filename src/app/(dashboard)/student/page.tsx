@@ -1,10 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 
+import prisma from "@/lib/prisma";
+import { SearchParamsType } from "@/lib/types";
+
 import AnnouncementsContainer from "@/components/AnnouncementsContainer";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
 import EventCalendarContainer from "@/components/EventCalendarContainer";
-import { SearchParamsType } from "@/lib/types";
-import prisma from "@/lib/prisma";
 
 async function StudentPage({
   searchParams,
