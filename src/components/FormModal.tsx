@@ -178,7 +178,7 @@ function FormModal<T>({
   data,
   id,
   relatedData,
-}: FormModalProps<T> & { relatedData?: any[] }) {
+}: FormModalProps<T> & { relatedData?: any }) {
   // Creating a state for the Modal window
   const [openModal, setOpenModal] = useState(false);
 

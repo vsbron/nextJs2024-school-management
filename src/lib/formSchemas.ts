@@ -19,10 +19,11 @@ export type AssignmentInputs = z.infer<typeof assignmentSchema>;
 
 // Classes form schema
 export const classSchema = z.object({
-  class: z.string().min(1, { message: "Class is required!" }),
-  capacity: z.number().min(1, { message: "Capacity is required!" }),
-  grade: z.number().min(1, { message: "Grade is required!" }),
-  supervisor: z.string().min(1, { message: "Supervisor name is required!" }),
+  id: z.coerce.number().optional(),
+  name: z.string().min(1, { message: "Class is required!" }),
+  capacity: z.coerce.number().min(1, { message: "Capacity is required!" }),
+  gradeId: z.coerce.number().min(1, { message: "Grade is required!" }),
+  supervisorId: z.coerce.string().optional(),
 });
 export type ClassInputs = z.infer<typeof classSchema>;
 

@@ -70,6 +70,7 @@ function SubjectForm({
     formAction(formData);
   });
 
+  // Getting the teachers from the related data object
   const { teachers } = relatedData;
 
   // Returned JSX
