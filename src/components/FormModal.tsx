@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { FormModalProps } from "@/lib/types";
 
@@ -42,19 +42,45 @@ const SubjectForm = dynamic(() => import("./forms/SubjectForm"), {
 
 // Declaring the types for the various forms
 const forms: {
-  [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
+  [key: string]: (
+    setOpen: Dispatch<SetStateAction<boolean>>,
+    type: "create" | "update",
+    data?: any
+  ) => JSX.Element;
 } = {
-  teacher: (type, data) => <TeacherForm type={type} data={data} />,
-  student: (type, data) => <StudentForm type={type} data={data} />,
-  announcement: (type, data) => <AnnouncementForm type={type} data={data} />,
-  assignment: (type, data) => <AssignmentForm type={type} data={data} />,
-  class: (type, data) => <ClassForm type={type} data={data} />,
-  event: (type, data) => <EventForm type={type} data={data} />,
-  exam: (type, data) => <ExamForm type={type} data={data} />,
-  lesson: (type, data) => <LessonForm type={type} data={data} />,
-  parent: (type, data) => <ParentForm type={type} data={data} />,
-  result: (type, data) => <ResultForm type={type} data={data} />,
-  subject: (type, data) => <SubjectForm type={type} data={data} />,
+  teacher: (setOpenModal, type, data) => (
+    <TeacherForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  student: (setOpenModal, type, data) => (
+    <StudentForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  announcement: (setOpenModal, type, data) => (
+    <AnnouncementForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  assignment: (setOpenModal, type, data) => (
+    <AssignmentForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  class: (setOpenModal, type, data) => (
+    <ClassForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  event: (setOpenModal, type, data) => (
+    <EventForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  exam: (setOpenModal, type, data) => (
+    <ExamForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  lesson: (setOpenModal, type, data) => (
+    <LessonForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  parent: (setOpenModal, type, data) => (
+    <ParentForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  result: (setOpenModal, type, data) => (
+    <ResultForm setOpen={setOpenModal} type={type} data={data} />
+  ),
+  subject: (setOpenModal, type, data) => (
+    <SubjectForm setOpen={setOpenModal} type={type} data={data} />
+  ),
 };
 
 function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
@@ -106,7 +132,7 @@ function FormModal<T>({ table, type, data, id }: FormModalProps<T>) {
               </form>
             ) : (
               (type === "create" || type === "update") &&
-              forms[table](type, data)
+              forms[table](setOpenModal, type, data)
             )}
           </div>
         </div>

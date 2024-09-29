@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { ToastContainer } from "react-toastify";
 
 import { Open_Sans } from "next/font/google";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
 // Importing font
@@ -21,7 +23,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={openSans.className}>{children}</body>
+        <body className={openSans.className}>
+          {children}
+          <ToastContainer position="bottom-right" theme="dark" />
+        </body>
       </html>
     </ClerkProvider>
   );

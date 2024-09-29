@@ -108,7 +108,6 @@ export type StudentInputs = z.infer<typeof studentSchema>;
 // Subjects form schema
 export const subjectSchema = z.object({
   name: z.string().min(1, { message: "Subject is required!" }),
-  teachers: z.string().min(1, { message: "Teacher is required!" }),
 });
 export type SubjectInputs = z.infer<typeof subjectSchema>;
 
