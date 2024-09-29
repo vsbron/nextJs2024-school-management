@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -8,9 +9,11 @@ import { StudentInputs, studentSchema } from "@/lib/formSchemas";
 import InputField from "../InputField";
 
 function StudentForm({
+  setOpen,
   type,
   data,
 }: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
 }) {

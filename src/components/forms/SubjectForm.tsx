@@ -38,23 +38,25 @@ function SubjectForm({
 
   // Use effect to trigger the toast message
   useEffect(() => {
-    if (state.success) {
-      toast(
-        `Subject has been successfully ${
-          type === "create" ? "created" : "updated"
-        }`
-      );
-      // Close the modal
-      setOpen(false);
+    if (state.success || state.error) {
+      if (state.success) {
+        toast(
+          `Subject has been successfully ${
+            type === "create" ? "created" : "updated"
+          }`
+        );
+        // Close the modal
+        setOpen(false);
 
-      // Refresh the page
-      router.refresh();
-    } else {
-      toast(
-        `There was some kind of error while ${
-          type === "create" ? "creating" : "updating"
-        } the subject`
-      );
+        // Refresh the page
+        router.refresh();
+      } else {
+        toast(
+          `There was some kind of error while ${
+            type === "create" ? "creating" : "updating"
+          } the subject`
+        );
+      }
     }
   }, [state, type, router, setOpen]);
 

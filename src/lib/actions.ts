@@ -1,6 +1,5 @@
 "use server";
 import prisma from "./prisma";
-import { revalidatePath } from "next/cache";
 
 import { SubjectInputs } from "./formSchemas";
 
@@ -16,9 +15,6 @@ export const createSubject = async (
     await prisma.subject.create({
       data: { name: data.name },
     });
-
-    // Revalidating the path to display up to date list
-    revalidatePath("/list/subjects");
 
     // Return success state
     return { success: true, error: false };

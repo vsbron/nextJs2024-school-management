@@ -1,4 +1,5 @@
 "use client";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -7,9 +8,11 @@ import { AssignmentInputs, assignmentSchema } from "@/lib/formSchemas";
 import InputField from "../InputField";
 
 function AssignmentForm({
+  setOpen,
   type,
   data,
 }: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
 }) {

@@ -1,4 +1,5 @@
 "use client";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -9,9 +10,11 @@ import InputField from "../InputField";
 // Declaring the input types based on a Schema
 
 function AnnouncementForm({
+  setOpen,
   type,
   data,
 }: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
 }) {

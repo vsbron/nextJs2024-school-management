@@ -1,4 +1,5 @@
 "use client";
+import { Dispatch, SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -8,7 +9,15 @@ import InputField from "../InputField";
 
 // Zod schema
 
-function ExamForm({ type, data }: { type: "create" | "update"; data?: any }) {
+function ExamForm({
+  setOpen,
+  type,
+  data,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  type: "create" | "update";
+  data?: any;
+}) {
   // Getting the form functions from React Hook Form
   const {
     register,
