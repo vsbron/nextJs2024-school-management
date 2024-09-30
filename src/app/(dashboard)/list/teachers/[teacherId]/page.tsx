@@ -6,7 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import { Teacher } from "@prisma/client";
 
-// import BigCalendarContainer from "@/components/BigCalendarContainer";
+import BigCalendarContainer from "@/components/BigCalendarContainer";
 import FormContainer from "@/components/FormContainer";
 import PerformanceChart from "@/components/PerformanceChart";
 
@@ -104,7 +104,7 @@ async function SingleTeacherPage({
                     src="/phone.png"
                     width={14}
                     height={14}
-                    alt="Blood type"
+                    alt="Phone number"
                   />
                   <span>{teacher.phone}</span>
                 </div>
@@ -180,7 +180,7 @@ async function SingleTeacherPage({
         {/* BOTTOM */}
         <div className="mt-4 bg-white rounded-md p-4 h-[800px]">
           <h2>Teacher&apos;s schedule</h2>
-          {/* <BigCalendarContainer /> */}
+          <BigCalendarContainer type="teacherId" id={teacher.id} />
         </div>
       </div>
 

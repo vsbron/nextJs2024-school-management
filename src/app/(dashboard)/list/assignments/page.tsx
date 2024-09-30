@@ -1,8 +1,8 @@
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { currentUserId, role } from "@/lib/utils";
 import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -15,41 +15,47 @@ type AssignmentList = Assignment & {
   lesson: { subject: Subject; class: Class; teacher: Teacher };
 };
 
-const columns = [
-  {
-    header: "Subject",
-    accessor: "subject",
-    className: "px-4",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Due date",
-    accessor: "dueDate",
-  },
-  ...(role === "admin" || role === "teacher"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-
 async function AssignmentList({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
+  // Getting the user ID and the role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const currentUserId = userId;
+
+  // Defining columns for table
+  const columns = [
+    {
+      header: "Subject",
+      accessor: "subject",
+      className: "px-4",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Due date",
+      accessor: "dueDate",
+    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+
   // Destructuring the searchParams and setting our current page
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;

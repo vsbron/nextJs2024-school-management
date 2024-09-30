@@ -1,10 +1,3 @@
-import { auth } from "@clerk/nextjs/server";
-
-// Getting the role and the ID of the logged in user
-const { userId, sessionClaims } = auth();
-export const role = (sessionClaims?.metadata as { role?: string })?.role;
-export const currentUserId = userId;
-
 // Helper function that returns the first day of the work week
 const currentWorkWeek = () => {
   const today = new Date();
@@ -72,3 +65,26 @@ export const adjustScheduleToCurrentWeek = (
     };
   });
 };
+
+// Helper function to get the correct suffix for number
+export function getOrdinalSuffix(num: string) {
+  const numInt = parseInt(num, 10); // Convert the string to a number
+
+  let suffix = "th";
+  if (numInt % 100 >= 11 && numInt % 100 <= 13) {
+    suffix = "th";
+  } else {
+    switch (numInt % 10) {
+      case 1:
+        suffix = "st";
+        break;
+      case 2:
+        suffix = "nd";
+        break;
+      case 3:
+        suffix = "rd";
+        break;
+    }
+  }
+  return suffix;
+}

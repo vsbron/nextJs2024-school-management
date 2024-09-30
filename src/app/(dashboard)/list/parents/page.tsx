@@ -1,8 +1,8 @@
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { role } from "@/lib/utils";
 import { Parent, Prisma, Student } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -13,47 +13,51 @@ import TableSearch from "@/components/TableSearch";
 // Type for the student list with data from different tables
 type ParentList = Parent & { students: Student[] };
 
-const columns = [
-  {
-    header: "Info",
-    accessor: "info",
-    className: "px-4",
-  },
-  {
-    header: "Students",
-    accessor: "students",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Email",
-    accessor: "email",
-    className: "hidden lg:table-cell",
-  },
-  {
-    header: "Phone",
-    accessor: "phone",
-    className: "hidden lg:table-cell",
-  },
-  {
-    header: "Address",
-    accessor: "address",
-    className: "hidden lg:table-cell",
-  },
-  ...(role === "admin"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-
 async function ParentList({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
+  // Getting the user's role
+  const { sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  // Defining columns for table
+  const columns = [
+    {
+      header: "Info",
+      accessor: "info",
+      className: "px-4",
+    },
+    {
+      header: "Students",
+      accessor: "students",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Email",
+      accessor: "email",
+      className: "hidden lg:table-cell",
+    },
+    {
+      header: "Phone",
+      accessor: "phone",
+      className: "hidden lg:table-cell",
+    },
+    {
+      header: "Address",
+      accessor: "address",
+      className: "hidden lg:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
   // Destructuring the searchParams and setting our current page
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;

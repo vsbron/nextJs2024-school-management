@@ -1,14 +1,17 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
-import { Student } from "@prisma/client";
+import { Class, Student } from "@prisma/client";
 
-// import BigCalendarContainer from "@/components/BigCalendarContainer";
+import BigCalendarContainer from "@/components/BigCalendarContainer";
 import FormContainer from "@/components/FormContainer";
 import PerformanceChart from "@/components/PerformanceChart";
+import StudentAttendanceCard from "@/components/StudentAttendanceCard";
+import { getOrdinalSuffix } from "@/lib/utils";
 
 async function SingleStudentPage({
   params: { studentId },
@@ -20,8 +23,11 @@ async function SingleStudentPage({
   const role = (sessionClaims?.metadata as { role?: string })?.role;
 
   // Fetching the student data from database
-  const student: Student | null = await prisma.student.findUnique({
+  const student:
+    | (Student & { class: Class & { _count: { lessons: number } } })
+    | null = await prisma.student.findUnique({
     where: { id: studentId },
+    include: { class: { include: { _count: { select: { lessons: true } } } } },
   });
 
   // Guard clause
@@ -92,7 +98,7 @@ async function SingleStudentPage({
                     src="/phone.png"
                     width={14}
                     height={14}
-                    alt="Blood type"
+                    alt="Phone number"
                   />
                   <span>{student.phone}</span>
                 </div>
@@ -110,10 +116,9 @@ async function SingleStudentPage({
                 height={24}
                 alt=""
               />
-              <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">90%</h3>
-                <span className="text-sm text-gray-400">Attendance</span>
-              </div>
+              <Suspense fallback="Loading...">
+                <StudentAttendanceCard id={student.id} />
+              </Suspense>
             </div>
             {/* CARD */}
             <div className="bg-white p-4 rounded-xl flex gap-4">
@@ -125,7 +130,10 @@ async function SingleStudentPage({
                 alt=""
               />
               <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">6th</h3>
+                <h3 className="text-xl font-semibold">
+                  {student.class.name.charAt(0)}
+                  {getOrdinalSuffix(student.class.name.charAt(0))}
+                </h3>
                 <span className="text-sm text-gray-400">Grade</span>
               </div>
             </div>
@@ -139,7 +147,9 @@ async function SingleStudentPage({
                 alt=""
               />
               <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">18</h3>
+                <h3 className="text-xl font-semibold">
+                  {student.class._count.lessons}
+                </h3>
                 <span className="text-sm text-gray-400">Lessons</span>
               </div>
             </div>
@@ -153,7 +163,7 @@ async function SingleStudentPage({
                 alt=""
               />
               <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">6</h3>
+                <h3 className="text-xl font-semibold">{student.class.name}</h3>
                 <span className="text-sm text-gray-400">Class</span>
               </div>
             </div>
@@ -162,7 +172,7 @@ async function SingleStudentPage({
         {/* BOTTOM */}
         <div className="mt-4 bg-white rounded-md p-4 h-[800px]">
           <h2>Student&apos;s schedule</h2>
-          {/* <BigCalendarContainer /> */}
+          <BigCalendarContainer type="classId" id={student.class.id} />
         </div>
       </div>
 

@@ -186,8 +186,8 @@ function StudentForm({
             className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             defaultValue={data?.sex}
           >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
           </select>
           {errors.sex?.message && (
             <p className="text-xs text-red-400">

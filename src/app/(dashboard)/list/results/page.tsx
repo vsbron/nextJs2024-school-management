@@ -2,13 +2,13 @@ import Image from "next/image";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { currentUserId, role } from "@/lib/utils";
 import { Prisma } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import { auth } from "@clerk/nextjs/server";
 
 // Type for the results list with data from different tables
 type ResultsList = {
@@ -23,51 +23,57 @@ type ResultsList = {
   startTime: Date;
 };
 
-const columns = [
-  {
-    header: "Title",
-    accessor: "title",
-    className: "px-4",
-  },
-  {
-    header: "Student",
-    accessor: "student",
-  },
-  {
-    header: "Score",
-    accessor: "score",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Date",
-    accessor: "date",
-    className: "hidden md:table-cell",
-  },
-  ...(role === "admin" || role === "teacher"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-
 async function ResultsList({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
+  // Getting the user ID and the role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const currentUserId = userId;
+
+  // Defining columns for table
+  const columns = [
+    {
+      header: "Title",
+      accessor: "title",
+      className: "px-4",
+    },
+    {
+      header: "Student",
+      accessor: "student",
+    },
+    {
+      header: "Score",
+      accessor: "score",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Date",
+      accessor: "date",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin" || role === "teacher"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+
   // Destructuring the searchParams and setting our current page
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;

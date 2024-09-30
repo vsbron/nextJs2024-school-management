@@ -1,8 +1,8 @@
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { currentUserId, role } from "@/lib/utils";
 import { Announcement, Class, Prisma } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -13,37 +13,43 @@ import TableSearch from "@/components/TableSearch";
 // Type for the announcement list with data from different tables
 type AnnouncementList = Announcement & { class: Class | null };
 
-const columns = [
-  {
-    header: "Subject",
-    accessor: "subject",
-    className: "px-4",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Due date",
-    accessor: "dueDate",
-    className: "hidden md:table-cell",
-  },
-  ...(role === "admin"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-
 async function AnnouncementList({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
+  // Getting the user ID and the role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const currentUserId = userId;
+
+  // Defining columns for table
+  const columns = [
+    {
+      header: "Subject",
+      accessor: "subject",
+      className: "px-4",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Due date",
+      accessor: "dueDate",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+
   // Destructuring the searchParams and setting our current page
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;

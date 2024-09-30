@@ -1,8 +1,8 @@
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { role } from "@/lib/utils";
 import { Class, Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormModal from "@/components/FormModal";
@@ -17,37 +17,42 @@ type LessonList = Lesson & {
   subject: Subject;
 };
 
-const columns = [
-  {
-    header: "Subject",
-    accessor: "subject",
-    className: "px-4",
-  },
-  {
-    header: "Class",
-    accessor: "class",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Teacher",
-    accessor: "teacher",
-    className: "hidden md:table-cell",
-  },
-  ...(role === "admin"
-    ? [
-        {
-          header: "Actions",
-          accessor: "action",
-        },
-      ]
-    : []),
-];
-
 async function LessonList({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
+  // Getting the user's role
+  const { sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  // Defining columns for table
+  const columns = [
+    {
+      header: "Subject",
+      accessor: "subject",
+      className: "px-4",
+    },
+    {
+      header: "Class",
+      accessor: "class",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin"
+      ? [
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+        ]
+      : []),
+  ];
+
   // Destructuring the searchParams and setting our current page
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;

@@ -1,8 +1,8 @@
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { role } from "@/lib/utils";
 import { Prisma, Subject, Teacher } from "@prisma/client";
 
 import Pagination from "@/components/Pagination";
@@ -13,28 +13,33 @@ import FormContainer from "@/components/FormContainer";
 // Type for the subject list with data from different tables
 type SubjectList = Subject & { teachers: Teacher[] };
 
-const columns = [
-  {
-    header: "Subject Names",
-    accessor: "subject",
-    className: "px-4",
-  },
-  {
-    header: "Teachers",
-    accessor: "teachers",
-    className: "hidden md:table-cell",
-  },
-  {
-    header: "Actions",
-    accessor: "action",
-  },
-];
-
 async function SubjectList({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
+  // Getting the user's role
+  const { sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  // Defining columns for table
+  const columns = [
+    {
+      header: "Subject Names",
+      accessor: "subject",
+      className: "px-4",
+    },
+    {
+      header: "Teachers",
+      accessor: "teachers",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Actions",
+      accessor: "action",
+    },
+  ];
+
   // Destructuring the searchParams and setting our current page
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
