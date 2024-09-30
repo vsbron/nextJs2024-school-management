@@ -1,6 +1,6 @@
 "use server";
 import prisma from "./prisma";
-import { ClassInputs, SubjectInputs } from "./formSchemas";
+import { ClassInputs, SubjectInputs, TeacherInputs } from "./formSchemas";
 
 // Type for the current state
 type CurrentStateType = { success: boolean; error: boolean };
@@ -145,8 +145,69 @@ export const deleteClass = async (
   }
 };
 
+/*** CLASSES ***/
+// Server action for creating a new Teacher
+export const createTeacher = async (
+  currentState: CurrentStateType,
+  data: TeacherInputs
+) => {
+  try {
+    await prisma.teacher.create({
+      data: {},
+    });
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Teacher
+export const updateTeacher = async (
+  currentState: CurrentStateType,
+  data: TeacherInputs
+) => {
+  try {
+    await prisma.teacher.update({
+      where: { id: data.id },
+      data: {},
+    });
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting a Teacher
+export const deleteTeacher = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  const id = data.get("id") as string;
+  try {
+    // Deleting the data from the database
+    await prisma.teacher.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+
 // Delete server actions placeholder for different forms
-export const deleteTeacher = async () => ({ success: true, error: false });
 export const deleteStudent = async () => ({ success: true, error: false });
 export const deleteParent = async () => ({ success: true, error: false });
 export const deleteLesson = async () => ({ success: true, error: false });

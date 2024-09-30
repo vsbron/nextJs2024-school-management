@@ -119,7 +119,9 @@ async function ClassList({
       </td>
       <td>{item.capacity}</td>
       <td className="hidden md:table-cell">{item.name[0]}</td>
-      <td className="hidden md:table-cell">{item.supervisor?.name}</td>
+      <td className="hidden md:table-cell">
+        {item.supervisor?.name + " " + item.supervisor?.surname}
+      </td>
       {role === "admin" && (
         <td>
           <div className="flex items-center gap-2">

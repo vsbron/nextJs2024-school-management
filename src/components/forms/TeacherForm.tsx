@@ -1,9 +1,12 @@
 "use client";
-import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { useFormState } from "react-dom";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { createTeacher, updateTeacher } from "@/lib/actions";
 import { TeacherInputs, teacherSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
@@ -26,10 +29,49 @@ function TeacherForm({
     formState: { errors },
   } = useForm<TeacherInputs>({ resolver: zodResolver(teacherSchema) });
 
+  // Getting the state and action from the useFormState
+  const [state, formAction] = useFormState(
+    type === "create" ? createTeacher : updateTeacher,
+    {
+      success: false,
+      error: false,
+    }
+  );
+
+  // Getting the router
+  const router = useRouter();
+
+  // Use effect to trigger the toast message
+  useEffect(() => {
+    if (state.success || state.error) {
+      if (state.success) {
+        toast(
+          `Teacher has been successfully ${
+            type === "create" ? "created" : "updated"
+          }`
+        );
+        // Close the modal
+        setOpen(false);
+
+        // Refresh the page
+        router.refresh();
+      } else {
+        toast(
+          `There was some kind of error while ${
+            type === "create" ? "creating" : "updating"
+          } the teacher`
+        );
+      }
+    }
+  }, [state, type, router, setOpen]);
+
   // Submit handler
-  const submitHandler = handleSubmit((data) => {
-    console.log(data);
+  const submitHandler = handleSubmit((formData) => {
+    formAction(formData);
   });
+
+  // Getting the teachers from the related data object
+  const { subjects, classes } = relatedData;
 
   // Returned JSX
   return (
@@ -63,6 +105,16 @@ function TeacherForm({
           defaultValue={data?.password}
           error={errors?.password}
         />
+        {data && (
+          <InputField
+            label="ID"
+            name="id"
+            register={register}
+            defaultValue={data?.id}
+            error={errors?.id}
+            hidden
+          />
+        )}
       </div>
       <span className="text-sm text-gray-400 font-medium">
         Personal Information
@@ -72,16 +124,16 @@ function TeacherForm({
         <InputField
           label="First Name"
           register={register}
-          name="firstName"
-          defaultValue={data?.firstName}
-          error={errors?.firstName}
+          name="name"
+          defaultValue={data?.name}
+          error={errors?.name}
         />
         <InputField
           label="Last Name"
           register={register}
-          name="lastName"
-          defaultValue={data?.lastName}
-          error={errors?.lastName}
+          name="surname"
+          defaultValue={data?.surname}
+          error={errors?.surname}
         />
         <InputField
           label="Phone"
@@ -113,6 +165,49 @@ function TeacherForm({
           error={errors?.birthday}
         />
 
+        {/* Select field for the Subjects */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Subjects</label>
+          <select
+            multiple
+            {...register("subjects")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.subjects}
+          >
+            {subjects.map((subject: { id: number; name: string }) => (
+              <option value={subject.id} key={subject.id}>
+                {subject.name}
+              </option>
+            ))}
+          </select>
+          {errors.subjects?.message && (
+            <p className="text-xs text-red-400">
+              {errors.subjects?.message.toString()}
+            </p>
+          )}
+        </div>
+
+        {/* Select field for the Classes */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Classes</label>
+          <select
+            {...register("classes")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.classes}
+          >
+            {classes.map((classItem: { id: number; name: string }) => (
+              <option value={classItem.id} key={classItem.id}>
+                {classItem.name}
+              </option>
+            ))}
+          </select>
+          {errors.subjects?.message && (
+            <p className="text-xs text-red-400">
+              {errors.subjects?.message.toString()}
+            </p>
+          )}
+        </div>
+
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Sex</label>
           <select
@@ -126,32 +221,6 @@ function TeacherForm({
           {errors.sex?.message && (
             <p className="text-xs text-red-400">
               {errors.sex?.message.toString()}
-            </p>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
-          <label
-            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-            htmlFor="avatar"
-          >
-            <Image
-              src="/upload.png"
-              width={28}
-              height={28}
-              alt="Upload an avatar"
-            />
-            <span>Upload a photo</span>
-          </label>
-          <input
-            type="file"
-            {...register("avatar")}
-            className="hidden"
-            id="avatar"
-          />
-          {errors.avatar?.message && (
-            <p className="text-xs text-red-400">
-              {errors.avatar?.message.toString()}
             </p>
           )}
         </div>
