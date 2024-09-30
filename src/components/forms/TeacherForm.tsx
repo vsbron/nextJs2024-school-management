@@ -166,7 +166,7 @@ function TeacherForm({
           register={register}
           name="birthday"
           type="date"
-          defaultValue={data?.birthday}
+          defaultValue={data?.birthday.toISOString().split("T")[0]}
           error={errors?.birthday}
         />
 
