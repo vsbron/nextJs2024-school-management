@@ -1,6 +1,7 @@
 "use server";
 import prisma from "./prisma";
 import { ClassInputs, SubjectInputs, TeacherInputs } from "./formSchemas";
+import { clerkClient } from "@clerk/nextjs/server";
 
 // Type for the current state
 type CurrentStateType = { success: boolean; error: boolean };
@@ -152,8 +153,34 @@ export const createTeacher = async (
   data: TeacherInputs
 ) => {
   try {
+    // Creating user at Clerk service
+    const user = await clerkClient.users.createUser({
+      username: data.username,
+      password: data.password,
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: "teacher" },
+    });
+
     await prisma.teacher.create({
-      data: {},
+      data: {
+        id: user.id,
+        username: data.username,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        img: data.img || null,
+        bloodType: data.bloodType,
+        sex: data.sex,
+        birthday: data.birthday,
+        subjects: {
+          connect: data.subjects?.map((subjectId: string) => ({
+            id: parseInt(subjectId),
+          })),
+        },
+      },
     });
     // Return success state
     return { success: true, error: false };
@@ -161,7 +188,7 @@ export const createTeacher = async (
     console.error(e);
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: e };
   }
 };
 // Server action for updating existing Teacher

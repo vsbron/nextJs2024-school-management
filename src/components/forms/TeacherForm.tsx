@@ -31,6 +31,7 @@ function TeacherForm({
     formState: { errors },
   } = useForm<TeacherInputs>({ resolver: zodResolver(teacherSchema) });
 
+  // Setting the state for uploaded avatar
   const [img, setImg] = useState<any>();
 
   // Getting the state and action from the useFormState
@@ -71,11 +72,11 @@ function TeacherForm({
 
   // Submit handler
   const submitHandler = handleSubmit((formData) => {
-    formAction(formData);
+    formAction({ ...formData, img: img?.secure_url });
   });
 
   // Getting the teachers from the related data object
-  const { subjects, classes } = relatedData;
+  const { subjects } = relatedData;
 
   // Returned JSX
   return (
@@ -191,27 +192,6 @@ function TeacherForm({
           )}
         </div>
 
-        {/* Select field for the Classes */}
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Classes</label>
-          <select
-            {...register("classes")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            defaultValue={data?.classes}
-          >
-            {classes.map((classItem: { id: number; name: string }) => (
-              <option value={classItem.id} key={classItem.id}>
-                {classItem.name}
-              </option>
-            ))}
-          </select>
-          {errors.subjects?.message && (
-            <p className="text-xs text-red-400">
-              {errors.subjects?.message.toString()}
-            </p>
-          )}
-        </div>
-
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Sex</label>
           <select
@@ -219,8 +199,8 @@ function TeacherForm({
             className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             defaultValue={data?.sex}
           >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
           </select>
           {errors.sex?.message && (
             <p className="text-xs text-red-400">
@@ -259,6 +239,12 @@ function TeacherForm({
           )}
         </div>
       </div>
+
+      {/* Error message */}
+      {state.error && (
+        <span className="text-red-500">There was some kind of error</span>
+      )}
+
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>

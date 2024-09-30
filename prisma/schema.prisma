@@ -40,8 +40,8 @@ model Teacher {
   username  String    @unique
   name      String
   surname   String
-  email     String?   @unique
-  phone     String?   @unique
+  email     String    @unique
+  phone     String    @unique
   address   String
   img       String?
   bloodType String
