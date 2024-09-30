@@ -1,31 +1,33 @@
 import Link from "next/link";
 import Image from "next/image";
+import { notFound } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
-import Announcements from "@/components/Announcements";
-import BigCalendar from "@/components/BigCalendar";
-import FormModal from "@/components/FormModal";
+import prisma from "@/lib/prisma";
+import { Student } from "@prisma/client";
+
+// import BigCalendarContainer from "@/components/BigCalendarContainer";
+import FormContainer from "@/components/FormContainer";
 import PerformanceChart from "@/components/PerformanceChart";
 
-// Temp student data
-const tempData = {
-  id: 1,
-  username: "janedoe",
-  email: "janedoe@gmail.com",
-  password: "password",
-  firstName: "Jane",
-  lastName: "Doe",
-  grade: "5",
-  cass: "1A",
-  phone: "+1 234 567 89",
-  address: "2345 Main St, Anycity, USA",
-  bloodType: "B+",
-  birthday: "2001-01-01",
-  sex: "female",
-  avatar:
-    "https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a750d45d3eb7b8e754a48c_Jessie%20Meyton-p-500.jpg",
-};
+async function SingleStudentPage({
+  params: { studentId },
+}: {
+  params: { studentId: string };
+}) {
+  // Getting the role
+  const { sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
 
-function SingleStudentPage() {
+  // Fetching the student data from database
+  const student: Student | null = await prisma.student.findUnique({
+    where: { id: studentId },
+  });
+
+  // Guard clause
+  if (!student) return notFound;
+
+  // Returned JSX
   return (
     <div className="flex-1 p-4 flex flex-col xl:flex-row gap-4">
       {/* LEFT */}
@@ -36,7 +38,7 @@ function SingleStudentPage() {
           <div className="bg-schoolSky py-6 px-4 rounded-xl flex-1 flex flex-col xs:flex-row gap-4">
             <div className="basis-1/3">
               <Image
-                src="https://cdn.prod.website-files.com/6365d860c7b7a7191055eb8a/65a750d45d3eb7b8e754a48c_Jessie%20Meyton-p-500.jpg"
+                src={student.img || "/noAvatar.png"}
                 className="rounded-full object-cover"
                 alt="Student name"
                 width={144}
@@ -45,8 +47,12 @@ function SingleStudentPage() {
             </div>
             <div className="basis-2/3 flex flex-col justify-between gap-4">
               <div className="flex items-center gap-4">
-                <h1 className="text-xl font-semibold">Jane Doe</h1>
-                <FormModal table="student" type="update" data={tempData} />
+                <h1 className="text-xl font-semibold">
+                  {student.name + " " + student.surname}
+                </h1>
+                {role === "admin" && (
+                  <FormContainer table="student" type="update" data={student} />
+                )}
               </div>
               <p className="text-sm text-gray-500">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -59,7 +65,7 @@ function SingleStudentPage() {
                     height={14}
                     alt="Blood type"
                   />
-                  <span>A+</span>
+                  <span>{student.bloodType}</span>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
                   <Image
@@ -68,7 +74,9 @@ function SingleStudentPage() {
                     height={14}
                     alt="Blood type"
                   />
-                  <span>January 2025</span>
+                  <span>
+                    {new Intl.DateTimeFormat("en-US").format(student.birthday)}
+                  </span>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
                   <Image
@@ -77,7 +85,7 @@ function SingleStudentPage() {
                     height={14}
                     alt="Blood type"
                   />
-                  <span>user@gmail.com</span>
+                  <span>{student.email}</span>
                 </div>
                 <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
                   <Image
@@ -86,7 +94,7 @@ function SingleStudentPage() {
                     height={14}
                     alt="Blood type"
                   />
-                  <span>+1 234 5674</span>
+                  <span>{student.phone}</span>
                 </div>
               </div>
             </div>
@@ -154,7 +162,7 @@ function SingleStudentPage() {
         {/* BOTTOM */}
         <div className="mt-4 bg-white rounded-md p-4 h-[800px]">
           <h2>Student&apos;s schedule</h2>
-          <BigCalendar />
+          {/* <BigCalendarContainer /> */}
         </div>
       </div>
 
@@ -205,9 +213,6 @@ function SingleStudentPage() {
 
         {/* PERFORMANCE */}
         <PerformanceChart />
-
-        {/* ANNOUNCEMENTS */}
-        <Announcements />
       </div>
     </div>
   );

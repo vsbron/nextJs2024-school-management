@@ -85,6 +85,7 @@ export type ResultInputs = z.infer<typeof resultSchema>;
 
 // Students form schema
 export const studentSchema = z.object({
+  id: z.string().optional(),
   username: z
     .string()
     .min(3, { message: "Username must be at least 3 characters long!" })
@@ -93,8 +94,8 @@ export const studentSchema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 8 characters long!" }),
-  firstName: z.string().min(1, { message: "First name is required!" }),
-  lastName: z.string().min(1, { message: "Last name is required!" }),
+  name: z.string().min(1, { message: "First name is required!" }),
+  surname: z.string().min(1, { message: "Last name is required!" }),
   grade: z.number().min(1, { message: "Grade is required!" }),
   class: z.string().min(1, { message: "Class is required!" }),
   phone: z.string().min(1, { message: "Phone is required!" }),

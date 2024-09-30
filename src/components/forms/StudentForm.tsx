@@ -1,9 +1,14 @@
 "use client";
-import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useFormState } from "react-dom";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { CldUploadWidget } from "next-cloudinary";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "react-toastify";
 
+import { createStudent, updateStudent } from "@/lib/actions";
 import { StudentInputs, studentSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
@@ -12,7 +17,6 @@ function StudentForm({
   setOpen,
   type,
   data,
-  relatedData,
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
@@ -26,9 +30,48 @@ function StudentForm({
     formState: { errors },
   } = useForm<StudentInputs>({ resolver: zodResolver(studentSchema) });
 
+  // Setting the state for uploaded avatar
+  const [img, setImg] = useState<any>();
+
+  // Getting the state and action from the useFormState
+  const [state, formAction] = useFormState(
+    type === "create" ? createStudent : updateStudent,
+    {
+      success: false,
+      error: false,
+    }
+  );
+
+  // Getting the router
+  const router = useRouter();
+
+  // Use effect to trigger the toast message
+  useEffect(() => {
+    if (state.success || state.error) {
+      if (state.success) {
+        toast(
+          `Student has been successfully ${
+            type === "create" ? "created" : "updated"
+          }`
+        );
+        // Close the modal
+        setOpen(false);
+
+        // Refresh the page
+        router.refresh();
+      } else {
+        toast(
+          `There was some kind of error while ${
+            type === "create" ? "creating" : "updating"
+          } the student`
+        );
+      }
+    }
+  }, [state, type, router, setOpen]);
+
   // Submit handler
-  const submitHandler = handleSubmit((data) => {
-    console.log(data);
+  const submitHandler = handleSubmit((formData) => {
+    formAction(formData);
   });
 
   // Returned JSX
@@ -63,6 +106,16 @@ function StudentForm({
           defaultValue={data?.password}
           error={errors?.password}
         />
+        {data && (
+          <InputField
+            label="ID"
+            name="id"
+            register={register}
+            defaultValue={data?.id}
+            error={errors?.id}
+            hidden
+          />
+        )}
       </div>
       <span className="text-sm text-gray-400 font-medium">
         Personal Information
@@ -71,16 +124,16 @@ function StudentForm({
         <InputField
           label="First Name"
           register={register}
-          name="firstName"
-          defaultValue={data?.firstName}
-          error={errors?.firstName}
+          name="name"
+          defaultValue={data?.name}
+          error={errors?.name}
         />
         <InputField
           label="Last Name"
           register={register}
-          name="lastName"
-          defaultValue={data?.lastName}
-          error={errors?.lastName}
+          name="surname"
+          defaultValue={data?.surname}
+          error={errors?.surname}
         />
         <InputField
           label="Class"
@@ -144,31 +197,41 @@ function StudentForm({
         </div>
 
         <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
-          <label
-            className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
-            htmlFor="avatar"
+          <CldUploadWidget
+            uploadPreset="school_management"
+            onSuccess={(result, { widget }) => {
+              setImg(result.info);
+              widget.close();
+            }}
           >
-            <Image
-              src="/upload.png"
-              width={28}
-              height={28}
-              alt="Upload an avatar"
-            />
-            <span>Upload a photo</span>
-          </label>
-          <input
-            type="file"
-            {...register("avatar")}
-            className="hidden"
-            id="avatar"
-          />
-          {errors.avatar?.message && (
-            <p className="text-xs text-red-400">
-              {errors.avatar?.message.toString()}
-            </p>
+            {({ open }) => {
+              return (
+                <div
+                  className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+                  onClick={() => open()}
+                >
+                  <Image
+                    src="/upload.png"
+                    width={28}
+                    height={28}
+                    alt="Upload an avatar"
+                  />
+                  <span>Upload a photo</span>
+                </div>
+              );
+            }}
+          </CldUploadWidget>
+          {img && (
+            <Image src={img.secure_url} width={100} height={100} alt="" />
           )}
         </div>
       </div>
+
+      {/* Error message */}
+      {state.error && (
+        <span className="text-red-500">There was some kind of error</span>
+      )}
+
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>

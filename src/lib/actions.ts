@@ -1,6 +1,11 @@
 "use server";
 import prisma from "./prisma";
-import { ClassInputs, SubjectInputs, TeacherInputs } from "./formSchemas";
+import {
+  ClassInputs,
+  StudentInputs,
+  SubjectInputs,
+  TeacherInputs,
+} from "./formSchemas";
 import { clerkClient } from "@clerk/nextjs/server";
 
 // Type for the current state
@@ -146,7 +151,7 @@ export const deleteClass = async (
   }
 };
 
-/*** CLASSES ***/
+/*** TEACHERS ***/
 // Server action for creating a new Teacher
 export const createTeacher = async (
   currentState: CurrentStateType,
@@ -265,8 +270,126 @@ export const deleteTeacher = async (
   }
 };
 
+/*** STUDENTS ***/
+// Server action for creating a new Student
+export const createStudent = async (
+  currentState: CurrentStateType,
+  data: StudentInputs
+) => {
+  try {
+    // Creating user at Clerk service
+    const user = await clerkClient.users.createUser({
+      username: data.username,
+      password: data.password,
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: "student" },
+    });
+
+    await prisma.student.create({
+      data: {
+        id: user.id,
+        username: data.username,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        img: data.img || null,
+        bloodType: data.bloodType,
+        sex: data.sex,
+        birthday: data.birthday,
+        subjects: {
+          connect: data.subjects?.map((subjectId: string) => ({
+            id: parseInt(subjectId),
+          })),
+        },
+      },
+    });
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true, message: e };
+  }
+};
+// Server action for updating existing Student
+export const updateStudent = async (
+  currentState: CurrentStateType,
+  data: StudentInputs
+) => {
+  // Guard clause
+  if (!data.id) {
+    return { success: false, error: true };
+  }
+
+  try {
+    await clerkClient.users.updateUser(data.id, {
+      username: data.username,
+      ...(data.password !== "" && { password: data.password }),
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: "teacher" },
+    });
+
+    await prisma.student.update({
+      where: { id: data.id },
+      data: {
+        ...(data.password !== "" && { password: data.password }),
+        username: data.username,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        img: data.img || null,
+        bloodType: data.bloodType,
+        sex: data.sex,
+        birthday: data.birthday,
+        subjects: {
+          set: data.subjects?.map((subjectId: string) => ({
+            id: parseInt(subjectId),
+          })),
+        },
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting a Student
+export const deleteStudent = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  const id = data.get("id") as string;
+  try {
+    // Deleting the data from the database
+    await prisma.student.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+
 // Delete server actions placeholder for different forms
-export const deleteStudent = async () => ({ success: true, error: false });
 export const deleteParent = async () => ({ success: true, error: false });
 export const deleteLesson = async () => ({ success: true, error: false });
 export const deleteExam = async () => ({ success: true, error: false });

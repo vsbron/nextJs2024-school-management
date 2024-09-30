@@ -6,7 +6,6 @@ import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
 import { Teacher } from "@prisma/client";
 
-// import AnnouncementsContainer from "@/components/AnnouncementsContainer";
 // import BigCalendarContainer from "@/components/BigCalendarContainer";
 import FormContainer from "@/components/FormContainer";
 import PerformanceChart from "@/components/PerformanceChart";
@@ -16,8 +15,6 @@ async function SingleTeacherPage({
 }: {
   params: { teacherId: string };
 }) {
-  console.log("IDDDDDDDDDDDDDDDDDDDDDDDD:" + teacherId);
-
   // Getting the role
   const { sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
@@ -233,9 +230,6 @@ async function SingleTeacherPage({
         </div>
         {/* PERFORMANCE */}
         <PerformanceChart />
-
-        {/* ANNOUNCEMENTS
-        <AnnouncementsContainer /> */}
       </div>
     </div>
   );
