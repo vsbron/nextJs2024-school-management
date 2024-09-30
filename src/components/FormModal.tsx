@@ -203,7 +203,7 @@ function FormModal<T>({
   useEffect(() => {
     if (state.success || state.error) {
       if (state.success) {
-        toast("Subject has been successfully deleted");
+        toast(`${table} has been successfully deleted`);
         // Close the modal
         setOpenModal(false);
 
@@ -212,12 +212,16 @@ function FormModal<T>({
       } else {
         toast(
           `There was some kind of error while ${
-            type === "create" ? "creating" : "updating"
-          } the subject`
+            type === "create"
+              ? "creating"
+              : type === "update"
+              ? "updating"
+              : "deleting"
+          } the ${table}`
         );
       }
     }
-  }, [state, type, router, setOpenModal]);
+  }, [state, type, router, setOpenModal, table]);
 
   // Returned JSX
   return (

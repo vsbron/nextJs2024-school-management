@@ -17,6 +17,7 @@ function StudentForm({
   setOpen,
   type,
   data,
+  relatedData,
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
@@ -71,8 +72,11 @@ function StudentForm({
 
   // Submit handler
   const submitHandler = handleSubmit((formData) => {
-    formAction(formData);
+    formAction({ ...formData, img: img?.secure_url });
   });
+
+  // Getting the grades & classes from the related data object
+  const { grades, classes } = relatedData;
 
   // Returned JSX
   return (
@@ -136,20 +140,6 @@ function StudentForm({
           error={errors?.surname}
         />
         <InputField
-          label="Class"
-          register={register}
-          name="class"
-          defaultValue={data?.class}
-          error={errors?.class}
-        />
-        <InputField
-          label="Grade"
-          register={register}
-          name="grade"
-          defaultValue={data?.grade}
-          error={errors?.grade}
-        />
-        <InputField
           label="Phone"
           register={register}
           name="phone"
@@ -175,10 +165,16 @@ function StudentForm({
           register={register}
           name="birthday"
           type="date"
-          defaultValue={data?.birthday}
+          defaultValue={data?.birthday.toISOString().split("T")[0]}
           error={errors?.birthday}
         />
-
+        <InputField
+          label="Parent Id"
+          name="parentId"
+          defaultValue={data?.parentId}
+          register={register}
+          error={errors?.parentId}
+        />
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Sex</label>
           <select
@@ -192,6 +188,56 @@ function StudentForm({
           {errors.sex?.message && (
             <p className="text-xs text-red-400">
               {errors.sex?.message.toString()}
+            </p>
+          )}
+        </div>
+
+        {/* Select field for the Grades */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Grade</label>
+          <select
+            {...register("gradeId")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.gradeId}
+          >
+            {grades.map((grade: { id: number; level: number }) => (
+              <option value={grade.id} key={grade.id}>
+                {grade.level}
+              </option>
+            ))}
+          </select>
+          {errors.gradeId?.message && (
+            <p className="text-xs text-red-400">
+              {errors.gradeId?.message.toString()}
+            </p>
+          )}
+        </div>
+
+        {/* Select field for the Classes */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Class</label>
+          <select
+            {...register("classId")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.classId}
+          >
+            {classes.map(
+              (classItem: {
+                id: number;
+                name: string;
+                capacity: number;
+                _count: { students: number };
+              }) => (
+                <option value={classItem.id} key={classItem.id}>
+                  {classItem.name} (Capacity:{" "}
+                  {classItem._count.students + "/" + classItem.capacity})
+                </option>
+              )
+            )}
+          </select>
+          {errors.classId?.message && (
+            <p className="text-xs text-red-400">
+              {errors.classId?.message.toString()}
             </p>
           )}
         </div>

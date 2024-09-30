@@ -17,7 +17,7 @@ async function StudentAttendanceCard({ id }: { id: string }) {
   // Returned JSX
   return (
     <div className="flex flex-col">
-      <h3 className="text-xl font-semibold">{percentage}%</h3>
+      <h3 className="text-xl font-semibold">{percentage || "-"}%</h3>
       <span className="text-sm text-gray-400">Attendance</span>
     </div>
   );
