@@ -1,7 +1,8 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
+import { CldUploadWidget } from "next-cloudinary";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +11,7 @@ import { createTeacher, updateTeacher } from "@/lib/actions";
 import { TeacherInputs, teacherSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
+import Image from "next/image";
 
 function TeacherForm({
   setOpen,
@@ -28,6 +30,8 @@ function TeacherForm({
     handleSubmit,
     formState: { errors },
   } = useForm<TeacherInputs>({ resolver: zodResolver(teacherSchema) });
+
+  const [img, setImg] = useState<any>();
 
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
@@ -222,6 +226,36 @@ function TeacherForm({
             <p className="text-xs text-red-400">
               {errors.sex?.message.toString()}
             </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
+          <CldUploadWidget
+            uploadPreset="school_management"
+            onSuccess={(result, { widget }) => {
+              setImg(result.info);
+              widget.close();
+            }}
+          >
+            {({ open }) => {
+              return (
+                <div
+                  className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
+                  onClick={() => open()}
+                >
+                  <Image
+                    src="/upload.png"
+                    width={28}
+                    height={28}
+                    alt="Upload an avatar"
+                  />
+                  <span>Upload a photo</span>
+                </div>
+              );
+            }}
+          </CldUploadWidget>
+          {img && (
+            <Image src={img.secure_url} width={100} height={100} alt="" />
           )}
         </div>
       </div>
