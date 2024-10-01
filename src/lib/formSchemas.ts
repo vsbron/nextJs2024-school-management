@@ -39,10 +39,11 @@ export type EventInputs = z.infer<typeof eventSchema>;
 
 // Exams form schema
 export const examSchema = z.object({
-  subject: z.string().min(1, { message: "Subject is required!" }),
-  class: z.string().min(1, { message: "Class is required!" }),
-  teacher: z.string().min(1, { message: "Teacher name is required!" }),
-  date: z.string().min(1, { message: "Date is required!" }),
+  id: z.coerce.number().optional(),
+  title: z.string().min(1, { message: "Subject name is required!" }),
+  startTime: z.coerce.date({ message: "Start time is required" }),
+  endTime: z.coerce.date({ message: "End time is required" }),
+  lessonId: z.coerce.number({ message: "Teacher name is required!" }),
 });
 export type ExamInputs = z.infer<typeof examSchema>;
 

@@ -2,92 +2,15 @@
 import prisma from "./prisma";
 import {
   ClassInputs,
+  ExamInputs,
   StudentInputs,
   SubjectInputs,
   TeacherInputs,
 } from "./formSchemas";
-import { clerkClient } from "@clerk/nextjs/server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
 // Type for the current state
 type CurrentStateType = { success: boolean; error: boolean };
-
-/*** SUBJECTS ***/
-// Server action for creating a new Subject
-export const createSubject = async (
-  currentState: CurrentStateType,
-  data: SubjectInputs
-) => {
-  try {
-    // Adding the new data to the database
-    await prisma.subject.create({
-      data: {
-        name: data.name,
-        teachers: {
-          connect: data.teachers.map((teacherId) => ({ id: teacherId })),
-        },
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for updating existing Subject
-export const updateSubject = async (
-  currentState: CurrentStateType,
-  data: SubjectInputs
-) => {
-  try {
-    // Updating the data in the database
-    await prisma.subject.update({
-      where: {
-        id: data.id,
-      },
-      data: {
-        name: data.name,
-        teachers: {
-          set: data.teachers.map((teacherId) => ({ id: teacherId })),
-        },
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for deleting a Subject
-export const deleteSubject = async (
-  currentState: CurrentStateType,
-  data: FormData
-) => {
-  const id = data.get("id") as string;
-  try {
-    // Deleting the data from the database
-    await prisma.subject.delete({
-      where: {
-        id: parseInt(id),
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
 
 /*** CLASSES ***/
 // Server action for creating a new Class
@@ -132,22 +55,17 @@ export const deleteClass = async (
   currentState: CurrentStateType,
   data: FormData
 ) => {
+  // Getting id from the passed props
   const id = data.get("id") as string;
   try {
     // Deleting the data from the database
     await prisma.class.delete({
-      where: {
-        id: parseInt(id),
-      },
+      where: { id: parseInt(id) },
     });
-
-    // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true }; // Return error state
   }
 };
 
@@ -251,6 +169,7 @@ export const deleteTeacher = async (
   currentState: CurrentStateType,
   data: FormData
 ) => {
+  // Getting id from the passed props
   const id = data.get("id") as string;
   try {
     // Deleting user from clerk
@@ -258,18 +177,12 @@ export const deleteTeacher = async (
 
     // Deleting the data from the database
     await prisma.teacher.delete({
-      where: {
-        id: id,
-      },
+      where: { id: id },
     });
-
-    // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true }; // Return error state
   }
 };
 
@@ -377,6 +290,7 @@ export const deleteStudent = async (
   currentState: CurrentStateType,
   data: FormData
 ) => {
+  // Getting id from the passed props
   const id = data.get("id") as string;
   try {
     // Deleting user from clerk
@@ -384,8 +298,29 @@ export const deleteStudent = async (
 
     // Deleting the data from the database
     await prisma.student.delete({
-      where: {
-        id: id,
+      where: { id: id },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
+/*** SUBJECTS ***/
+// Server action for creating a new Subject
+export const createSubject = async (
+  currentState: CurrentStateType,
+  data: SubjectInputs
+) => {
+  try {
+    // Adding the new data to the database
+    await prisma.subject.create({
+      data: {
+        name: data.name,
+        teachers: {
+          connect: data.teachers.map((teacherId) => ({ id: teacherId })),
+        },
       },
     });
 
@@ -398,11 +333,161 @@ export const deleteStudent = async (
     return { success: false, error: true };
   }
 };
+// Server action for updating existing Subject
+export const updateSubject = async (
+  currentState: CurrentStateType,
+  data: SubjectInputs
+) => {
+  try {
+    // Updating the data in the database
+    await prisma.subject.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        name: data.name,
+        teachers: {
+          set: data.teachers.map((teacherId) => ({ id: teacherId })),
+        },
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting a Subject
+export const deleteSubject = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+  try {
+    // Deleting the data from the database
+    await prisma.subject.delete({
+      where: { id: parseInt(id) },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
+/*** EXAMS ***/
+// Server action for creating a new Exam
+export const createExam = async (
+  currentState: CurrentStateType,
+  data: ExamInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherLesson = await prisma.lesson.findFirst({
+        where: { teacherId: userId!, id: data.lessonId },
+      });
+
+      if (!teacherLesson) {
+        return { success: false, error: true };
+      }
+    }
+    // Adding the new data to the database
+    await prisma.exam.create({
+      data: {
+        title: data.title,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        lessonId: data.lessonId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Exam
+export const updateExam = async (
+  currentState: CurrentStateType,
+  data: ExamInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherLesson = await prisma.lesson.findFirst({
+        where: { teacherId: userId!, id: data.lessonId },
+      });
+
+      if (!teacherLesson) {
+        return { success: false, error: true };
+      }
+    }
+    // Adding the new data to the database
+    await prisma.exam.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        lessonId: data.lessonId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Exam
+export const deleteExam = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  // Getting the user ID and the role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    // Deleting the data from the database
+    await prisma.exam.delete({
+      where: {
+        id: parseInt(id),
+        ...(role === "teacher" ? { lesson: { teacherId: userId! } } : {}),
+      },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
 
 // Delete server actions placeholder for different forms
 export const deleteParent = async () => ({ success: true, error: false });
 export const deleteLesson = async () => ({ success: true, error: false });
-export const deleteExam = async () => ({ success: true, error: false });
 export const deleteAssignment = async () => ({ success: true, error: false });
 export const deleteResult = async () => ({ success: true, error: false });
 export const deleteAttendance = async () => ({ success: true, error: false });
