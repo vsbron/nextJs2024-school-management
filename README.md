@@ -1,23 +1,47 @@
-# School Management
+# School Management App
 
-School management App.
+A comprehensive School Management App designed to create and manage schedules, activities, and resources for teachers, students, and parents.
 
 ## Features
 
-- Dashboard that displays multiple components on various School activities data;
-- App contains various lists of the data like Teachers, Students, Parents, Exams etc;
-- Teachers and Students are having separate page for each person with personal details;
-- Lists and single pages contain form triggers for adding or updating the data;
-- Lists page fetch data from the Database and have search filtering option;
-- Some lists could be accessed from single teacher/student page with lists showing the data related to them;
+- **Authentication & Roles**
 
-## Details
+  - Secure login with support for 4 user roles: **Admin**, **Teacher**, **Student**, and **Parent**.
+  - Role-specific access control:
+    - Admins have full access to manage data.
+    - Teachers, Students, and Parents can only manage or view data relevant to them.
 
-- App is written using NEXT.js framework with a TypeScript;
-- Styles are handled via Tailwind CSS;
-- Authentication is handled via Clerk;
-- Forms are handled via React Hook Form and validated via Zod;
+- **Dashboard Overview**
 
-### Live version
+  - A dynamic dashboard based on the user role:
+    - **Admin:** Full school activity overview with charts, schedules, calendars, events, and announcements.
+    - **Teacher/Student:** Personalized data such as schedules, assignments, exams, and upcoming events.
+    - **Parent:** Access to relevant student data like grades, schedules, and events.
+  - Left-side navigation for quick access to data lists (exams, assignments, announcements, etc.).
 
-https://vsbron-nextjs2024-school-management.vercel.app/
+- **Data Management**
+
+  - List views for managing different data entities (Teachers, Students, Parents, Lessons, Exams, Assignments, etc.).
+  - CRUD functionality (Create, Read, Update, Delete) for each role:
+    - **Admin:** Can create, view, edit, and delete all data.
+    - **Teachers:** Can manage exams and assignments.
+    - **Students/Parents:** Limited to viewing data.
+
+- **User Profiles**
+
+  - Detailed teacher and student profiles, including:
+    - Personal information (name, phone, address, email, birthday, blood type etc.).
+    - Individual schedules and more.
+  - Admins have full editing access to all user profiles.
+
+- **User Creation with Clerk**
+  - When creating new Teachers, Students, or Parents, their accounts are automatically generated via the **Clerk** authentication service.
+
+## Technical Details
+
+- **Framework:** Built with **Next.js** and **TypeScript** for scalable and efficient development.
+- **Styling:** Managed using **Tailwind CSS** for responsive, mobile-friendly design (supporting screens as small as 360px wide).
+- **Authentication:** Powered by **Clerk** for role-based user authentication.
+- **Forms:** Handled with **React Hook Form**, and validated using **Zod** for reliable form submission.
+- **Database:** Managed with **Prisma**, with data stored in **Docker** containers.
+- **File Storage:** Image uploads and storage are handled through **Cloudinary**.
