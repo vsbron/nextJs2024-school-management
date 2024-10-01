@@ -8,11 +8,11 @@ import { AnnouncementInputs, announcementSchema } from "@/lib/formSchemas";
 import InputField from "../InputField";
 
 function AnnouncementForm({
-  setOpen,
+  // setOpen,
   type,
   data,
-  relatedData,
-}: {
+}: // relatedData,
+{
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;

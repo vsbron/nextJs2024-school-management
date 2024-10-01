@@ -8,11 +8,11 @@ import { EventInputs, eventSchema } from "@/lib/formSchemas";
 import InputField from "../InputField";
 
 function EventForm({
-  setOpen,
+  // setOpen,
   type,
   data,
-  relatedData,
-}: {
+}: // relatedData,
+{
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;

@@ -8,11 +8,11 @@ import { LessonInputs, lessonSchema } from "@/lib/formSchemas";
 import InputField from "../InputField";
 
 function LessonForm({
-  setOpen,
+  // setOpen,
   type,
   data,
-  relatedData,
-}: {
+}: // relatedData,
+{
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;

@@ -8,11 +8,11 @@ import { ResultInputs, resultSchema } from "@/lib/formSchemas";
 import InputField from "../InputField";
 
 function ResultForm({
-  setOpen,
+  // setOpen,
   type,
   data,
-  relatedData,
-}: {
+}: // relatedData,
+{
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;

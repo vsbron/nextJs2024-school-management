@@ -8,11 +8,11 @@ import { ParentInputs, parentSchema } from "@/lib/formSchemas";
 import InputField from "../InputField";
 
 function ParentForm({
-  setOpen,
+  // setOpen,
   type,
   data,
-  relatedData,
-}: {
+}: // relatedData,
+{
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
