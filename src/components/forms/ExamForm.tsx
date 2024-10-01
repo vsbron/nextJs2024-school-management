@@ -92,7 +92,10 @@ function ExamForm({
           label="Start Time"
           register={register}
           name="startTime"
-          defaultValue={data?.startTime}
+          defaultValue={
+            data?.startTime &&
+            new Date(data.startTime).toISOString().slice(0, 16)
+          }
           error={errors?.startTime}
           type="datetime-local"
         />
@@ -100,7 +103,9 @@ function ExamForm({
           label="End Time"
           register={register}
           name="endTime"
-          defaultValue={data?.endTime}
+          defaultValue={
+            data?.endTime && new Date(data.endTime).toISOString().slice(0, 16)
+          }
           error={errors?.endTime}
           type="datetime-local"
         />

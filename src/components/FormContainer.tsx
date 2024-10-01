@@ -13,6 +13,10 @@ async function FormContainer<T>({
   // Creating empty object for optional related data
   let relatedData = {};
 
+  // Getting the userId and the role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
   // Execute only if the type is any other from Delete
   if (type !== "delete") {
     switch (table) {
@@ -47,13 +51,6 @@ async function FormContainer<T>({
         relatedData = { grades: classGrades, teachers: classTeachers };
         break;
       case "exam":
-        const { userId, sessionClaims } = auth();
-        const role = (
-          sessionClaims?.metadata as {
-            role?: "admin" | "teacher" | "student" | "parent";
-          }
-        )?.role;
-
         const examLessons = await prisma.lesson.findMany({
           where: { ...(role === "teacher" ? { teacherId: userId! } : {}) },
           select: { id: true, name: true },
