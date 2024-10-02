@@ -3,6 +3,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 
 import prisma from "./prisma";
 import {
+  AnnouncementInputs,
   AssignmentInputs,
   ClassInputs,
   EventInputs,
@@ -685,17 +686,109 @@ export const deleteEvent = async (
   // Getting id from the passed props
   const id = data.get("id") as string;
 
-  // Getting the user ID and the role
+  try {
+    // Deleting the data from the database
+    await prisma.event.delete({
+      where: { id: parseInt(id) },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
+/*** ANNOUNCEMENTS ***/
+// Server action for creating a new Announcement
+export const createAnnouncement = async (
+  currentState: CurrentStateType,
+  data: AnnouncementInputs
+) => {
+  // Getting the user ID
   const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
 
   try {
-    // Deleting the data from the database
-    await prisma.event.delete({
-      where: {
-        id: parseInt(id),
-        ...(role === "teacher" ? { class: { supervisorId: userId! } } : {}),
+    if (role === "teacher") {
+      const teacherClass = await prisma.class.findFirst({
+        where: { supervisorId: userId!, id: data.classId },
+      });
+
+      if (!teacherClass) {
+        return { success: false, error: true };
+      }
+    }
+
+    // Adding the new data to the database
+    await prisma.announcement.create({
+      data: {
+        title: data.title,
+        date: adjustToTimezone(data.date),
+        description: data.description,
+        classId: data.classId === 0 ? null : data.classId,
       },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Announcement
+export const updateAnnouncement = async (
+  currentState: CurrentStateType,
+  data: AnnouncementInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherClass = await prisma.class.findFirst({
+        where: { supervisorId: userId!, id: data.classId },
+      });
+
+      if (!teacherClass) {
+        return { success: false, error: true };
+      }
+    }
+    // Adding the new data to the database
+    await prisma.announcement.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        date: adjustToTimezone(data.date),
+        description: data.description,
+        classId: data.classId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Announcement
+export const deleteAnnouncement = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  try {
+    // Deleting the data from the database
+    await prisma.announcement.delete({
+      where: { id: parseInt(id) },
     });
     return { success: true, error: false }; // Return success state
   } catch (e) {
@@ -709,4 +802,3 @@ export const deleteParent = async () => ({ success: true, error: false });
 export const deleteLesson = async () => ({ success: true, error: false });
 export const deleteResult = async () => ({ success: true, error: false });
 export const deleteAttendance = async () => ({ success: true, error: false });
-export const deleteAnnouncement = async () => ({ success: true, error: false });

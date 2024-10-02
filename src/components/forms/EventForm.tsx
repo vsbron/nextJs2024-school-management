@@ -144,6 +144,13 @@ function EventForm({
           />
         )}
       </div>
+
+      {/* Error message */}
+      {state.error && (
+        <span className="text-red-500">Something went wrong</span>
+      )}
+
+      {/* Submit button */}
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>

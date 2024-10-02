@@ -2,9 +2,11 @@ import { z } from "zod";
 
 // Announcements form schema
 export const announcementSchema = z.object({
-  title: z.string().min(1, { message: "Subject is required!" }),
-  class: z.string().min(1, { message: "Class is required!" }),
-  date: z.string().min(1, { message: "Due date is required!" }),
+  id: z.coerce.number().optional(),
+  title: z.string().min(1, { message: "Event name is required!" }),
+  description: z.string().min(1, { message: "Event description is required!" }),
+  date: z.coerce.date({ message: "Date is required" }),
+  classId: z.coerce.number().optional(),
 });
 export type AnnouncementInputs = z.infer<typeof announcementSchema>;
 

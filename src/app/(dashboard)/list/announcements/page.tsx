@@ -3,9 +3,10 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { formatDate } from "@/lib/utils";
 import { Announcement, Class, Prisma } from "@prisma/client";
 
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -26,18 +27,17 @@ async function AnnouncementList({
   // Defining columns for table
   const columns = [
     {
-      header: "Subject",
-      accessor: "subject",
+      header: "Title",
+      accessor: "title",
       className: "px-4",
     },
     {
       header: "Class",
       accessor: "class",
-      className: "hidden md:table-cell",
     },
     {
-      header: "Due date",
-      accessor: "dueDate",
+      header: "Date",
+      accessor: "date",
       className: "hidden md:table-cell",
     },
     ...(role === "admin"
@@ -118,20 +118,17 @@ async function AnnouncementList({
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex items-center gap-4 p-4">
+      <td className="flex flex-col items-start p-4">
         <h3 className="font-semibold">{item.title}</h3>
+        <p className="text-gray-500">{item.description}</p>
       </td>
-      <td className="hidden md:table-cell">{item.class?.name || "None"}</td>
-      <td className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("en-US").format(item.date)}
-      </td>
+      <td>{item.class?.name || "-"}</td>
+      <td className="hidden md:table-cell">{formatDate(item.date)}</td>
       {role === "admin" && (
         <td>
           <div className="flex items-center gap-2">
-            <>
-              <FormModal table="announcement" type="update" data={item} />
-              <FormModal table="announcement" type="delete" id={item.id} />
-            </>
+            <FormContainer table="announcement" type="update" data={item} />
+            <FormContainer table="announcement" type="delete" id={item.id} />
           </div>
         </td>
       )}
@@ -156,7 +153,7 @@ async function AnnouncementList({
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
             {role === "admin" && (
-              <FormModal table="announcement" type="create" />
+              <FormContainer table="announcement" type="create" />
             )}
           </div>
         </div>
