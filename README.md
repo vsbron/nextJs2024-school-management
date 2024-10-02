@@ -45,3 +45,13 @@ A comprehensive School Management App designed to create and manage schedules, a
 - **Forms:** Handled with **React Hook Form**, and validated using **Zod** for reliable form submission.
 - **Database:** Managed with **Prisma**, with data stored in **Docker** containers.
 - **File Storage:** Image uploads and storage are handled through **Cloudinary**.
+
+## Improvements
+
+- Filled all the rest of the forms that were missing;
+- Improved some forms to be more self explanatory and to improve UI;
+- Added number of helper function to fix the date differences between UI and Database due to timezone;
+
+### Live version
+
+- No live version (project requires docker and creating a database from a seed file)

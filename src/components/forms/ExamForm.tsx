@@ -6,11 +6,12 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { formFormatDateTime } from "@/lib/utils";
 import { createExam, updateExam } from "@/lib/actions";
 import { ExamInputs, examSchema } from "@/lib/formSchemas";
+import { Class, Subject } from "@prisma/client";
 
 import InputField from "../InputField";
-import { Class, Subject } from "@prisma/client";
 
 function ExamForm({
   setOpen,
@@ -68,13 +69,6 @@ function ExamForm({
 
   // Submit handler
   const submitHandler = handleSubmit((formData) => {
-    const newStartTime = new Date(
-      formData.startTime.getTime() - new Date().getTimezoneOffset() * 60 * 1000
-    );
-
-    console.log("ORig date: " + formData.startTime);
-    console.log("New data: " + newStartTime);
-
     formAction(formData);
   });
 
@@ -100,10 +94,7 @@ function ExamForm({
           label="Start Time"
           register={register}
           name="startTime"
-          defaultValue={
-            data?.startTime &&
-            new Date(data.startTime).toISOString().slice(0, 16)
-          }
+          defaultValue={data?.startTime && formFormatDateTime(data.startTime)}
           error={errors?.startTime}
           type="datetime-local"
         />
@@ -111,9 +102,7 @@ function ExamForm({
           label="End Time"
           register={register}
           name="endTime"
-          defaultValue={
-            data?.endTime && new Date(data.endTime).toISOString().slice(0, 16)
-          }
+          defaultValue={data?.endTime && formFormatDateTime(data.endTime)}
           error={errors?.endTime}
           type="datetime-local"
         />

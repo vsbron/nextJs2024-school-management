@@ -57,6 +57,13 @@ async function FormContainer<T>({
         });
         relatedData = { lessons: examLessons };
         break;
+      case "assignment":
+        const assignmentLessons = await prisma.lesson.findMany({
+          where: { ...(role === "teacher" ? { teacherId: userId! } : {}) },
+          select: { id: true, name: true, class: true, subject: true },
+        });
+        relatedData = { lessons: assignmentLessons };
+        break;
     }
   }
   // Returned JSX

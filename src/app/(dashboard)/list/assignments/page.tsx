@@ -5,10 +5,11 @@ import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
 
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import { formatDate } from "@/lib/utils";
 
 // Type for the assignment list with data from different tables
 type AssignmentList = Assignment & {
@@ -28,18 +29,23 @@ async function AssignmentList({
   // Defining columns for table
   const columns = [
     {
-      header: "Subject",
-      accessor: "subject",
+      header: "Title",
+      accessor: "title",
       className: "px-4",
     },
     {
-      header: "Class",
-      accessor: "class",
+      header: "Subject",
+      accessor: "subject",
       className: "hidden md:table-cell",
     },
     {
       header: "Teacher",
       accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Start Date",
+      accessor: "startDate",
       className: "hidden md:table-cell",
     },
     {
@@ -154,18 +160,22 @@ async function AssignmentList({
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.lesson.subject.name}</h3>
+        <h3 className="font-semibold">{item.title}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.lesson.class.name}</td>
+
+      <td className="hidden md:table-cell">
+        {item.lesson.subject.name} ({item.lesson.class.name})
+      </td>
       <td className="hidden md:table-cell">
         {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
       </td>
-      <td>{new Intl.DateTimeFormat("en-US").format(item.dueDate)}</td>
+      <td className="hidden md:table-cell">{formatDate(item.startDate)}</td>
+      <td className="hidden md:table-cell">{formatDate(item.dueDate)}</td>
       {(role === "admin" || role === "teacher") && (
         <td>
           <div className="flex items-center gap-2">
-            <FormModal table="assignment" type="update" data={item} />
-            <FormModal table="assignment" type="delete" id={item.id} />
+            <FormContainer table="assignment" type="update" data={item} />
+            <FormContainer table="assignment" type="delete" id={item.id} />
           </div>
         </td>
       )}
@@ -190,7 +200,7 @@ async function AssignmentList({
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
             {(role === "admin" || role === "teacher") && (
-              <FormModal table="assignment" type="create" />
+              <FormContainer table="assignment" type="create" />
             )}
           </div>
         </div>
