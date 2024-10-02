@@ -88,3 +88,27 @@ export function getOrdinalSuffix(num: string) {
   }
   return suffix;
 }
+
+// Helper functions that format date/time ignoring the timezones
+export function formatDate(date: Date) {
+  const stringDate = date.toISOString();
+  const [datePart] = stringDate.split("T");
+  const [year, month, day] = datePart.split("-");
+  return `${month}/${day}/${year}`;
+}
+export function formatDateTime(date: Date) {
+  const stringDate = date.toISOString();
+  const [datePart, timePart] = stringDate.split("T");
+  const [year, month, day] = datePart.split("-");
+  const [hour, minute] = timePart.split(":");
+  return `${month}/${day}/${year} ${hour}:${minute}`;
+}
+export function formFormatDate(date: Date) {
+  return date.toISOString().slice(0, 16);
+}
+export function formFormatDateTime(date: Date) {
+  return date.toISOString().slice(0, 16);
+}
+export function adjustToTimezone(date: Date) {
+  return new Date(date.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
+}

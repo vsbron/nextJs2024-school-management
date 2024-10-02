@@ -9,6 +9,7 @@ import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import { formatDateTime } from "@/lib/utils";
 
 // Type for the exam list with data from different tables
 type ExamList = Exam & {
@@ -28,13 +29,14 @@ async function ExamList({
   // Defining columns for table
   const columns = [
     {
-      header: "Subject",
-      accessor: "subject",
+      header: "Title",
+      accessor: "title",
       className: "px-4",
     },
     {
-      header: "Class",
-      accessor: "class",
+      header: "Subject",
+      accessor: "subject",
+      className: "hidden md:table-cell",
     },
     {
       header: "Teacher",
@@ -153,18 +155,16 @@ async function ExamList({
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.lesson.subject.name}</h3>
+        <h3 className="font-semibold">{item.title}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.lesson.class.name}</td>
+      <td className="hidden md:table-cell">
+        {item.lesson.subject.name} ({item.lesson.class.name})
+      </td>
       <td className="hidden md:table-cell">
         {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
       </td>
-      <td className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("en-US").format(item.startTime)}
-      </td>
-      <td className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("en-US").format(item.endTime)}
-      </td>
+      <td className="hidden md:table-cell">{formatDateTime(item.startTime)}</td>
+      <td className="hidden md:table-cell">{formatDateTime(item.endTime)}</td>
       {(role === "admin" || role === "teacher") && (
         <td>
           <div className="flex items-center gap-2">

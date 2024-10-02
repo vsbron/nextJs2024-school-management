@@ -8,6 +8,7 @@ import {
   TeacherInputs,
 } from "./formSchemas";
 import { auth, clerkClient } from "@clerk/nextjs/server";
+import { adjustToTimezone } from "./utils";
 
 // Type for the current state
 type CurrentStateType = { success: boolean; error: boolean };
@@ -400,12 +401,13 @@ export const createExam = async (
         return { success: false, error: true };
       }
     }
+
     // Adding the new data to the database
     await prisma.exam.create({
       data: {
         title: data.title,
-        startTime: data.startTime,
-        endTime: data.endTime,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
         lessonId: data.lessonId,
       },
     });
@@ -443,8 +445,8 @@ export const updateExam = async (
       where: { id: data.id },
       data: {
         title: data.title,
-        startTime: data.startTime,
-        endTime: data.endTime,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
         lessonId: data.lessonId,
       },
     });

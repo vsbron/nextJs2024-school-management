@@ -10,6 +10,7 @@ import { createExam, updateExam } from "@/lib/actions";
 import { ExamInputs, examSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
+import { Class, Subject } from "@prisma/client";
 
 function ExamForm({
   setOpen,
@@ -67,6 +68,13 @@ function ExamForm({
 
   // Submit handler
   const submitHandler = handleSubmit((formData) => {
+    const newStartTime = new Date(
+      formData.startTime.getTime() - new Date().getTimezoneOffset() * 60 * 1000
+    );
+
+    console.log("ORig date: " + formData.startTime);
+    console.log("New data: " + newStartTime);
+
     formAction(formData);
   });
 
@@ -82,7 +90,7 @@ function ExamForm({
       <span className="text-sm text-gray-400 font-medium">Information</span>
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
-          label="Subject"
+          label="Title"
           register={register}
           name="title"
           defaultValue={data?.title}
@@ -111,17 +119,24 @@ function ExamForm({
         />
         {/* Select field for the Teachers */}
         <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Teachers</label>
+          <label className="text-xs text-gray-500">Lesson</label>
           <select
             {...register("lessonId")}
             className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            defaultValue={data?.teachers}
+            defaultValue={data?.lessonId}
           >
-            {lessons.map((lesson: { id: string; name: string }) => (
-              <option value={lesson.id} key={lesson.id}>
-                {lesson.name}
-              </option>
-            ))}
+            {lessons.map(
+              (lesson: {
+                id: string;
+                name: string;
+                subject: Subject;
+                class: Class;
+              }) => (
+                <option value={lesson.id} key={lesson.id}>
+                  {lesson.subject.name} ({lesson.class.name})
+                </option>
+              )
+            )}
           </select>
           {errors.lessonId?.message && (
             <p className="text-xs text-red-400">
