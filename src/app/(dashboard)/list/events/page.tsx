@@ -5,10 +5,11 @@ import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { Class, Event, Prisma } from "@prisma/client";
 
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import { formatDateTime } from "@/lib/utils";
 
 // Type for the event list with data from different tables
 type EventList = Event & { class: Class | null };
@@ -35,11 +36,6 @@ async function EventList({
       accessor: "class",
     },
     {
-      header: "Date",
-      accessor: "date",
-      className: "hidden md:table-cell",
-    },
-    {
       header: "Start Time",
       accessor: "startTime",
       className: "hidden md:table-cell",
@@ -49,7 +45,7 @@ async function EventList({
       accessor: "endTime",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin" || role === "teacher"
+    ...(role === "admin"
       ? [
           {
             header: "Actions",
@@ -84,42 +80,31 @@ async function EventList({
     }
   }
 
-  // // ROLE CONDITIONS - switch version
-  // switch (role) {
-  //   case "admin":
-  //     break;
-  //   case "teacher":
-  //     query.OR = [
-  //       { classId: null },
-  //       { class: { lessons: { some: { teacherId: currentUserId! } } } },
-  //     ];
-  //     break;
-  //   case "student":
-  //     query.OR = [
-  //       { classId: null },
-  //       { class: { students: { some: { id: currentUserId! } } } },
-  //     ];
-  //     break;
-  //   case "parent":
-  //     query.OR = [
-  //       { classId: null },
-  //       { class: { students: { some: { parentId: currentUserId! } } } },
-  //     ];
-  //     break;
-  //   default:
-  //     break;
-  // }
-
-  // ROLE CONDITIONS - Object keys version
-  const roleConditions = {
-    teacher: { lessons: { some: { teacherId: currentUserId! } } },
-    student: { students: { some: { id: currentUserId! } } },
-    parent: { students: { some: { parentId: currentUserId! } } },
-  };
-  query.OR = [
-    { classId: null },
-    { class: roleConditions[role as keyof typeof roleConditions] || {} },
-  ];
+  // ROLE CONDITIONS - switch version
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.OR = [
+        { classId: null },
+        { class: { lessons: { some: { teacherId: currentUserId! } } } },
+      ];
+      break;
+    case "student":
+      query.OR = [
+        { classId: null },
+        { class: { students: { some: { id: currentUserId! } } } },
+      ];
+      break;
+    case "parent":
+      query.OR = [
+        { classId: null },
+        { class: { students: { some: { parentId: currentUserId! } } } },
+      ];
+      break;
+    default:
+      break;
+  }
 
   // Fetching the data from the database and setting the pagination constants
   const [data, count] = await prisma.$transaction([
@@ -138,37 +123,21 @@ async function EventList({
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex items-center gap-4 p-4">
+      <td className="flex flex-col items-start p-4">
         <h3 className="font-semibold">{item.title}</h3>
+        <p className="text-gray-500">{item.description}</p>
       </td>
       <td>{item.class?.name || "-"}</td>
-      <td className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("en-US").format(item.startTime)}
-      </td>
-      <td className="hidden md:table-cell">
-        {item.startTime.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })}
-      </td>
-      <td className="hidden md:table-cell">
-        {item.endTime.toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        })}
-      </td>
-      <td>
-        <div className="flex items-center gap-2">
-          {role === "admin" && (
-            <>
-              <FormModal table="event" type="update" data={item} />
-              <FormModal table="event" type="delete" id={item.id} />
-            </>
-          )}
-        </div>
-      </td>
+      <td className="hidden md:table-cell">{formatDateTime(item.startTime)}</td>
+      <td className="hidden md:table-cell">{formatDateTime(item.endTime)}</td>
+      {role === "admin" && (
+        <td>
+          <div className="flex items-center gap-2">
+            <FormContainer table="event" type="update" data={item} />
+            <FormContainer table="event" type="delete" id={item.id} />
+          </div>
+        </td>
+      )}
     </tr>
   );
 
@@ -187,7 +156,7 @@ async function EventList({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && <FormModal table="event" type="create" />}
+            {role === "admin" && <FormContainer table="event" type="create" />}
           </div>
         </div>
       </div>

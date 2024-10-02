@@ -163,6 +163,7 @@ async function ExamList({
       <td className="hidden md:table-cell">
         {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
       </td>
+      <td className="hidden md:table-cell">{typeof item.startTime}</td>
       <td className="hidden md:table-cell">{formatDateTime(item.startTime)}</td>
       <td className="hidden md:table-cell">{formatDateTime(item.endTime)}</td>
       {(role === "admin" || role === "teacher") && (

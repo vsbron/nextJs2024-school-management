@@ -1,14 +1,16 @@
 "use server";
+import { auth, clerkClient } from "@clerk/nextjs/server";
+
 import prisma from "./prisma";
 import {
   AssignmentInputs,
   ClassInputs,
+  EventInputs,
   ExamInputs,
   StudentInputs,
   SubjectInputs,
   TeacherInputs,
 } from "./formSchemas";
-import { auth, clerkClient } from "@clerk/nextjs/server";
 import { adjustToTimezone } from "./utils";
 
 // Type for the current state
@@ -594,72 +596,117 @@ export const deleteAssignment = async (
   }
 };
 
+/*** EVENTS ***/
+// Server action for creating a new Event
+export const createEvent = async (
+  currentState: CurrentStateType,
+  data: EventInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherClass = await prisma.class.findFirst({
+        where: { supervisorId: userId!, id: data.classId },
+      });
+
+      if (!teacherClass) {
+        return { success: false, error: true };
+      }
+    }
+
+    // Adding the new data to the database
+    await prisma.event.create({
+      data: {
+        title: data.title,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        description: data.description,
+        classId: data.classId === 0 ? null : data.classId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Event
+export const updateEvent = async (
+  currentState: CurrentStateType,
+  data: EventInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherClass = await prisma.class.findFirst({
+        where: { supervisorId: userId!, id: data.classId },
+      });
+
+      if (!teacherClass) {
+        return { success: false, error: true };
+      }
+    }
+    // Adding the new data to the database
+    await prisma.event.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        description: data.description,
+        classId: data.classId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Event
+export const deleteEvent = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  // Getting the user ID and the role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    // Deleting the data from the database
+    await prisma.event.delete({
+      where: {
+        id: parseInt(id),
+        ...(role === "teacher" ? { class: { supervisorId: userId! } } : {}),
+      },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
 // Delete server actions placeholder for different forms
 export const deleteParent = async () => ({ success: true, error: false });
 export const deleteLesson = async () => ({ success: true, error: false });
 export const deleteResult = async () => ({ success: true, error: false });
 export const deleteAttendance = async () => ({ success: true, error: false });
-export const deleteEvent = async () => ({ success: true, error: false });
 export const deleteAnnouncement = async () => ({ success: true, error: false });
-
-// TEMPLATE
-// // Server action for creating a new Class
-// export const createClass = async (
-//   currentState: CurrentStateType,
-//   data: ClassInputs
-// ) => {
-//   try {
-//     await prisma.class.create({
-//       data: {},
-//     });
-//     // Return success state
-//     return { success: true, error: false };
-//   } catch (e) {
-//     console.error(e);
-
-//     // Return error state
-//     return { success: false, error: true };
-//   }
-// };
-// // Server action for updating existing Class
-// export const updateClass = async (
-//   currentState: CurrentStateType,
-//   data: ClassInputs
-// ) => {
-//   try {
-//     await prisma.class.update({
-//       where: { id: data.id },
-//       data: {},
-//     });
-//     // Return success state
-//     return { success: true, error: false };
-//   } catch (e) {
-//     console.error(e);
-
-//     // Return error state
-//     return { success: false, error: true };
-//   }
-// };
-// // Server action for deleting a Class
-// export const deleteClass = async (
-//   currentState: CurrentStateType,
-//   data: FormData
-// ) => {
-//   const id = data.get("id") as string;
-//   try {
-//     // Deleting the data from the database
-//     await prisma.class.delete({
-//       where: {
-//         id: parseInt(id),
-//       },
-//     });
-
-//     // Return success state
-//     return { success: true, error: false };
-//   } catch (e) {
-//     console.error(e);
-
-//     // Return error state
-//     return { success: false, error: true };
-//   }
-// };

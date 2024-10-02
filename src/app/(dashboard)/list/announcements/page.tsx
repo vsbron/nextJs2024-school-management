@@ -75,42 +75,31 @@ async function AnnouncementList({
     }
   }
 
-  // // ROLE CONDITIONS - switch version
-  // switch (role) {
-  //   case "admin":
-  //     break;
-  //   case "teacher":
-  //     query.OR = [
-  //       { classId: null },
-  //       { class: { lessons: { some: { teacherId: currentUserId! } } } },
-  //     ];
-  //     break;
-  //   case "student":
-  //     query.OR = [
-  //       { classId: null },
-  //       { class: { students: { some: { id: currentUserId! } } } },
-  //     ];
-  //     break;
-  //   case "parent":
-  //     query.OR = [
-  //       { classId: null },
-  //       { class: { students: { some: { parentId: currentUserId! } } } },
-  //     ];
-  //     break;
-  //   default:
-  //     break;
-  // }
-
-  // ROLE CONDITIONS - Object keys version
-  const roleConditions = {
-    teacher: { lessons: { some: { teacherId: currentUserId! } } },
-    student: { students: { some: { id: currentUserId! } } },
-    parent: { students: { some: { parentId: currentUserId! } } },
-  };
-  query.OR = [
-    { classId: null },
-    { class: roleConditions[role as keyof typeof roleConditions] || {} },
-  ];
+  // ROLE CONDITIONS - switch version
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.OR = [
+        { classId: null },
+        { class: { lessons: { some: { teacherId: currentUserId! } } } },
+      ];
+      break;
+    case "student":
+      query.OR = [
+        { classId: null },
+        { class: { students: { some: { id: currentUserId! } } } },
+      ];
+      break;
+    case "parent":
+      query.OR = [
+        { classId: null },
+        { class: { students: { some: { parentId: currentUserId! } } } },
+      ];
+      break;
+    default:
+      break;
+  }
 
   // Fetching the data from the database and setting the pagination constants
   const [data, count] = await prisma.$transaction([

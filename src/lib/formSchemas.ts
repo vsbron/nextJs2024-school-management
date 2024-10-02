@@ -30,11 +30,12 @@ export type ClassInputs = z.infer<typeof classSchema>;
 
 // Events form schema
 export const eventSchema = z.object({
+  id: z.coerce.number().optional(),
   title: z.string().min(1, { message: "Event name is required!" }),
-  class: z.string().min(1, { message: "Class is required!" }),
-  date: z.string().min(1, { message: "Date is required!" }),
-  startTime: z.string().min(1, { message: "Start time is required!" }),
-  endTime: z.string().min(1, { message: "End time is required" }),
+  description: z.string().min(1, { message: "Event description is required!" }),
+  startTime: z.coerce.date({ message: "Start time is required" }),
+  endTime: z.coerce.date({ message: "End time is required" }),
+  classId: z.coerce.number().optional(),
 });
 export type EventInputs = z.infer<typeof eventSchema>;
 

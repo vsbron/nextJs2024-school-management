@@ -106,7 +106,7 @@ function ExamForm({
           error={errors?.endTime}
           type="datetime-local"
         />
-        {/* Select field for the Teachers */}
+        {/* Select field for the Classes */}
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Lesson</label>
           <select
