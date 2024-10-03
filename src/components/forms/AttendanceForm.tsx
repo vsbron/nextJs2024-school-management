@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { createAttendance, updateAttendance } from "@/lib/actions";
 import { AttendanceInputs, attendanceSchema } from "@/lib/formSchemas";
-import { formFormatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 
 import InputField from "../InputField";
 
@@ -16,8 +16,8 @@ function ClassForm({
   setOpen,
   type,
   data,
-}: // relatedData,
-{
+  relatedData,
+}: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
@@ -33,10 +33,7 @@ function ClassForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createAttendance : updateAttendance,
-    {
-      success: false,
-      error: false,
-    }
+    { success: false, error: false }
   );
 
   // Getting the router
@@ -68,11 +65,21 @@ function ClassForm({
 
   // Submit handler
   const submitHandler = handleSubmit((formData) => {
-    formAction(formData);
+    console.log("Here");
+
+    // Find the selected lesson by lessonId
+    const selectedLesson = lessons.find(
+      (lesson: { id: number }) => lesson.id === formData.lessonId
+    );
+    const modifiedFormData = { ...formData, date: selectedLesson.startTime };
+
+    console.log(modifiedFormData.date);
+
+    formAction(modifiedFormData);
   });
 
-  // // Getting the teachers from the related data object
-  // const { teachers, grades } = relatedData;
+  // Getting the students and lessons from the related data object
+  const { students, lessons } = relatedData;
 
   // Returned JSX
   return (
@@ -82,15 +89,6 @@ function ClassForm({
       </h2>
       <span className="text-sm text-gray-400 font-medium">Information</span>
       <div className="flex justify-between flex-wrap gap-4">
-        <InputField
-          label="Date"
-          register={register}
-          name="date"
-          defaultValue={data?.date && formFormatDate(data.date)}
-          error={errors?.date}
-          type="date"
-        />
-
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Present</label>
           <select
@@ -107,20 +105,58 @@ function ClassForm({
             </p>
           )}
         </div>
-        <InputField
-          label="Student"
-          register={register}
-          name="studentId"
-          defaultValue={data?.studentId}
-          error={errors?.studentId}
-        />
-        <InputField
-          label="Lesson"
-          register={register}
-          name="lessonId"
-          defaultValue={data?.lessonId}
-          error={errors?.lessonId}
-        />
+
+        {/* Select field for the Students */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Student</label>
+          <select
+            {...register("studentId")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.studentId}
+          >
+            {students.map(
+              (student: { id: string; name: string; surname: string }) => (
+                <option value={student.id} key={student.id}>
+                  {student.name + " " + student.surname}
+                </option>
+              )
+            )}
+          </select>
+          {errors.studentId?.message && (
+            <p className="text-xs text-red-400">
+              {errors.studentId?.message.toString()}
+            </p>
+          )}
+        </div>
+
+        {/* Select field for the Lessons */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Lesson</label>
+          <select
+            {...register("lessonId")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.lessonId}
+          >
+            {lessons.map(
+              (lesson: {
+                id: string;
+                startTime: Date;
+                subject: { name: string };
+                class: { name: string };
+              }) => (
+                <option value={lesson.id} key={lesson.id}>
+                  {lesson.subject.name} ({lesson.class.name}) -{" "}
+                  {formatDate(lesson.startTime)}
+                </option>
+              )
+            )}
+          </select>
+          {errors.studentId?.message && (
+            <p className="text-xs text-red-400">
+              {errors.studentId?.message.toString()}
+            </p>
+          )}
+        </div>
         {data && (
           <InputField
             label="ID"

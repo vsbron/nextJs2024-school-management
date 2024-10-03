@@ -25,7 +25,6 @@ export const attendanceSchema = z.object({
   id: z.coerce.number().optional(),
   studentId: z.string({ message: "Student name is required" }),
   lessonId: z.coerce.number({ message: "Lesson is required!" }),
-  date: z.coerce.date({ message: "Date is required" }),
   present: z.enum(["YES", "NO"], { message: "This field is required" }),
 });
 export type AttendanceInputs = z.infer<typeof attendanceSchema>;

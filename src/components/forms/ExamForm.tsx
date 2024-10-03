@@ -34,10 +34,7 @@ function ExamForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createExam : updateExam,
-    {
-      success: false,
-      error: false,
-    }
+    { success: false, error: false }
   );
 
   // Getting the router

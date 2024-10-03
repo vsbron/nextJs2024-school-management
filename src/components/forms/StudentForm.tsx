@@ -37,10 +37,7 @@ function StudentForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createStudent : updateStudent,
-    {
-      success: false,
-      error: false,
-    }
+    { success: false, error: false }
   );
 
   // Getting the router

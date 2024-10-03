@@ -32,10 +32,7 @@ function SubjectForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createSubject : updateSubject,
-    {
-      success: false,
-      error: false,
-    }
+    { success: false, error: false }
   );
 
   // Getting the router
@@ -114,7 +111,7 @@ function SubjectForm({
             {teachers.map(
               (teacher: { id: string; name: string; surname: string }) => (
                 <option value={teacher.id} key={teacher.id}>
-                  {teacher.name + " " + teacher.name}
+                  {teacher.name + " " + teacher.surname}
                 </option>
               )
             )}

@@ -87,7 +87,9 @@ async function SubjectList({
         <h3 className="font-semibold">{item.name}</h3>
       </td>
       <td className="hidden md:table-cell">
-        {item.teachers.map((teacherItem) => teacherItem.name).join(", ")}
+        {item.teachers
+          .map((teacherItem) => teacherItem.name + " " + teacherItem.surname)
+          .join(", ")}
       </td>
       <td>
         <div className="flex items-center gap-2">

@@ -31,18 +31,13 @@ async function Navbar() {
           </div>
         </div>
         <div className="flex flex-col text-right">
-          <span className="text-sm leading-3 font-medium">John Doe</span>
+          <span className="text-sm leading-3 font-medium">
+            {user?.fullName}
+          </span>
           <span className="text-[10px] text-gray-500">
             {user?.publicMetadata.role as string}
           </span>
         </div>
-        {/* <Image
-          src="/avatar.png"
-          className="rounded-full"
-          alt="Message"
-          width={36}
-          height={36}
-        /> */}
         <UserButton />
       </div>
     </div>

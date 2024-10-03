@@ -35,10 +35,7 @@ function AnnouncementForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createAnnouncement : updateAnnouncement,
-    {
-      success: false,
-      error: false,
-    }
+    { success: false, error: false }
   );
 
   // Getting the router

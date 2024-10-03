@@ -108,9 +108,7 @@ export const deleteAnnouncement = async (
 
   try {
     // Deleting the data from the database
-    await prisma.announcement.delete({
-      where: { id: parseInt(id) },
-    });
+    await prisma.announcement.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
@@ -286,9 +284,7 @@ export const deleteAttendance = async (
 
   try {
     // Deleting the data from the database
-    await prisma.attendance.delete({
-      where: { id: parseInt(id) },
-    });
+    await prisma.attendance.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
@@ -303,9 +299,7 @@ export const createClass = async (
   data: ClassInputs
 ) => {
   try {
-    await prisma.class.create({
-      data,
-    });
+    await prisma.class.create({ data });
     // Return success state
     return { success: true, error: false };
   } catch (e) {
@@ -321,10 +315,7 @@ export const updateClass = async (
   data: ClassInputs
 ) => {
   try {
-    await prisma.class.update({
-      where: { id: data.id },
-      data,
-    });
+    await prisma.class.update({ where: { id: data.id }, data });
     // Return success state
     return { success: true, error: false };
   } catch (e) {
@@ -343,9 +334,7 @@ export const deleteClass = async (
   const id = data.get("id") as string;
   try {
     // Deleting the data from the database
-    await prisma.class.delete({
-      where: { id: parseInt(id) },
-    });
+    await prisma.class.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
@@ -444,9 +433,7 @@ export const deleteEvent = async (
 
   try {
     // Deleting the data from the database
-    await prisma.event.delete({
-      where: { id: parseInt(id) },
-    });
+    await prisma.event.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
@@ -624,9 +611,7 @@ export const deleteLesson = async (
 
   try {
     // Deleting the data from the database
-    await prisma.lesson.delete({
-      where: { id: parseInt(id) },
-    });
+    await prisma.lesson.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
@@ -745,9 +730,7 @@ export const deleteStudent = async (
     await clerkClient.users.deleteUser(id);
 
     // Deleting the data from the database
-    await prisma.student.delete({
-      where: { id: id },
-    });
+    await prisma.student.delete({ where: { id: id } });
     return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
@@ -789,9 +772,7 @@ export const updateSubject = async (
   try {
     // Updating the data in the database
     await prisma.subject.update({
-      where: {
-        id: data.id,
-      },
+      where: { id: data.id },
       data: {
         name: data.name,
         teachers: {
@@ -818,9 +799,7 @@ export const deleteSubject = async (
   const id = data.get("id") as string;
   try {
     // Deleting the data from the database
-    await prisma.subject.delete({
-      where: { id: parseInt(id) },
-    });
+    await prisma.subject.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
@@ -935,9 +914,7 @@ export const deleteTeacher = async (
     await clerkClient.users.deleteUser(id);
 
     // Deleting the data from the database
-    await prisma.teacher.delete({
-      where: { id: id },
-    });
+    await prisma.teacher.delete({ where: { id: id } });
     return { success: true, error: false }; // Return success state
   } catch (e) {
     console.error(e);
