@@ -55,18 +55,11 @@ async function SubjectList({
       switch (key) {
         // Filtering by teacher id
         case "teacherId":
-          query.teachers = {
-            some: {
-              id: value,
-            },
-          };
+          query.teachers = { some: { id: value } };
           break;
         // Filtering by search input
         case "search":
-          query.name = {
-            contains: value,
-            mode: "insensitive",
-          };
+          query.name = { contains: value, mode: "insensitive" };
         default:
           break;
       }

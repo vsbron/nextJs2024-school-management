@@ -94,11 +94,23 @@ async function ResultsList({
           break;
         // Filtering by search input
         case "search":
+          // prettier-ignore
           query.OR = [
             { exam: { title: { contains: value, mode: "insensitive" } } },
             { assignment: { title: { contains: value, mode: "insensitive" } } },
             { student: { name: { contains: value, mode: "insensitive" } } },
+            { OR: [
+              { exam: { lesson: { teacher: { OR: [
+                { name: { contains: value, mode: "insensitive" } },
+                { surname: { contains: value, mode: "insensitive" } },
+              ] } } } },
+              { assignment: { lesson: { teacher: { OR: [
+                { name: { contains: value, mode: "insensitive" } },
+                { surname: { contains: value, mode: "insensitive" } },
+              ] } } } },
+            ] },
           ];
+          break;
         default:
           break;
       }

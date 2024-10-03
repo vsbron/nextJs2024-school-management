@@ -86,10 +86,10 @@ async function ClassList({
           break;
         // Filtering by search input
         case "search":
-          query.name = {
-            contains: value,
-            mode: "insensitive",
-          };
+          query.OR = [
+            { name: { contains: value, mode: "insensitive" } },
+            { supervisor: { name: { contains: value, mode: "insensitive" } } },
+          ];
         default:
           break;
       }

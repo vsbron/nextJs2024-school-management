@@ -183,40 +183,52 @@ async function SingleStudentPage({
           <h2 className="text-xl font-semibold mb-4">Shortcuts</h2>
           <div className="flex gap-2 flex-wrap text-xs text-gray-500">
             <Link
-              href={`/list/lessons?classId=${"2"}`}
+              href={`/list/lessons?classId=${student.classId}`}
               className="p-2 rounded-md bg-schoolYellowLight"
             >
               Student&apos;s lessons
             </Link>
             <Link
-              href={`/list/teachers?classId=${"2"}`}
+              href={`/list/teachers?classId=${student.classId}`}
               className="p-2 rounded-md bg-schoolPurpleLight"
             >
               Student&apos;s teachers
             </Link>
             <Link
-              href={`/list/parents?parentId=${"parentId1"}`}
-              className="p-2 rounded-md bg-pink-50"
+              href={`/list/parents?parentId=${student.parentId}`}
+              className="p-2 rounded-md bg-schoolSkyLight"
             >
               Student&apos;s parents
             </Link>
             <Link
-              href={`/list/lessons?classId=${"2"}`}
-              className="p-2 rounded-md bg-pink-50"
+              href={`/list/lessons?classId=${student.classId}`}
+              className="p-2 rounded-md bg-schoolYellowLight"
             >
               Student&apos;s exams
             </Link>
             <Link
-              href={`/list/lessons?classId=${"2"}`}
-              className="p-2 rounded-md bg-schoolSkyLight"
+              href={`/list/lessons?classId=${student.classId}`}
+              className="p-2 rounded-md bg-schoolPurpleLight"
             >
               Student&apos;s assignments
             </Link>
             <Link
-              href={`/list/results?studentId=${"student2"}`}
-              className="p-2 rounded-md bg-schoolYellowLight"
+              href={`/list/results?studentId=${student.id}`}
+              className="p-2 rounded-md bg-schoolSkyLight"
             >
               Student&apos;s results
+            </Link>
+            <Link
+              href={`/list/events?classId=${student.classId}`}
+              className="p-2 rounded-md bg-schoolYellowLight"
+            >
+              Student&apos;s events
+            </Link>
+            <Link
+              href={`/list/announcements?classId=${student.classId}`}
+              className="p-2 rounded-md bg-schoolPurpleLight"
+            >
+              Student&apos;s announcements
             </Link>
           </div>
         </div>

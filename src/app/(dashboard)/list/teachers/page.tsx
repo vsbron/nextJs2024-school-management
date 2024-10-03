@@ -80,18 +80,11 @@ async function TeacherList({
       switch (key) {
         // Filtering by class id
         case "classId":
-          query.lessons = {
-            some: {
-              classId: parseInt(value),
-            },
-          };
+          query.lessons = { some: { classId: parseInt(value) } };
           break;
         // Filtering by search input
         case "search":
-          query.name = {
-            contains: value,
-            mode: "insensitive",
-          };
+          query.name = { contains: value, mode: "insensitive" };
         default:
           break;
       }

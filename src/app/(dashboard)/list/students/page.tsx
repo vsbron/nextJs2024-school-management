@@ -75,20 +75,11 @@ async function StudentList({
       switch (key) {
         // Filtering by teacher id
         case "teacherId":
-          query.class = {
-            lessons: {
-              some: {
-                teacherId: value,
-              },
-            },
-          };
+          query.class = { lessons: { some: { teacherId: value } } };
           break;
         // Filtering by search input
         case "search":
-          query.name = {
-            contains: value,
-            mode: "insensitive",
-          };
+          query.name = { contains: value, mode: "insensitive" };
         default:
           break;
       }

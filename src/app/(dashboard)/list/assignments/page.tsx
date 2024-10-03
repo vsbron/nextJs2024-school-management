@@ -88,6 +88,7 @@ async function AssignmentList({
         // Filtering by search input
         case "search":
           query.OR = [
+            { title: { contains: value, mode: "insensitive" } },
             {
               lesson: {
                 subject: { name: { contains: value, mode: "insensitive" } },

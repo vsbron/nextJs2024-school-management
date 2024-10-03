@@ -73,18 +73,11 @@ async function ParentList({
       switch (key) {
         // Filtering by parent id
         case "parentId":
-          query.students = {
-            some: {
-              parentId: value,
-            },
-          };
+          query.students = { some: { parentId: value } };
           break;
         // Filtering by search input
         case "search":
-          query.name = {
-            contains: value,
-            mode: "insensitive",
-          };
+          query.name = { contains: value, mode: "insensitive" };
         default:
           break;
       }

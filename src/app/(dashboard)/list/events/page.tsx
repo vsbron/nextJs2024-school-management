@@ -68,6 +68,10 @@ async function EventList({
 
       // Switch statement to cover all available search params
       switch (key) {
+        // Filtering by class id
+        case "classId":
+          query.OR = [{ class: { id: parseInt(value) } }, { class: null }];
+          break;
         // Filtering by search input
         case "search":
           query.title = {

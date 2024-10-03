@@ -88,12 +88,14 @@ async function ExamList({
           break;
         // Filtering by search input
         case "search":
-          query.lesson.subject = {
-            name: {
-              contains: value,
-              mode: "insensitive",
+          query.OR = [
+            { title: { contains: value, mode: "insensitive" } },
+            {
+              lesson: {
+                teacher: { name: { contains: value, mode: "insensitive" } },
+              },
             },
-          };
+          ];
         default:
           break;
       }
@@ -163,7 +165,6 @@ async function ExamList({
       <td className="hidden md:table-cell">
         {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
       </td>
-      <td className="hidden md:table-cell">{typeof item.startTime}</td>
       <td className="hidden md:table-cell">{formatDateTime(item.startTime)}</td>
       <td className="hidden md:table-cell">{formatDateTime(item.endTime)}</td>
       {(role === "admin" || role === "teacher") && (

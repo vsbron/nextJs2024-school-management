@@ -191,38 +191,38 @@ async function SingleTeacherPage({
           <h2 className="text-xl font-semibold mb-4">Shortcuts</h2>
           <div className="flex gap-2 flex-wrap text-xs text-gray-500">
             <Link
-              href={`/list/classes?teacherId=${"teacher12"}`}
+              href={`/list/classes?teacherId=${teacher.id}`}
               className="p-2 rounded-md bg-schoolSkyLight"
             >
               Teacher&apos;s classes
             </Link>
             <Link
-              href={`/list/students?teacherId=${"teacher2"}`}
+              href={`/list/students?teacherId=${teacher.id}`}
               className="p-2 rounded-md bg-schoolPurpleLight"
             >
               Teacher&apos;s students
             </Link>
             <Link
-              href={`/list/lessons?teacherId=${"teacher2"}`}
+              href={`/list/lessons?teacherId=${teacher.id}`}
               className="p-2 rounded-md bg-schoolYellowLight"
             >
               Teacher&apos;s lessons
             </Link>
             <Link
-              href={`/list/lessons?teacherId=${"teacher2"}`}
-              className="p-2 rounded-md bg-pink-50"
+              href={`/list/lessons?teacherId=${teacher.id}`}
+              className="p-2 rounded-md bg-schoolSkyLight"
             >
               Teacher&apos;s exams
             </Link>
             <Link
-              href={`/list/assignments?teacherId=${"teacher2"}`}
-              className="p-2 rounded-md bg-schoolSkyLight"
+              href={`/list/assignments?teacherId=${teacher.id}`}
+              className="p-2 rounded-md bg-schoolPurpleLight"
             >
               Teacher&apos;s assignments
             </Link>
             <Link
-              href={`/list/subjects?teacherId=${"teacher2"}`}
-              className="p-2 rounded-md bg-schoolPurpleLight"
+              href={`/list/subjects?teacherId=${teacher.id}`}
+              className="p-2 rounded-md bg-schoolYellowLight"
             >
               Teacher&apos;s subjects
             </Link>
