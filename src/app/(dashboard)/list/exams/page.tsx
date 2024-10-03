@@ -144,6 +144,7 @@ async function ExamList({
           },
         },
       },
+      orderBy: { startTime: "desc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

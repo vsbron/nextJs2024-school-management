@@ -86,6 +86,7 @@ async function StudentList({
     prisma.student.findMany({
       where: query,
       include: { class: true },
+      orderBy: { name: "asc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

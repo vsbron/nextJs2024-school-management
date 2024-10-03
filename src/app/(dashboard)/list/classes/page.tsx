@@ -107,6 +107,7 @@ async function ClassList({
         announcements: true,
         supervisor: true,
       },
+      orderBy: { name: "asc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

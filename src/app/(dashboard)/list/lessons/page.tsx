@@ -113,6 +113,7 @@ async function LessonList({
         class: true,
         teacher: true,
       },
+      orderBy: { startTime: "desc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

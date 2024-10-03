@@ -87,7 +87,6 @@ async function AttendanceList({
               },
             },
           ];
-
         default:
           break;
       }
@@ -110,6 +109,7 @@ async function AttendanceList({
         student: true,
         lesson: { select: { subject: true, class: true } },
       },
+      orderBy: { date: "desc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

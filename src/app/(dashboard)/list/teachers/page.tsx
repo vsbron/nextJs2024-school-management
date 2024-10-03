@@ -96,6 +96,7 @@ async function TeacherList({
     prisma.teacher.findMany({
       where: query,
       include: { subjects: true, classes: true },
+      orderBy: { name: "asc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

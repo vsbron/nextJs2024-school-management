@@ -107,6 +107,7 @@ async function AnnouncementList({
     prisma.announcement.findMany({
       where: query,
       include: { class: true },
+      orderBy: { date: "desc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

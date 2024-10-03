@@ -114,22 +114,10 @@ async function AssignmentList({
       query.lesson.teacherId = currentUserId!;
       break;
     case "student":
-      query.lesson.class = {
-        students: {
-          some: {
-            id: currentUserId!,
-          },
-        },
-      };
+      query.lesson.class = { students: { some: { id: currentUserId! } } };
       break;
     case "parent":
-      query.lesson.class = {
-        students: {
-          some: {
-            parentId: currentUserId!,
-          },
-        },
-      };
+      query.lesson.class = { students: { some: { parentId: currentUserId! } } };
       break;
     default:
       break;
@@ -142,6 +130,7 @@ async function AssignmentList({
       include: {
         lesson: { select: { subject: true, teacher: true, class: true } },
       },
+      orderBy: { dueDate: "asc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

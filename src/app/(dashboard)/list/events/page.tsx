@@ -115,6 +115,7 @@ async function EventList({
     prisma.event.findMany({
       where: query,
       include: { class: true },
+      orderBy: { startTime: "desc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

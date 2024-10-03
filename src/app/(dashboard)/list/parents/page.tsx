@@ -89,6 +89,7 @@ async function ParentList({
     prisma.parent.findMany({
       where: query,
       include: { students: true },
+      orderBy: { name: "asc" },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),
