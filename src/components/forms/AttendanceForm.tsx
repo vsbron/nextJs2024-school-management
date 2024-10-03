@@ -65,16 +65,14 @@ function ClassForm({
 
   // Submit handler
   const submitHandler = handleSubmit((formData) => {
-    console.log("Here");
-
     // Find the selected lesson by lessonId
     const selectedLesson = lessons.find(
       (lesson: { id: number }) => lesson.id === formData.lessonId
     );
+    // Overwrite the data from the lesson data
     const modifiedFormData = { ...formData, date: selectedLesson.startTime };
 
-    console.log(modifiedFormData.date);
-
+    // Call the form action with modified formData
     formAction(modifiedFormData);
   });
 
@@ -167,6 +165,14 @@ function ClassForm({
             hidden
           />
         )}
+        <InputField
+          label="Date"
+          name="date"
+          register={register}
+          defaultValue={new Date().toISOString().split("T")[0]}
+          error={errors?.date}
+          hidden
+        />
       </div>
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}

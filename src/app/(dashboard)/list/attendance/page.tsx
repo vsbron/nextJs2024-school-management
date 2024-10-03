@@ -73,13 +73,21 @@ async function AttendanceList({
 
       // Switch statement to cover all available search params
       switch (key) {
-        // // Filtering by student id
-        // case "studentId":
-        //   query.studentId = value;
-        //   break;
-        // // Filtering by search input
-        // case "search":
-        //   query.student = { contains: value, mode: "insensitive" };
+        // Filtering by student id
+        case "studentId":
+          query.studentId = value;
+          break;
+        // Filtering by search input
+        case "search":
+          query.OR = [
+            { student: { name: { contains: value, mode: "insensitive" } } },
+            {
+              lesson: {
+                subject: { name: { contains: value, mode: "insensitive" } },
+              },
+            },
+          ];
+
         default:
           break;
       }

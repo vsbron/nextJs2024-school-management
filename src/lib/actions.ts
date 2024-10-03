@@ -222,22 +222,22 @@ export const deleteAssignment = async (
   }
 };
 
-/*** ASSIGNMENTS ***/
+/*** ATTENDANCES ***/
 // Server action for creating a new Attendance
 export const createAttendance = async (
   currentState: CurrentStateType,
   data: AttendanceInputs
 ) => {
   try {
-    // // Adding the new data to the database
-    // await prisma.attendance.create({
-    //   data: {
-    //     title: data.title,
-    //     startDate: adjustToTimezone(data.startDate),
-    //     dueDate: adjustToTimezone(data.dueDate),
-    //     lessonId: data.lessonId,
-    //   },
-    // });
+    // Adding the new data to the database
+    await prisma.attendance.create({
+      data: {
+        studentId: data.studentId,
+        lessonId: data.lessonId,
+        date: adjustToTimezone(data.date),
+        present: data.present === "YES",
+      },
+    });
 
     // Return success state
     return { success: true, error: false };
@@ -254,16 +254,16 @@ export const updateAttendance = async (
   data: AttendanceInputs
 ) => {
   try {
-    // // Adding the new data to the database
-    // await prisma.attendance.update({
-    //   where: { id: data.id },
-    //   data: {
-    //     title: data.title,
-    //     startDate: adjustToTimezone(data.startDate),
-    //     dueDate: adjustToTimezone(data.dueDate),
-    //     lessonId: data.lessonId,
-    //   },
-    // });
+    // Adding the new data to the database
+    await prisma.attendance.update({
+      where: { id: data.id },
+      data: {
+        studentId: data.studentId,
+        lessonId: data.lessonId,
+        date: adjustToTimezone(data.date),
+        present: data.present === "YES",
+      },
+    });
 
     // Return success state
     return { success: true, error: false };
