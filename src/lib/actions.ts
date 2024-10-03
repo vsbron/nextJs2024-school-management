@@ -5,6 +5,7 @@ import prisma from "./prisma";
 import {
   AnnouncementInputs,
   AssignmentInputs,
+  AttendanceInputs,
   ClassInputs,
   EventInputs,
   ExamInputs,
@@ -17,6 +18,283 @@ import { adjustToTimezone } from "./utils";
 
 // Type for the current state
 type CurrentStateType = { success: boolean; error: boolean };
+
+/*** ANNOUNCEMENTS ***/
+// Server action for creating a new Announcement
+export const createAnnouncement = async (
+  currentState: CurrentStateType,
+  data: AnnouncementInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherClass = await prisma.class.findFirst({
+        where: { supervisorId: userId!, id: data.classId },
+      });
+
+      if (!teacherClass) {
+        return { success: false, error: true };
+      }
+    }
+
+    // Adding the new data to the database
+    await prisma.announcement.create({
+      data: {
+        title: data.title,
+        date: adjustToTimezone(data.date),
+        description: data.description,
+        classId: data.classId === 0 ? null : data.classId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Announcement
+export const updateAnnouncement = async (
+  currentState: CurrentStateType,
+  data: AnnouncementInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherClass = await prisma.class.findFirst({
+        where: { supervisorId: userId!, id: data.classId },
+      });
+
+      if (!teacherClass) {
+        return { success: false, error: true };
+      }
+    }
+    // Adding the new data to the database
+    await prisma.announcement.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        date: adjustToTimezone(data.date),
+        description: data.description,
+        classId: data.classId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Announcement
+export const deleteAnnouncement = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  try {
+    // Deleting the data from the database
+    await prisma.announcement.delete({
+      where: { id: parseInt(id) },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
+/*** ASSIGNMENTS ***/
+// Server action for creating a new Assignment
+export const createAssignment = async (
+  currentState: CurrentStateType,
+  data: AssignmentInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherLesson = await prisma.lesson.findFirst({
+        where: { teacherId: userId!, id: data.lessonId },
+      });
+
+      if (!teacherLesson) {
+        return { success: false, error: true };
+      }
+    }
+
+    // Adding the new data to the database
+    await prisma.assignment.create({
+      data: {
+        title: data.title,
+        startDate: adjustToTimezone(data.startDate),
+        dueDate: adjustToTimezone(data.dueDate),
+        lessonId: data.lessonId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Assignment
+export const updateAssignment = async (
+  currentState: CurrentStateType,
+  data: AssignmentInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherLesson = await prisma.lesson.findFirst({
+        where: { teacherId: userId!, id: data.lessonId },
+      });
+
+      if (!teacherLesson) {
+        return { success: false, error: true };
+      }
+    }
+    // Adding the new data to the database
+    await prisma.assignment.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        startDate: adjustToTimezone(data.startDate),
+        dueDate: adjustToTimezone(data.dueDate),
+        lessonId: data.lessonId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Assignment
+export const deleteAssignment = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  // Getting the user ID and the role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    // Deleting the data from the database
+    await prisma.assignment.delete({
+      where: {
+        id: parseInt(id),
+        ...(role === "teacher" ? { lesson: { teacherId: userId! } } : {}),
+      },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
+/*** ASSIGNMENTS ***/
+// Server action for creating a new Attendance
+export const createAttendance = async (
+  currentState: CurrentStateType,
+  data: AttendanceInputs
+) => {
+  try {
+    // // Adding the new data to the database
+    // await prisma.attendance.create({
+    //   data: {
+    //     title: data.title,
+    //     startDate: adjustToTimezone(data.startDate),
+    //     dueDate: adjustToTimezone(data.dueDate),
+    //     lessonId: data.lessonId,
+    //   },
+    // });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Attendance
+export const updateAttendance = async (
+  currentState: CurrentStateType,
+  data: AttendanceInputs
+) => {
+  try {
+    // // Adding the new data to the database
+    // await prisma.attendance.update({
+    //   where: { id: data.id },
+    //   data: {
+    //     title: data.title,
+    //     startDate: adjustToTimezone(data.startDate),
+    //     dueDate: adjustToTimezone(data.dueDate),
+    //     lessonId: data.lessonId,
+    //   },
+    // });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Attendance
+export const deleteAttendance = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  try {
+    // Deleting the data from the database
+    await prisma.attendance.delete({
+      where: { id: parseInt(id) },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
 
 /*** CLASSES ***/
 // Server action for creating a new Class
@@ -75,89 +353,75 @@ export const deleteClass = async (
   }
 };
 
-/*** TEACHERS ***/
-// Server action for creating a new Teacher
-export const createTeacher = async (
+/*** EVENTS ***/
+// Server action for creating a new Event
+export const createEvent = async (
   currentState: CurrentStateType,
-  data: TeacherInputs
+  data: EventInputs
 ) => {
-  try {
-    // Creating user at Clerk service
-    const user = await clerkClient.users.createUser({
-      username: data.username,
-      password: data.password,
-      firstName: data.name,
-      lastName: data.surname,
-      publicMetadata: { role: "teacher" },
-    });
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
 
-    await prisma.teacher.create({
+  try {
+    if (role === "teacher") {
+      const teacherClass = await prisma.class.findFirst({
+        where: { supervisorId: userId!, id: data.classId },
+      });
+
+      if (!teacherClass) {
+        return { success: false, error: true };
+      }
+    }
+
+    // Adding the new data to the database
+    await prisma.event.create({
       data: {
-        id: user.id,
-        username: data.username,
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        phone: data.phone,
-        address: data.address,
-        img: data.img || null,
-        bloodType: data.bloodType,
-        sex: data.sex,
-        birthday: data.birthday,
-        subjects: {
-          connect: data.subjects?.map((subjectId: string) => ({
-            id: parseInt(subjectId),
-          })),
-        },
+        title: data.title,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        description: data.description,
+        classId: data.classId === 0 ? null : data.classId,
       },
     });
+
     // Return success state
     return { success: true, error: false };
   } catch (e) {
     console.error(e);
 
     // Return error state
-    return { success: false, error: true, message: e };
-  }
-};
-// Server action for updating existing Teacher
-export const updateTeacher = async (
-  currentState: CurrentStateType,
-  data: TeacherInputs
-) => {
-  // Guard clause
-  if (!data.id) {
     return { success: false, error: true };
   }
+};
+// Server action for updating existing Event
+export const updateEvent = async (
+  currentState: CurrentStateType,
+  data: EventInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
 
   try {
-    await clerkClient.users.updateUser(data.id, {
-      username: data.username,
-      ...(data.password !== "" && { password: data.password }),
-      firstName: data.name,
-      lastName: data.surname,
-      publicMetadata: { role: "teacher" },
-    });
+    if (role === "teacher") {
+      const teacherClass = await prisma.class.findFirst({
+        where: { supervisorId: userId!, id: data.classId },
+      });
 
-    await prisma.teacher.update({
+      if (!teacherClass) {
+        return { success: false, error: true };
+      }
+    }
+    // Adding the new data to the database
+    await prisma.event.update({
       where: { id: data.id },
       data: {
-        ...(data.password !== "" && { password: data.password }),
-        username: data.username,
-        name: data.name,
-        surname: data.surname,
-        email: data.email,
-        phone: data.phone,
-        address: data.address,
-        img: data.img || null,
-        bloodType: data.bloodType,
-        sex: data.sex,
-        birthday: data.birthday,
-        subjects: {
-          set: data.subjects?.map((subjectId: string) => ({
-            id: parseInt(subjectId),
-          })),
-        },
+        title: data.title,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        description: data.description,
+        classId: data.classId,
       },
     });
 
@@ -170,20 +434,198 @@ export const updateTeacher = async (
     return { success: false, error: true };
   }
 };
-// Server action for deleting a Teacher
-export const deleteTeacher = async (
+// Server action for deleting an Event
+export const deleteEvent = async (
   currentState: CurrentStateType,
   data: FormData
 ) => {
   // Getting id from the passed props
   const id = data.get("id") as string;
-  try {
-    // Deleting user from clerk
-    await clerkClient.users.deleteUser(id);
 
+  try {
     // Deleting the data from the database
-    await prisma.teacher.delete({
-      where: { id: id },
+    await prisma.event.delete({
+      where: { id: parseInt(id) },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
+/*** EXAMS ***/
+// Server action for creating a new Exam
+export const createExam = async (
+  currentState: CurrentStateType,
+  data: ExamInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherLesson = await prisma.lesson.findFirst({
+        where: { teacherId: userId!, id: data.lessonId },
+      });
+
+      if (!teacherLesson) {
+        return { success: false, error: true };
+      }
+    }
+
+    // Adding the new data to the database
+    await prisma.exam.create({
+      data: {
+        title: data.title,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        lessonId: data.lessonId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Exam
+export const updateExam = async (
+  currentState: CurrentStateType,
+  data: ExamInputs
+) => {
+  // Getting the user ID
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    if (role === "teacher") {
+      const teacherLesson = await prisma.lesson.findFirst({
+        where: { teacherId: userId!, id: data.lessonId },
+      });
+
+      if (!teacherLesson) {
+        return { success: false, error: true };
+      }
+    }
+    // Adding the new data to the database
+    await prisma.exam.update({
+      where: { id: data.id },
+      data: {
+        title: data.title,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        lessonId: data.lessonId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Exam
+export const deleteExam = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  // Getting the user ID and the role
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
+  try {
+    // Deleting the data from the database
+    await prisma.exam.delete({
+      where: {
+        id: parseInt(id),
+        ...(role === "teacher" ? { lesson: { teacherId: userId! } } : {}),
+      },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
+/*** LESSONS ***/
+// Server action for creating a new Lesson
+export const createLesson = async (
+  currentState: CurrentStateType,
+  data: LessonInputs
+) => {
+  try {
+    // Adding the new data to the database
+    await prisma.lesson.create({
+      data: {
+        name: data.name,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        subjectId: data.subjectId,
+        classId: data.classId,
+        teacherId: data.teacherId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Lesson
+export const updateLesson = async (
+  currentState: CurrentStateType,
+  data: LessonInputs
+) => {
+  try {
+    // Adding the new data to the database
+    await prisma.lesson.update({
+      where: { id: data.id },
+      data: {
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        subjectId: data.subjectId,
+        classId: data.classId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Lesson
+export const deleteLesson = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  try {
+    // Deleting the data from the database
+    await prisma.lesson.delete({
+      where: { id: parseInt(id) },
     });
     return { success: true, error: false }; // Return success state
   } catch (e) {
@@ -386,460 +828,89 @@ export const deleteSubject = async (
   }
 };
 
-/*** EXAMS ***/
-// Server action for creating a new Exam
-export const createExam = async (
+/*** TEACHERS ***/
+// Server action for creating a new Teacher
+export const createTeacher = async (
   currentState: CurrentStateType,
-  data: ExamInputs
+  data: TeacherInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
   try {
-    if (role === "teacher") {
-      const teacherLesson = await prisma.lesson.findFirst({
-        where: { teacherId: userId!, id: data.lessonId },
-      });
+    // Creating user at Clerk service
+    const user = await clerkClient.users.createUser({
+      username: data.username,
+      password: data.password,
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: "teacher" },
+    });
 
-      if (!teacherLesson) {
-        return { success: false, error: true };
-      }
-    }
-
-    // Adding the new data to the database
-    await prisma.exam.create({
+    await prisma.teacher.create({
       data: {
-        title: data.title,
-        startTime: adjustToTimezone(data.startTime),
-        endTime: adjustToTimezone(data.endTime),
-        lessonId: data.lessonId,
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for updating existing Exam
-export const updateExam = async (
-  currentState: CurrentStateType,
-  data: ExamInputs
-) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    if (role === "teacher") {
-      const teacherLesson = await prisma.lesson.findFirst({
-        where: { teacherId: userId!, id: data.lessonId },
-      });
-
-      if (!teacherLesson) {
-        return { success: false, error: true };
-      }
-    }
-    // Adding the new data to the database
-    await prisma.exam.update({
-      where: { id: data.id },
-      data: {
-        title: data.title,
-        startTime: adjustToTimezone(data.startTime),
-        endTime: adjustToTimezone(data.endTime),
-        lessonId: data.lessonId,
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for deleting an Exam
-export const deleteExam = async (
-  currentState: CurrentStateType,
-  data: FormData
-) => {
-  // Getting id from the passed props
-  const id = data.get("id") as string;
-
-  // Getting the user ID and the role
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    // Deleting the data from the database
-    await prisma.exam.delete({
-      where: {
-        id: parseInt(id),
-        ...(role === "teacher" ? { lesson: { teacherId: userId! } } : {}),
-      },
-    });
-    return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
-  }
-};
-
-/*** ASSIGNMENTS ***/
-// Server action for creating a new Assignment
-export const createAssignment = async (
-  currentState: CurrentStateType,
-  data: AssignmentInputs
-) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    if (role === "teacher") {
-      const teacherLesson = await prisma.lesson.findFirst({
-        where: { teacherId: userId!, id: data.lessonId },
-      });
-
-      if (!teacherLesson) {
-        return { success: false, error: true };
-      }
-    }
-
-    // Adding the new data to the database
-    await prisma.assignment.create({
-      data: {
-        title: data.title,
-        startDate: adjustToTimezone(data.startDate),
-        dueDate: adjustToTimezone(data.dueDate),
-        lessonId: data.lessonId,
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for updating existing Assignment
-export const updateAssignment = async (
-  currentState: CurrentStateType,
-  data: AssignmentInputs
-) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    if (role === "teacher") {
-      const teacherLesson = await prisma.lesson.findFirst({
-        where: { teacherId: userId!, id: data.lessonId },
-      });
-
-      if (!teacherLesson) {
-        return { success: false, error: true };
-      }
-    }
-    // Adding the new data to the database
-    await prisma.assignment.update({
-      where: { id: data.id },
-      data: {
-        title: data.title,
-        startDate: adjustToTimezone(data.startDate),
-        dueDate: adjustToTimezone(data.dueDate),
-        lessonId: data.lessonId,
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for deleting an Assignment
-export const deleteAssignment = async (
-  currentState: CurrentStateType,
-  data: FormData
-) => {
-  // Getting id from the passed props
-  const id = data.get("id") as string;
-
-  // Getting the user ID and the role
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    // Deleting the data from the database
-    await prisma.assignment.delete({
-      where: {
-        id: parseInt(id),
-        ...(role === "teacher" ? { lesson: { teacherId: userId! } } : {}),
-      },
-    });
-    return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
-  }
-};
-
-/*** EVENTS ***/
-// Server action for creating a new Event
-export const createEvent = async (
-  currentState: CurrentStateType,
-  data: EventInputs
-) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    if (role === "teacher") {
-      const teacherClass = await prisma.class.findFirst({
-        where: { supervisorId: userId!, id: data.classId },
-      });
-
-      if (!teacherClass) {
-        return { success: false, error: true };
-      }
-    }
-
-    // Adding the new data to the database
-    await prisma.event.create({
-      data: {
-        title: data.title,
-        startTime: adjustToTimezone(data.startTime),
-        endTime: adjustToTimezone(data.endTime),
-        description: data.description,
-        classId: data.classId === 0 ? null : data.classId,
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for updating existing Event
-export const updateEvent = async (
-  currentState: CurrentStateType,
-  data: EventInputs
-) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    if (role === "teacher") {
-      const teacherClass = await prisma.class.findFirst({
-        where: { supervisorId: userId!, id: data.classId },
-      });
-
-      if (!teacherClass) {
-        return { success: false, error: true };
-      }
-    }
-    // Adding the new data to the database
-    await prisma.event.update({
-      where: { id: data.id },
-      data: {
-        title: data.title,
-        startTime: adjustToTimezone(data.startTime),
-        endTime: adjustToTimezone(data.endTime),
-        description: data.description,
-        classId: data.classId,
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for deleting an Event
-export const deleteEvent = async (
-  currentState: CurrentStateType,
-  data: FormData
-) => {
-  // Getting id from the passed props
-  const id = data.get("id") as string;
-
-  try {
-    // Deleting the data from the database
-    await prisma.event.delete({
-      where: { id: parseInt(id) },
-    });
-    return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
-  }
-};
-
-/*** ANNOUNCEMENTS ***/
-// Server action for creating a new Announcement
-export const createAnnouncement = async (
-  currentState: CurrentStateType,
-  data: AnnouncementInputs
-) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    if (role === "teacher") {
-      const teacherClass = await prisma.class.findFirst({
-        where: { supervisorId: userId!, id: data.classId },
-      });
-
-      if (!teacherClass) {
-        return { success: false, error: true };
-      }
-    }
-
-    // Adding the new data to the database
-    await prisma.announcement.create({
-      data: {
-        title: data.title,
-        date: adjustToTimezone(data.date),
-        description: data.description,
-        classId: data.classId === 0 ? null : data.classId,
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for updating existing Announcement
-export const updateAnnouncement = async (
-  currentState: CurrentStateType,
-  data: AnnouncementInputs
-) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
-  try {
-    if (role === "teacher") {
-      const teacherClass = await prisma.class.findFirst({
-        where: { supervisorId: userId!, id: data.classId },
-      });
-
-      if (!teacherClass) {
-        return { success: false, error: true };
-      }
-    }
-    // Adding the new data to the database
-    await prisma.announcement.update({
-      where: { id: data.id },
-      data: {
-        title: data.title,
-        date: adjustToTimezone(data.date),
-        description: data.description,
-        classId: data.classId,
-      },
-    });
-
-    // Return success state
-    return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
-
-    // Return error state
-    return { success: false, error: true };
-  }
-};
-// Server action for deleting an Announcement
-export const deleteAnnouncement = async (
-  currentState: CurrentStateType,
-  data: FormData
-) => {
-  // Getting id from the passed props
-  const id = data.get("id") as string;
-
-  try {
-    // Deleting the data from the database
-    await prisma.announcement.delete({
-      where: { id: parseInt(id) },
-    });
-    return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
-  }
-};
-
-/*** LESSONS ***/
-// Server action for creating a new Lesson
-export const createLesson = async (
-  currentState: CurrentStateType,
-  data: LessonInputs
-) => {
-  try {
-    // Adding the new data to the database
-    await prisma.lesson.create({
-      data: {
+        id: user.id,
+        username: data.username,
         name: data.name,
-        startTime: adjustToTimezone(data.startTime),
-        endTime: adjustToTimezone(data.endTime),
-        subjectId: data.subjectId,
-        classId: data.classId,
-        teacherId: data.teacherId,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        img: data.img || null,
+        bloodType: data.bloodType,
+        sex: data.sex,
+        birthday: data.birthday,
+        subjects: {
+          connect: data.subjects?.map((subjectId: string) => ({
+            id: parseInt(subjectId),
+          })),
+        },
       },
     });
-
     // Return success state
     return { success: true, error: false };
   } catch (e) {
     console.error(e);
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: e };
   }
 };
-// Server action for updating existing Lesson
-export const updateLesson = async (
+// Server action for updating existing Teacher
+export const updateTeacher = async (
   currentState: CurrentStateType,
-  data: LessonInputs
+  data: TeacherInputs
 ) => {
+  // Guard clause
+  if (!data.id) {
+    return { success: false, error: true };
+  }
+
   try {
-    // Adding the new data to the database
-    await prisma.lesson.update({
+    await clerkClient.users.updateUser(data.id, {
+      username: data.username,
+      ...(data.password !== "" && { password: data.password }),
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: "teacher" },
+    });
+
+    await prisma.teacher.update({
       where: { id: data.id },
       data: {
-        startTime: adjustToTimezone(data.startTime),
-        endTime: adjustToTimezone(data.endTime),
-        subjectId: data.subjectId,
-        classId: data.classId,
+        ...(data.password !== "" && { password: data.password }),
+        username: data.username,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+        img: data.img || null,
+        bloodType: data.bloodType,
+        sex: data.sex,
+        birthday: data.birthday,
+        subjects: {
+          set: data.subjects?.map((subjectId: string) => ({
+            id: parseInt(subjectId),
+          })),
+        },
       },
     });
 
@@ -852,18 +923,20 @@ export const updateLesson = async (
     return { success: false, error: true };
   }
 };
-// Server action for deleting an Lesson
-export const deleteLesson = async (
+// Server action for deleting a Teacher
+export const deleteTeacher = async (
   currentState: CurrentStateType,
   data: FormData
 ) => {
   // Getting id from the passed props
   const id = data.get("id") as string;
-
   try {
+    // Deleting user from clerk
+    await clerkClient.users.deleteUser(id);
+
     // Deleting the data from the database
-    await prisma.lesson.delete({
-      where: { id: parseInt(id) },
+    await prisma.teacher.delete({
+      where: { id: id },
     });
     return { success: true, error: false }; // Return success state
   } catch (e) {
@@ -875,4 +948,3 @@ export const deleteLesson = async (
 // Delete server actions placeholder for different forms
 export const deleteParent = async () => ({ success: true, error: false });
 export const deleteResult = async () => ({ success: true, error: false });
-export const deleteAttendance = async () => ({ success: true, error: false });

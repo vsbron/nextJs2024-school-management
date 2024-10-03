@@ -2,22 +2,19 @@ import Image from "next/image";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { Lesson, Prisma, Student } from "@prisma/client";
+import { Attendance, Class, Prisma, Student, Subject } from "@prisma/client";
 
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 import { auth } from "@clerk/nextjs/server";
 import { formatDate } from "@/lib/utils";
 
-// Type for the results list with data from different tables
-type AttendanceList = {
-  id: number;
-  date: Date;
-  present: boolean;
+// Type for the assignment list with data from different tables
+type AttendanceList = Attendance & {
   student: Student;
-  lesson: Lesson;
+  lesson: { subject: Subject; class: Class };
 };
 
 async function AttendanceList({
@@ -29,6 +26,8 @@ async function AttendanceList({
   const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
   const currentUserId = userId;
+
+  console.log(currentUserId);
 
   // Defining columns for table
   const columns = [
@@ -52,7 +51,7 @@ async function AttendanceList({
       accessor: "present",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin" || role === "teacher"
+    ...(role === "admin"
       ? [
           {
             header: "Actions",
@@ -74,11 +73,11 @@ async function AttendanceList({
 
       // Switch statement to cover all available search params
       switch (key) {
-        // Filtering by student id
-        case "studentId":
-          query.studentId = value;
-          break;
-        // Filtering by search input
+        // // Filtering by student id
+        // case "studentId":
+        //   query.studentId = value;
+        //   break;
+        // // Filtering by search input
         // case "search":
         //   query.student = { contains: value, mode: "insensitive" };
         default:
@@ -87,12 +86,9 @@ async function AttendanceList({
     }
   }
 
-  // ROLE CONDITIONS - switch version
+  // ROLE CONDITIONS
   switch (role) {
     case "admin":
-      break;
-    case "teacher":
-      query.lesson = { teacher: { id: currentUserId! } };
       break;
     default:
       break;
@@ -128,11 +124,11 @@ async function AttendanceList({
       </td>
       <td className="hidden md:table-cell">{formatDate(item.date)}</td>
       <td className="hidden md:table-cell">{item.present ? "Yes" : "No"}</td>
-      {(role === "admin" || role === "teacher") && (
+      {role === "admin" && (
         <td>
           <div className="flex items-center gap-2">
-            <FormModal table="result" type="update" data={item} />
-            <FormModal table="result" type="delete" id={item.id} />
+            <FormContainer table="attendance" type="update" data={item} />
+            <FormContainer table="attendance" type="delete" id={item.id} />
           </div>
         </td>
       )}
@@ -144,7 +140,9 @@ async function AttendanceList({
     <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
       {/* TOP */}
       <div className="flex items-center justify-between">
-        <h2 className="hidden md:block text-lg font-semibold">All Results</h2>
+        <h2 className="hidden md:block text-lg font-semibold">
+          All Attendances
+        </h2>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
@@ -154,7 +152,9 @@ async function AttendanceList({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && <FormModal table="result" type="create" />}
+            {role === "admin" && (
+              <FormContainer table="attendance" type="create" />
+            )}
           </div>
         </div>
       </div>

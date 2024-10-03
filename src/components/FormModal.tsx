@@ -51,6 +51,9 @@ const AnnouncementForm = dynamic(() => import("./forms/AnnouncementForm"), {
 const AssignmentForm = dynamic(() => import("./forms/AssignmentForm"), {
   loading: () => <h4>Loading form...</h4>,
 });
+const AttendanceForm = dynamic(() => import("./forms/AttendanceForm"), {
+  loading: () => <h4>Loading form...</h4>,
+});
 const ClassForm = dynamic(() => import("./forms/ClassForm"), {
   loading: () => <h4>Loading form...</h4>,
 });
@@ -82,22 +85,6 @@ const forms: {
     relatedData?: any
   ) => JSX.Element;
 } = {
-  teacher: (setOpenModal, type, data, relatedData) => (
-    <TeacherForm
-      setOpen={setOpenModal}
-      type={type}
-      data={data}
-      relatedData={relatedData}
-    />
-  ),
-  student: (setOpenModal, type, data, relatedData) => (
-    <StudentForm
-      setOpen={setOpenModal}
-      type={type}
-      data={data}
-      relatedData={relatedData}
-    />
-  ),
   announcement: (setOpenModal, type, data, relatedData) => (
     <AnnouncementForm
       setOpen={setOpenModal}
@@ -108,6 +95,14 @@ const forms: {
   ),
   assignment: (setOpenModal, type, data, relatedData) => (
     <AssignmentForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
+  ),
+  attendance: (setOpenModal, type, data, relatedData) => (
+    <AttendanceForm
       setOpen={setOpenModal}
       type={type}
       data={data}
@@ -162,8 +157,24 @@ const forms: {
       relatedData={relatedData}
     />
   ),
+  student: (setOpenModal, type, data, relatedData) => (
+    <StudentForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
+  ),
   subject: (setOpenModal, type, data, relatedData) => (
     <SubjectForm
+      setOpen={setOpenModal}
+      type={type}
+      data={data}
+      relatedData={relatedData}
+    />
+  ),
+  teacher: (setOpenModal, type, data, relatedData) => (
+    <TeacherForm
       setOpen={setOpenModal}
       type={type}
       data={data}

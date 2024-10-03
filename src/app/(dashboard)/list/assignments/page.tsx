@@ -140,13 +140,7 @@ async function AssignmentList({
     prisma.assignment.findMany({
       where: query,
       include: {
-        lesson: {
-          select: {
-            subject: true,
-            teacher: true,
-            class: true,
-          },
-        },
+        lesson: { select: { subject: true, teacher: true, class: true } },
       },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),

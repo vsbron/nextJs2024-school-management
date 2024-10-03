@@ -33,17 +33,18 @@ export type BigCalendarType = {
 // Prop types for Form modal
 export type FormModalProps<T> = {
   table:
-    | "teacher"
+    | "announcement"
+    | "assignment"
+    | "attendance"
+    | "class"
+    | "event"
+    | "exam"
+    | "lesson"
+    | "parent"
+    | "result"
     | "student"
     | "subject"
-    | "result"
-    | "parent"
-    | "lesson"
-    | "exam"
-    | "event"
-    | "class"
-    | "assignment"
-    | "announcement";
+    | "teacher";
   type: "create" | "update" | "delete";
   data?: T;
   id?: string | number;
@@ -51,17 +52,18 @@ export type FormModalProps<T> = {
 // Prop types for Form modal container
 export type FormContainerProps<T> = {
   table:
-    | "teacher"
+    | "announcement"
+    | "assignment"
+    | "attendance"
+    | "class"
+    | "event"
+    | "exam"
+    | "lesson"
+    | "parent"
+    | "result"
     | "student"
     | "subject"
-    | "result"
-    | "parent"
-    | "lesson"
-    | "exam"
-    | "event"
-    | "class"
-    | "assignment"
-    | "announcement";
+    | "teacher";
   type: "create" | "update" | "delete";
   data?: T;
   id?: string | number;
