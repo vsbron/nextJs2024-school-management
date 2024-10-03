@@ -230,6 +230,12 @@ async function SingleStudentPage({
             >
               Student&apos;s announcements
             </Link>
+            <Link
+              href={`/list/attendance?studentId=${student.id}`}
+              className="p-2 rounded-md bg-schoolSkyLight"
+            >
+              Student&apos;s attendance
+            </Link>
           </div>
         </div>
 
