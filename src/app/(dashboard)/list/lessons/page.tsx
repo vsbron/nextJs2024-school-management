@@ -5,10 +5,11 @@ import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { Class, Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
+import { formatDateTime } from "@/lib/utils";
 
 // Type for the lesson list with data from different tables
 type LessonList = Lesson & {
@@ -23,8 +24,9 @@ async function LessonList({
   searchParams: { [key: string]: string | undefined };
 }) {
   // Getting the user's role
-  const { sessionClaims } = auth();
+  const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const currentUserId = userId;
 
   // Defining columns for table
   const columns = [
@@ -34,8 +36,13 @@ async function LessonList({
       className: "px-4",
     },
     {
-      header: "Class",
-      accessor: "class",
+      header: "Start Time",
+      accessor: "startTime",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "End Time",
+      accessor: "endTime",
       className: "hidden md:table-cell",
     },
     {
@@ -43,7 +50,7 @@ async function LessonList({
       accessor: "teacher",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin"
+    ...(role === "admin" || role === "teacher"
       ? [
           {
             header: "Actions",
@@ -86,6 +93,17 @@ async function LessonList({
     }
   }
 
+  // ROLE CONDITIONS - switch version
+  switch (role) {
+    case "admin":
+      break;
+    case "teacher":
+      query.teacherId = currentUserId!;
+      break;
+    default:
+      break;
+  }
+
   // Fetching the data from the database and setting the pagination constants
   const [data, count] = await prisma.$transaction([
     prisma.lesson.findMany({
@@ -108,17 +126,20 @@ async function LessonList({
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.subject.name}</h3>
+        <h3 className="font-semibold">
+          {item.subject.name} ({item.class.name})
+        </h3>
       </td>
-      <td className="hidden md:table-cell">{item.class.name}</td>
+      <td className="hidden md:table-cell">{formatDateTime(item.startTime)}</td>
+      <td className="hidden md:table-cell">{formatDateTime(item.endTime)}</td>
       <td className="hidden md:table-cell">
         {item.teacher.name + " " + item.teacher.surname}
       </td>
-      {role === "admin" && (
+      {(role === "admin" || role === "teacher") && (
         <td>
           <div className="flex items-center gap-2">
-            <FormModal table="lesson" type="update" data={item} />
-            <FormModal table="lesson" type="delete" id={item.id} />
+            <FormContainer table="lesson" type="update" data={item} />
+            <FormContainer table="lesson" type="delete" id={item.id} />
           </div>
         </td>
       )}
@@ -140,7 +161,9 @@ async function LessonList({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && <FormModal table="lesson" type="create" />}
+            {(role === "admin" || role === "teacher") && (
+              <FormContainer table="lesson" type="create" />
+            )}
           </div>
         </div>
       </div>

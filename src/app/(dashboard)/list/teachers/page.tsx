@@ -117,7 +117,9 @@ async function TeacherList({
           alt={item.name}
         />
         <div className="flex flex-col">
-          <h3 className="font-semibold">{item.name}</h3>
+          <h3 className="font-semibold">
+            {item.name} {item.surname}
+          </h3>
           <p className="text-sm text-gray-500">{item.email}</p>
         </div>
       </td>

@@ -8,6 +8,7 @@ import {
   ClassInputs,
   EventInputs,
   ExamInputs,
+  LessonInputs,
   StudentInputs,
   SubjectInputs,
   TeacherInputs,
@@ -797,8 +798,81 @@ export const deleteAnnouncement = async (
   }
 };
 
+/*** LESSONS ***/
+// Server action for creating a new Lesson
+export const createLesson = async (
+  currentState: CurrentStateType,
+  data: LessonInputs
+) => {
+  try {
+    // Adding the new data to the database
+    await prisma.lesson.create({
+      data: {
+        name: data.name,
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        subjectId: data.subjectId,
+        classId: data.classId,
+        teacherId: data.teacherId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Lesson
+export const updateLesson = async (
+  currentState: CurrentStateType,
+  data: LessonInputs
+) => {
+  try {
+    // Adding the new data to the database
+    await prisma.lesson.update({
+      where: { id: data.id },
+      data: {
+        startTime: adjustToTimezone(data.startTime),
+        endTime: adjustToTimezone(data.endTime),
+        subjectId: data.subjectId,
+        classId: data.classId,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting an Lesson
+export const deleteLesson = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  try {
+    // Deleting the data from the database
+    await prisma.lesson.delete({
+      where: { id: parseInt(id) },
+    });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
 // Delete server actions placeholder for different forms
 export const deleteParent = async () => ({ success: true, error: false });
-export const deleteLesson = async () => ({ success: true, error: false });
 export const deleteResult = async () => ({ success: true, error: false });
 export const deleteAttendance = async () => ({ success: true, error: false });

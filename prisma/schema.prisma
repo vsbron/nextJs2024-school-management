@@ -98,7 +98,6 @@ model Subject {
 model Lesson {
   id        Int      @id @default(autoincrement())
   name      String
-  day       Day
   startTime DateTime
   endTime   DateTime
 

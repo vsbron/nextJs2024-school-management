@@ -47,15 +47,19 @@ export const examSchema = z.object({
   title: z.string().min(1, { message: "Subject name is required!" }),
   startTime: z.coerce.date({ message: "Start time is required" }),
   endTime: z.coerce.date({ message: "End time is required" }),
-  lessonId: z.coerce.number({ message: "Teacher name is required!" }),
+  lessonId: z.coerce.number({ message: "Lesson is required!" }),
 });
 export type ExamInputs = z.infer<typeof examSchema>;
 
 // Lessons form schema
 export const lessonSchema = z.object({
-  subject: z.string().min(1, { message: "Subject is required!" }),
-  class: z.string().min(1, { message: "Class is required!" }),
-  teacher: z.string().min(1, { message: "Teacher name is required!" }),
+  id: z.coerce.number().optional(),
+  name: z.string().min(1, { message: "Name is required!" }),
+  subjectId: z.coerce.number({ message: "Subject is required" }),
+  classId: z.coerce.number({ message: "Class is required" }),
+  startTime: z.coerce.date({ message: "Start time is required" }),
+  endTime: z.coerce.date({ message: "End time is required" }),
+  teacherId: z.string().min(1, { message: "Name is required!" }),
 });
 export type LessonInputs = z.infer<typeof lessonSchema>;
 
@@ -141,7 +145,7 @@ export const teacherSchema = z.object({
     .or(z.literal("")),
   name: z.string().min(1, { message: "First name is required!" }),
   surname: z.string().min(1, { message: "Last name is required!" }),
-  email: z.string().email({ message: "Invalid email address!" }).optional(),
+  email: z.string().email({ message: "Invalid email address!" }),
   phone: z.string().min(1, { message: "Phone is required!" }),
   address: z.string().min(1, { message: "Address is required!" }),
   img: z.string().optional(),

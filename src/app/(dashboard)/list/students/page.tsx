@@ -31,13 +31,8 @@ async function StudentList({
       className: "px-4",
     },
     {
-      header: "Student Id",
-      accessor: "studentId",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Grade",
-      accessor: "grade",
+      header: "Class",
+      accessor: "classId",
       className: "hidden md:table-cell",
     },
     {
@@ -111,12 +106,13 @@ async function StudentList({
           alt={item.name}
         />
         <div className="flex flex-col">
-          <h3 className="font-semibold">{item.name}</h3>
-          <p className="text-sm text-gray-500">{item.class.name}</p>
+          <h3 className="font-semibold">
+            {item.name} {item.surname}
+          </h3>
+          <p className="text-sm text-gray-500">{item.username}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.username}</td>
-      <td className="hidden md:table-cell">{item.class.name[0]}</td>
+      <td className="hidden md:table-cell">{item.class.name}</td>
       <td className="hidden lg:table-cell">{item.phone}</td>
       <td className="hidden lg:table-cell">{item.address}</td>
       <td>
