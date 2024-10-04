@@ -49,14 +49,7 @@ async function ParentList({
       accessor: "address",
       className: "hidden lg:table-cell",
     },
-    ...(role === "admin"
-      ? [
-          {
-            header: "Actions",
-            accessor: "action",
-          },
-        ]
-      : []),
+    ...(role === "admin" ? [{ header: "Actions", accessor: "action" }] : []),
   ];
   // Destructuring the searchParams and setting our current page
   const { page, ...queryParams } = searchParams;
@@ -104,7 +97,9 @@ async function ParentList({
     >
       <td className="flex items-center gap-4 p-4">
         <div className="flex flex-col">
-          <h3 className="font-semibold">{item.name}</h3>
+          <h3 className="font-semibold">
+            {item.name} {item.surname}
+          </h3>
           <p className="text-sm text-gray-500">{item.email}</p>
         </div>
       </td>

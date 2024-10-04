@@ -124,7 +124,7 @@ async function TeacherList({
           <p className="text-sm text-gray-500">{item.email}</p>
         </div>
       </td>
-      <td className="hidden md:table-cell">{item.username}</td>
+      <td className="hidden md:table-cell">{item.id}</td>
       <td className="hidden md:table-cell">
         {item.subjects.map((subject) => subject.name).join(", ")}
       </td>

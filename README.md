@@ -24,7 +24,7 @@ A comprehensive School Management App designed to create and manage schedules, a
   - List views for managing different data entities (Teachers, Students, Parents, Lessons, Exams, Assignments, etc.).
   - CRUD functionality (Create, Read, Update, Delete) for each role:
     - **Admin:** Can create, view, edit, and delete all data.
-    - **Teachers:** Can manage exams and assignments.
+    - **Teachers:** Can manage exams, assignments and others.
     - **Students/Parents:** Limited to viewing data.
 
 - **User Profiles**
