@@ -115,7 +115,7 @@ model Parent {
   phone     String    @unique
   address   String
   createdAt DateTime  @default(now())
-  students  Student[]
+  students  Student[]?
 }
 
 model Result {

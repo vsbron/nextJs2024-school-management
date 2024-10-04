@@ -10,6 +10,7 @@ import {
   EventInputs,
   ExamInputs,
   LessonInputs,
+  ParentInputs,
   StudentInputs,
   SubjectInputs,
   TeacherInputs,
@@ -619,6 +620,103 @@ export const deleteLesson = async (
   }
 };
 
+/*** PARENTS ***/
+// Server action for creating a new Parent
+export const createParent = async (
+  currentState: CurrentStateType,
+  data: ParentInputs
+) => {
+  try {
+    // Creating user at Clerk service
+    const user = await clerkClient.users.createUser({
+      username: data.username,
+      password: data.password,
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: "parent" },
+    });
+
+    await prisma.parent.create({
+      data: {
+        id: user.id,
+        username: data.username,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+      },
+    });
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true, message: e };
+  }
+};
+// Server action for updating existing Parent
+export const updateParent = async (
+  currentState: CurrentStateType,
+  data: ParentInputs
+) => {
+  // Guard clause
+  if (!data.id) {
+    return { success: false, error: true };
+  }
+
+  try {
+    await clerkClient.users.updateUser(data.id, {
+      username: data.username,
+      ...(data.password !== "" && { password: data.password }),
+      firstName: data.name,
+      lastName: data.surname,
+      publicMetadata: { role: "parent" },
+    });
+
+    await prisma.parent.update({
+      where: { id: data.id },
+      data: {
+        ...(data.password !== "" && { password: data.password }),
+        username: data.username,
+        name: data.name,
+        surname: data.surname,
+        email: data.email,
+        phone: data.phone,
+        address: data.address,
+      },
+    });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true, message: e };
+  }
+};
+// Server action for deleting a Parent
+export const deleteParent = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+  try {
+    // Deleting user from clerk
+    await clerkClient.users.deleteUser(id);
+
+    // Deleting the data from the database
+    await prisma.parent.delete({ where: { id: id } });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
 /*** STUDENTS ***/
 // Server action for creating a new Student
 export const createStudent = async (
@@ -923,5 +1021,4 @@ export const deleteTeacher = async (
 };
 
 // Delete server actions placeholder for different forms
-export const deleteParent = async () => ({ success: true, error: false });
 export const deleteResult = async () => ({ success: true, error: false });

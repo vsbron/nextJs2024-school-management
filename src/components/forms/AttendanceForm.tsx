@@ -9,9 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createAttendance, updateAttendance } from "@/lib/actions";
 import { AttendanceInputs, attendanceSchema } from "@/lib/formSchemas";
 import { formatDate } from "@/lib/utils";
+import { Class, Lesson, Student } from "@prisma/client";
 
 import InputField from "../InputField";
-import { Class, Lesson, Student } from "@prisma/client";
 
 function ClassForm({
   setOpen,
