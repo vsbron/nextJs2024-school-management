@@ -11,7 +11,7 @@ import { AttendanceInputs, attendanceSchema } from "@/lib/formSchemas";
 import { formatDate } from "@/lib/utils";
 
 import InputField from "../InputField";
-import { Class, Student } from "@prisma/client";
+import { Class, Lesson, Student } from "@prisma/client";
 
 function ClassForm({
   setOpen,
@@ -45,12 +45,16 @@ function ClassForm({
 
   // Use effect to set the selected lesson based on the data provided
   useEffect(() => {
-    if (data) {
-      const lessonFromData = lessons.find(
-        (lesson: { id: string }) => lesson.id === data.lessonId
-      );
-      setSelectedLesson(lessonFromData);
-    }
+    // Get the initial selected lesson ID from the lessonId field
+    const initialLessonId = data?.lessonId || lessons[0]?.id; // Fallback to first lesson if no data
+
+    // Find the selected lesson based on the ID
+    const selectedLesson = lessons.find(
+      (lesson: Lesson) => lesson.id === initialLessonId
+    );
+
+    // Set the selected lesson in the state
+    setSelectedLesson(selectedLesson);
   }, []); // Keeping the dependency array empty to run only on mount
 
   // Use effect to trigger the toast message
@@ -109,46 +113,6 @@ function ClassForm({
       </h2>
       <span className="text-sm text-gray-400 font-medium">Information</span>
       <div className="flex justify-between flex-wrap gap-4">
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Present</label>
-          <select
-            {...register("present")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            defaultValue={data?.present}
-          >
-            <option value="YES">Yes</option>
-            <option value="NO">No</option>
-          </select>
-          {errors.present?.message && (
-            <p className="text-xs text-red-400">
-              {errors.present?.message.toString()}
-            </p>
-          )}
-        </div>
-
-        {/* Select field for the Students */}
-        <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Student</label>
-          <select
-            {...register("studentId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
-            defaultValue={data?.studentId}
-          >
-            {filteredStudents.map(
-              (student: { id: string; name: string; surname: string }) => (
-                <option value={student.id} key={student.id}>
-                  {student.name + " " + student.surname}
-                </option>
-              )
-            )}
-          </select>
-          {errors.studentId?.message && (
-            <p className="text-xs text-red-400">
-              {errors.studentId?.message.toString()}
-            </p>
-          )}
-        </div>
-
         {/* Select field for the Lessons */}
         <div className="flex flex-col gap-2 w-full md:w-1/4">
           <label className="text-xs text-gray-500">Lesson</label>
@@ -182,6 +146,45 @@ function ClassForm({
           {errors.studentId?.message && (
             <p className="text-xs text-red-400">
               {errors.studentId?.message.toString()}
+            </p>
+          )}
+        </div>
+
+        {/* Select field for the Students */}
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Student</label>
+          <select
+            {...register("studentId")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.studentId}
+          >
+            {filteredStudents.map(
+              (student: { id: string; name: string; surname: string }) => (
+                <option value={student.id} key={student.id}>
+                  {student.name + " " + student.surname}
+                </option>
+              )
+            )}
+          </select>
+          {errors.studentId?.message && (
+            <p className="text-xs text-red-400">
+              {errors.studentId?.message.toString()}
+            </p>
+          )}
+        </div>
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Present</label>
+          <select
+            {...register("present")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.present}
+          >
+            <option value="YES">Yes</option>
+            <option value="NO">No</option>
+          </select>
+          {errors.present?.message && (
+            <p className="text-xs text-red-400">
+              {errors.present?.message.toString()}
             </p>
           )}
         </div>
