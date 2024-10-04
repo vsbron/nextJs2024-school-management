@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,7 @@ import { AttendanceInputs, attendanceSchema } from "@/lib/formSchemas";
 import { formatDate } from "@/lib/utils";
 
 import InputField from "../InputField";
+import { Class, Student } from "@prisma/client";
 
 function ClassForm({
   setOpen,
@@ -38,6 +39,19 @@ function ClassForm({
 
   // Getting the router
   const router = useRouter();
+
+  // Track the selected lesson
+  const [selectedLesson, setSelectedLesson] = useState<any>(null);
+
+  // Use effect to set the selected lesson based on the data provided
+  useEffect(() => {
+    if (data) {
+      const lessonFromData = lessons.find(
+        (lesson: { id: string }) => lesson.id === data.lessonId
+      );
+      setSelectedLesson(lessonFromData);
+    }
+  }, []); // Keeping the dependency array empty to run only on mount
 
   // Use effect to trigger the toast message
   useEffect(() => {
@@ -79,6 +93,14 @@ function ClassForm({
   // Getting the students and lessons from the related data object
   const { students, lessons } = relatedData;
 
+  // Filter students based on selected lesson's class (if a lesson is selected)
+  const filteredStudents = selectedLesson
+    ? students.filter(
+        (student: Student & { class: Class }) =>
+          student.class.id === selectedLesson.class.id
+      )
+    : students;
+
   // Returned JSX
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-8">
@@ -112,7 +134,7 @@ function ClassForm({
             className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             defaultValue={data?.studentId}
           >
-            {students.map(
+            {filteredStudents.map(
               (student: { id: string; name: string; surname: string }) => (
                 <option value={student.id} key={student.id}>
                   {student.name + " " + student.surname}
@@ -134,6 +156,14 @@ function ClassForm({
             {...register("lessonId")}
             className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             defaultValue={data?.lessonId}
+            onChange={(e) => {
+              setSelectedLesson(
+                lessons.find(
+                  (lesson: { id: number }) =>
+                    lesson.id === Number(e.target.value)
+                )
+              );
+            }}
           >
             {lessons.map(
               (lesson: {
