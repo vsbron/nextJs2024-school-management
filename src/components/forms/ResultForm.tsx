@@ -15,6 +15,7 @@ function ResultForm({
   setOpen,
   type,
   data,
+  relatedData,
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
@@ -68,7 +69,7 @@ function ResultForm({
     formAction(formData);
   });
 
-  console.log(data);
+  const { students, exams } = relatedData;
 
   // Returned JSX
   return (
@@ -78,26 +79,54 @@ function ResultForm({
       </h2>
       <span className="text-sm text-gray-400 font-medium">Information</span>
       <div className="flex justify-between flex-wrap gap-4">
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Exam</label>
+          <select
+            {...register("examId")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.examId}
+          >
+            {exams.map((exam: { id: string; title: string }) => (
+              <option value={exam.id} key={exam.id}>
+                {exam.title}
+              </option>
+            ))}
+          </select>
+          {errors.examId?.message && (
+            <p className="text-xs text-red-400">
+              {errors.examId?.message.toString()}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 w-full md:w-1/4">
+          <label className="text-xs text-gray-500">Student</label>
+          <select
+            {...register("studentId")}
+            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            defaultValue={data?.studentId}
+          >
+            {students.map(
+              (student: { id: string; name: string; surname: true }) => (
+                <option value={student.id} key={student.id}>
+                  {student.name[0]}. {student.surname}
+                </option>
+              )
+            )}
+          </select>
+          {errors.studentId?.message && (
+            <p className="text-xs text-red-400">
+              {errors.studentId?.message.toString()}
+            </p>
+          )}
+        </div>
+
         <InputField
           label="Score"
           register={register}
           name="score"
           defaultValue={data?.score}
           error={errors?.score}
-        />
-        <InputField
-          label="Exam ID"
-          register={register}
-          name="examId"
-          defaultValue={data?.examId}
-          error={errors?.examId}
-        />
-        <InputField
-          label="Student ID"
-          register={register}
-          name="studentId"
-          defaultValue={data?.studentId}
-          error={errors?.studentId}
         />
 
         {data && (
