@@ -99,14 +99,13 @@ export type ParentInputs = z.infer<typeof parentSchema>;
 
 // Results form schema
 export const resultSchema = z.object({
-  id: z.coerce.number().optional(),
-  score: z.coerce
-    .number()
-    .min(0, { message: "Score must be at least 0!" })
-    .max(100, { message: "Score cannot exceed 100!" }),
-  examId: z.coerce.number().optional(),
-  assignmentId: z.coerce.number().optional(),
-  studentId: z.string({ message: "Student name is required" }),
+  subject: z.string().min(1, { message: "Subject is required!" }),
+  student: z.string().min(1, { message: "Student name is required!" }),
+  score: z.string().min(1, { message: "Score is required!" }),
+  teacher: z.string().min(1, { message: "Teacher name is required!" }),
+  class: z.string().min(1, { message: "Class is required!" }),
+  date: z.string().min(1, { message: "Date is required" }),
+  type: z.date({ message: "Type is required!" }),
 });
 export type ResultInputs = z.infer<typeof resultSchema>;
 
