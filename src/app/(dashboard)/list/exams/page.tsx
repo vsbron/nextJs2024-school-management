@@ -164,7 +164,7 @@ async function ExamList({
         {item.lesson.subject.name} ({item.lesson.class.name})
       </td>
       <td className="hidden md:table-cell">
-        {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
+        {item.lesson.teacher.name[0]}. {item.lesson.teacher.surname}
       </td>
       <td className="hidden md:table-cell">{formatDateTime(item.startTime)}</td>
       <td className="hidden md:table-cell">{formatDateTime(item.endTime)}</td>

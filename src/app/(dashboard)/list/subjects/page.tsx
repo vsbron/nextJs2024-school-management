@@ -89,7 +89,9 @@ async function SubjectList({
       </td>
       <td className="hidden md:table-cell">
         {item.teachers
-          .map((teacherItem) => teacherItem.name + " " + teacherItem.surname)
+          .map(
+            (teacherItem) => teacherItem.name[0] + ". " + teacherItem.surname
+          )
           .join(", ")}
       </td>
       <td>

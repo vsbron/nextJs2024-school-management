@@ -54,7 +54,7 @@ async function SingleStudentPage({
             <div className="basis-2/3 flex flex-col justify-between gap-4">
               <div className="flex items-center gap-4">
                 <h1 className="text-xl font-semibold">
-                  {student.name + " " + student.surname}
+                  {student.name} {student.surname}
                 </h1>
                 {role === "admin" && (
                   <FormContainer table="student" type="update" data={student} />

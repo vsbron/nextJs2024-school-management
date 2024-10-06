@@ -156,7 +156,7 @@ function LessonForm({
             {teachers.map(
               (teacher: { id: string; name: string; surname: string }) => (
                 <option value={teacher.id} key={teacher.id}>
-                  {teacher.name} {teacher.surname}
+                  {teacher.name[0]}. {teacher.surname}
                 </option>
               )
             )}

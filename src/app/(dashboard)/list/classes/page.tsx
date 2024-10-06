@@ -126,7 +126,7 @@ async function ClassList({
       <td>{item.capacity}</td>
       <td className="hidden md:table-cell">{item.name[0]}</td>
       <td className="hidden md:table-cell">
-        {item.supervisor?.name + " " + item.supervisor?.surname}
+        {item.supervisor?.name[0]}. {item.supervisor?.surname}
       </td>
       {role === "admin" && (
         <td>

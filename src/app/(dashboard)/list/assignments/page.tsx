@@ -151,7 +151,7 @@ async function AssignmentList({
         {item.lesson.subject.name} ({item.lesson.class.name})
       </td>
       <td className="hidden md:table-cell">
-        {item.lesson.teacher.name + " " + item.lesson.teacher.surname}
+        {item.lesson.teacher.name[0]}. {item.lesson.teacher.surname}
       </td>
       <td className="hidden md:table-cell">{formatDate(item.startDate)}</td>
       <td className="hidden md:table-cell">{formatDate(item.dueDate)}</td>

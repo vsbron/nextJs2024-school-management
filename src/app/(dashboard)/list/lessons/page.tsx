@@ -134,7 +134,7 @@ async function LessonList({
       <td className="hidden md:table-cell">{formatDateTime(item.startTime)}</td>
       <td className="hidden md:table-cell">{formatDateTime(item.endTime)}</td>
       <td className="hidden md:table-cell">
-        {item.teacher.name + " " + item.teacher.surname}
+        {item.teacher.name[0]}. {item.teacher.surname}
       </td>
       {(role === "admin" || role === "teacher") && (
         <td>

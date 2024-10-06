@@ -161,7 +161,7 @@ function AttendanceForm({
             {filteredStudents.map(
               (student: { id: string; name: string; surname: string }) => (
                 <option value={student.id} key={student.id}>
-                  {student.name + " " + student.surname}
+                  {student.name[0]}. {student.surname}
                 </option>
               )
             )}

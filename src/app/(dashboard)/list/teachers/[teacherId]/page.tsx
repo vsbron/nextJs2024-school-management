@@ -60,7 +60,7 @@ async function SingleTeacherPage({
             <div className="basis-2/3 flex flex-col justify-between gap-4">
               <div className="flex items-center gap-4">
                 <h1 className="text-xl font-semibold">
-                  {teacher.name + " " + teacher.surname}
+                  {teacher.name} {teacher.surname}
                 </h1>
                 {role === "admin" && (
                   <FormContainer table="teacher" type="update" data={teacher} />
