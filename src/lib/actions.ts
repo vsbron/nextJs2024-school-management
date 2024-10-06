@@ -725,15 +725,14 @@ export const createResult = async (
   data: ResultInputs
 ) => {
   try {
-    // // Adding the new data to the database
-    // await prisma.result.create({
-    //   data: {
-    //     studentId: data.studentId,
-    //     lessonId: data.lessonId,
-    //     date: adjustToTimezone(data.date),
-    //     present: data.present === "YES",
-    //   },
-    // });
+    // Adding the new data to the database
+    await prisma.result.create({
+      data: {
+        score: data.score,
+        examId: data.examId,
+        studentId: data.studentId,
+      },
+    });
 
     // Return success state
     return { success: true, error: false };
@@ -750,16 +749,15 @@ export const updateResult = async (
   data: ResultInputs
 ) => {
   try {
-    // // Adding the new data to the database
-    // await prisma.result.update({
-    //   where: { id: data.id },
-    //   data: {
-    //     studentId: data.studentId,
-    //     lessonId: data.lessonId,
-    //     date: adjustToTimezone(data.date),
-    //     present: data.present === "YES",
-    //   },
-    // });
+    // Adding the new data to the database
+    await prisma.result.update({
+      where: { id: data.id },
+      data: {
+        score: data.score,
+        examId: data.examId,
+        studentId: data.studentId,
+      },
+    });
 
     // Return success state
     return { success: true, error: false };

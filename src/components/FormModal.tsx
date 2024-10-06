@@ -214,8 +214,11 @@ function FormModal<T>({
   useEffect(() => {
     if (state.success || state.error) {
       if (state.success) {
-        toast(`${table} has been successfully deleted`);
-        // Close the modal
+        toast(
+          `${
+            table.charAt(0).toUpperCase() + table.slice(1)
+          } has been successfully deleted`
+        ); // Close the modal
         setOpenModal(false);
 
         // Refresh the page
