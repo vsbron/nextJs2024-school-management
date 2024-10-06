@@ -49,12 +49,12 @@ function AttendanceForm({
     const initialLessonId = data?.lessonId || lessons[0]?.id; // Fallback to first lesson if no data
 
     // Find the selected lesson based on the ID
-    const selectedLesson = lessons.find(
+    const selectedFormLesson = lessons.find(
       (lesson: Lesson) => lesson.id === initialLessonId
     );
 
     // Set the selected lesson in the state
-    setSelectedLesson(selectedLesson);
+    setSelectedLesson(selectedFormLesson);
   }, []); // Keeping the dependency array empty to run only on mount
 
   // Use effect to trigger the toast message
@@ -130,12 +130,12 @@ function AttendanceForm({
             }}
           >
             {lessons.map(
-              (lesson: {
-                id: string;
-                startTime: Date;
-                subject: { name: string };
-                class: { name: string };
-              }) => (
+              (
+                lesson: Lesson & {
+                  subject: { name: string };
+                  class: { name: string };
+                }
+              ) => (
                 <option value={lesson.id} key={lesson.id}>
                   {lesson.subject.name} ({lesson.class.name}) -{" "}
                   {formatDate(lesson.startTime)}
