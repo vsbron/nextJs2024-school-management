@@ -11,6 +11,7 @@ import {
   ExamInputs,
   LessonInputs,
   ParentInputs,
+  ResultInputs,
   StudentInputs,
   SubjectInputs,
   TeacherInputs,
@@ -717,6 +718,76 @@ export const deleteParent = async (
   }
 };
 
+/*** RESULTS ***/
+// Server action for creating a new Result
+export const createResult = async (
+  currentState: CurrentStateType,
+  data: ResultInputs
+) => {
+  try {
+    // // Adding the new data to the database
+    // await prisma.result.create({
+    //   data: {
+    //     studentId: data.studentId,
+    //     lessonId: data.lessonId,
+    //     date: adjustToTimezone(data.date),
+    //     present: data.present === "YES",
+    //   },
+    // });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for updating existing Result
+export const updateResult = async (
+  currentState: CurrentStateType,
+  data: ResultInputs
+) => {
+  try {
+    // // Adding the new data to the database
+    // await prisma.result.update({
+    //   where: { id: data.id },
+    //   data: {
+    //     studentId: data.studentId,
+    //     lessonId: data.lessonId,
+    //     date: adjustToTimezone(data.date),
+    //     present: data.present === "YES",
+    //   },
+    // });
+
+    // Return success state
+    return { success: true, error: false };
+  } catch (e) {
+    console.error(e);
+
+    // Return error state
+    return { success: false, error: true };
+  }
+};
+// Server action for deleting a Result
+export const deleteResult = async (
+  currentState: CurrentStateType,
+  data: FormData
+) => {
+  // Getting id from the passed props
+  const id = data.get("id") as string;
+
+  try {
+    // Deleting the data from the database
+    await prisma.result.delete({ where: { id: parseInt(id) } });
+    return { success: true, error: false }; // Return success state
+  } catch (e) {
+    console.error(e);
+    return { success: false, error: true }; // Return error state
+  }
+};
+
 /*** STUDENTS ***/
 // Server action for creating a new Student
 export const createStudent = async (
@@ -1019,6 +1090,3 @@ export const deleteTeacher = async (
     return { success: false, error: true }; // Return error state
   }
 };
-
-// Delete server actions placeholder for different forms
-export const deleteResult = async () => ({ success: true, error: false });

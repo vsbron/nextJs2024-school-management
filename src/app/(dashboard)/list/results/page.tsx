@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { Prisma } from "@prisma/client";
 
-import FormModal from "@/components/FormModal";
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
@@ -130,9 +130,7 @@ async function ResultsList({
       query.studentId = currentUserId!;
       break;
     case "parent":
-      query.student = {
-        parentId: currentUserId!,
-      };
+      query.student = { parentId: currentUserId! };
       break;
     default:
       break;
@@ -198,8 +196,8 @@ async function ResultsList({
       {(role === "admin" || role === "teacher") && (
         <td>
           <div className="flex items-center gap-2">
-            <FormModal table="result" type="update" data={item} />
-            <FormModal table="result" type="delete" id={item.id} />
+            <FormContainer table="result" type="update" data={item} />
+            <FormContainer table="result" type="delete" id={item.id} />
           </div>
         </td>
       )}
@@ -221,7 +219,7 @@ async function ResultsList({
             <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
               <Image src="/sort.png" width={14} height={14} alt="" />
             </button>
-            {role === "admin" && <FormModal table="result" type="create" />}
+            {role === "admin" && <FormContainer table="result" type="create" />}
           </div>
         </div>
       </div>

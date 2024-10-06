@@ -1,24 +1,24 @@
 "use client";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
+import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { createResult, updateResult } from "@/lib/actions";
 import { ResultInputs, resultSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
 
-// !!! NOT READY
-
 function ResultForm({
-  // setOpen,
+  setOpen,
   type,
   data,
-}: // relatedData,
-{
+}: {
   setOpen: Dispatch<SetStateAction<boolean>>;
   type: "create" | "update";
   data?: any;
-  relatedData?: any;
 }) {
   // Getting the form functions from React Hook Form
   const {
@@ -27,9 +27,43 @@ function ResultForm({
     formState: { errors },
   } = useForm<ResultInputs>({ resolver: zodResolver(resultSchema) });
 
+  // Getting the state and action from the useFormState
+  const [state, formAction] = useFormState(
+    type === "create" ? createResult : updateResult,
+    { success: false, error: false }
+  );
+
+  // Getting the router
+  const router = useRouter();
+
+  // Use effect to trigger the toast message
+  useEffect(() => {
+    if (state.success || state.error) {
+      if (state.success) {
+        toast(
+          `Result has been successfully ${
+            type === "create" ? "created" : "updated"
+          }`
+        );
+        // Close the modal
+        setOpen(false);
+
+        // Refresh the page
+        router.refresh();
+      } else {
+        toast(
+          `There was some kind of error while ${
+            type === "create" ? "creating" : "updating"
+          } the result`
+        );
+      }
+    }
+  }, [state, type, router, setOpen]);
+
   // Submit handler
-  const submitHandler = handleSubmit((data) => {
-    console.log(data);
+  const submitHandler = handleSubmit((formData) => {
+    // Call the form action with modified formData
+    formAction(formData);
   });
 
   // Returned JSX
@@ -41,56 +75,46 @@ function ResultForm({
       <span className="text-sm text-gray-400 font-medium">Information</span>
       <div className="flex justify-between flex-wrap gap-4">
         <InputField
-          label="Subject"
-          register={register}
-          name="subject"
-          defaultValue={data?.subject}
-          error={errors?.subject}
-        />
-        <InputField
-          label="Student"
-          register={register}
-          name="student"
-          defaultValue={data?.student}
-          error={errors?.student}
-        />
-        <InputField
           label="Score"
           register={register}
           name="score"
           defaultValue={data?.score}
           error={errors?.score}
+          type="number"
         />
         <InputField
-          label="Teacher"
+          label="Task"
           register={register}
-          name="teacher"
-          defaultValue={data?.teacher}
-          error={errors?.teacher}
+          name="examId"
+          defaultValue={data?.examId}
+          error={errors?.examId}
+          type="number"
         />
         <InputField
-          label="Class"
+          label="Student"
           register={register}
-          name="class"
-          defaultValue={data?.class}
-          error={errors?.class}
+          name="studentId"
+          defaultValue={data?.studentId}
+          error={errors?.studentId}
         />
-        <InputField
-          label="Date"
-          register={register}
-          name="date"
-          defaultValue={data?.date}
-          error={errors?.date}
-        />
-        <InputField
-          label="Type"
-          register={register}
-          name="type"
-          defaultValue={data?.type}
-          error={errors?.type}
-        />
+        {data && (
+          <InputField
+            label="ID"
+            name="id"
+            register={register}
+            defaultValue={data?.id}
+            error={errors?.id}
+            hidden
+          />
+        )}
       </div>
 
+      {/* Error message */}
+      {state.error && (
+        <span className="text-red-500">Something went wrong</span>
+      )}
+
+      {/* Submit button */}
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>

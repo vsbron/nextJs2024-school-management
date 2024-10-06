@@ -13,7 +13,7 @@ import { Class, Lesson, Student } from "@prisma/client";
 
 import InputField from "../InputField";
 
-function ClassForm({
+function AttendanceForm({
   setOpen,
   type,
   data,
@@ -207,6 +207,13 @@ function ClassForm({
           hidden
         />
       </div>
+
+      {/* Error message */}
+      {state.error && (
+        <span className="text-red-500">Something went wrong</span>
+      )}
+
+      {/* Submit button */}
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>
@@ -214,4 +221,4 @@ function ClassForm({
   );
 }
 
-export default ClassForm;
+export default AttendanceForm;
