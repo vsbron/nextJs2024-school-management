@@ -90,14 +90,6 @@ async function AttendanceList({
     }
   }
 
-  // ROLE CONDITIONS
-  switch (role) {
-    case "admin":
-      break;
-    default:
-      break;
-  }
-
   // Fetching the data from the database and setting the pagination constants
   const [data, count] = await prisma.$transaction([
     prisma.attendance.findMany({

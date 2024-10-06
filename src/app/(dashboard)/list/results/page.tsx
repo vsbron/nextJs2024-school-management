@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { Prisma, Result } from "@prisma/client";
+import { Exam, Prisma, Result, Student } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
@@ -11,7 +11,7 @@ import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
 
 // Type for the result list with data from different tables
-type ResultsList = Result;
+type ResultsList = Result & { exam: Exam; student: Student };
 
 async function ResultsList({
   searchParams,
@@ -19,24 +19,20 @@ async function ResultsList({
   searchParams: { [key: string]: string | undefined };
 }) {
   // Getting the user ID and the role
-  const { sessionClaims } = auth();
+  const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const currentUserId = userId;
 
   // Defining columns for table
   const columns = [
     {
-      header: "ID",
-      accessor: "id",
+      header: "Exam",
+      accessor: "exam",
       className: "px-4",
     },
     {
-      header: "Class ID",
-      accessor: "classId",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "StudentId",
-      accessor: "studentId",
+      header: "Student",
+      accessor: "student",
       className: "hidden md:table-cell",
     },
     {
@@ -44,7 +40,7 @@ async function ResultsList({
       accessor: "score",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin" || role === "teacher"
+    ...(role === "admin"
       ? [
           {
             header: "Actions",
@@ -67,22 +63,21 @@ async function ResultsList({
 
       // Switch statement to cover all available search params
       switch (key) {
-        // // Filtering by student id
-        // case "studentId":
-        //   query.studentId = value;
-        //   break;
-        // // Filtering by search input
-        // case "search":
-        //   // prettier-ignore
-        //   query.OR = [
-        //     { exam: { title: { contains: value, mode: "insensitive" } } },
-        //     { student: { name: { contains: value, mode: "insensitive" } } },
-        //     { exam: { lesson: { teacher: { OR: [
-        //       { name: { contains: value, mode: "insensitive" } },
-        //       { surname: { contains: value, mode: "insensitive" } },
-        //     ] } } } },
-        //   ];
-        //   break;
+        // Filtering by student id
+        case "studentId":
+          query.studentId = value;
+          break;
+        // Filtering by search input
+        case "search":
+          // prettier-ignore
+          query.OR = [
+            { exam: { title: { contains: value, mode: "insensitive" } } },
+            { OR: [
+              { student: { name: { contains: value, mode: "insensitive" } } },
+              { student: {surname: { contains: value, mode: "insensitive" } } },
+            ] },
+          ];
+          break;
         default:
           break;
       }
@@ -90,19 +85,17 @@ async function ResultsList({
   }
   // ROLE CONDITIONS
   switch (role) {
-    // case "admin":
-    //   break;
     // case "teacher":
     //   query.exam = { lesson: { teacherId: currentUserId! } };
     //   break;
-    // case "student":
-    //   query.studentId = currentUserId!;
-    //   break;
-    // case "parent":
-    //   query.student = {
-    //     parentId: currentUserId!,
-    //   };
-    //   break;
+    case "student":
+      query.studentId = currentUserId!;
+      break;
+    case "parent":
+      query.student = {
+        parentId: currentUserId!,
+      };
+      break;
     default:
       break;
   }
@@ -111,6 +104,7 @@ async function ResultsList({
   const [data, count] = await prisma.$transaction([
     prisma.result.findMany({
       where: query,
+      include: { exam: true, student: true },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),
@@ -124,12 +118,13 @@ async function ResultsList({
       className="border-b border-gray-200 a:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.id}</h3>
+        <h3 className="font-semibold">{item.exam.title}</h3>
       </td>
-      <td className="hidden md:table-cell">{item.examId}</td>
-      <td className="hidden md:table-cell">{item.studentId}</td>
+      <td className="hidden md:table-cell">
+        {item.student.name[0]}. {item.student.surname}
+      </td>
       <td className="hidden md:table-cell">{item.score}</td>
-      {(role === "admin" || role === "teacher") && (
+      {role === "admin" && (
         <td>
           <div className="flex items-center gap-2">
             <FormContainer table="result" type="update" data={item} />

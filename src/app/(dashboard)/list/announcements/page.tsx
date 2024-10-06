@@ -78,8 +78,6 @@ async function AnnouncementList({
 
   // ROLE CONDITIONS - switch version
   switch (role) {
-    case "admin":
-      break;
     case "teacher":
       query.OR = [
         { classId: null },

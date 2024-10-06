@@ -104,8 +104,6 @@ async function ExamList({
 
   // ROLE CONDITIONS
   switch (role) {
-    case "admin":
-      break;
     case "teacher":
       query.lesson.teacherId = currentUserId!;
       break;

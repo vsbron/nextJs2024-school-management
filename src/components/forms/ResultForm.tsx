@@ -69,6 +69,7 @@ function ResultForm({
     formAction(formData);
   });
 
+  // Getting the students & exams from the related data object
   const { students, exams } = relatedData;
 
   // Returned JSX

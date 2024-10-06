@@ -95,8 +95,6 @@ async function LessonList({
 
   // ROLE CONDITIONS - switch version
   switch (role) {
-    case "admin":
-      break;
     case "teacher":
       query.teacherId = currentUserId!;
       break;
