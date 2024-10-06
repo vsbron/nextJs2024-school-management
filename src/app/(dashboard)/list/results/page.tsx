@@ -1,37 +1,41 @@
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
-import { Prisma } from "@prisma/client";
+import {
+  Result,
+  Prisma,
+  Exam,
+  Lesson,
+  Subject,
+  Teacher,
+  Class,
+  Student,
+} from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { auth } from "@clerk/nextjs/server";
+import { formatDate } from "@/lib/utils";
 
-// Type for the results list with data from different tables
-type ResultsList = {
-  id: number;
-  title: string;
-  studentName: string;
-  studentSurname: string;
-  teacherName: string;
-  teacherSurname: string;
-  score: number;
-  className: string;
-  startTime: Date;
+// Type for the result list with data from different tables
+type ResultList = Result & {
+  exam: Exam & {
+    lesson: Lesson & { class: Class; subject: Subject; teacher: Teacher };
+  };
+  student: Student;
 };
 
-async function ResultsList({
+async function ResultList({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
   // Getting the user ID and the role
-  const { userId, sessionClaims } = auth();
+  const { sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
-  const currentUserId = userId;
 
   // Defining columns for table
   const columns = [
@@ -41,17 +45,8 @@ async function ResultsList({
       className: "px-4",
     },
     {
-      header: "Student",
-      accessor: "student",
-    },
-    {
-      header: "Score",
-      accessor: "score",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Teacher",
-      accessor: "teacher",
+      header: "Subject",
+      accessor: "subject",
       className: "hidden md:table-cell",
     },
     {
@@ -64,7 +59,17 @@ async function ResultsList({
       accessor: "date",
       className: "hidden md:table-cell",
     },
-    ...(role === "admin" || role === "teacher"
+    {
+      header: "Student",
+      accessor: "student",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    ...(role === "admin"
       ? [
           {
             header: "Actions",
@@ -88,66 +93,53 @@ async function ResultsList({
 
       // Switch statement to cover all available search params
       switch (key) {
-        // Filtering by student id
-        case "studentId":
-          query.studentId = value;
+        // Filtering by teacher id
+        case "teacherId":
+          break;
+        // Filtering by class id
+        case "classId":
           break;
         // Filtering by search input
         case "search":
-          // prettier-ignore
-          query.OR = [
-            { exam: { title: { contains: value, mode: "insensitive" } } },
-            { assignment: { title: { contains: value, mode: "insensitive" } } },
-            { student: { name: { contains: value, mode: "insensitive" } } },
-            { OR: [
-              { exam: { lesson: { teacher: { OR: [
-                { name: { contains: value, mode: "insensitive" } },
-                { surname: { contains: value, mode: "insensitive" } },
-              ] } } } },
-              { assignment: { lesson: { teacher: { OR: [
-                { name: { contains: value, mode: "insensitive" } },
-                { surname: { contains: value, mode: "insensitive" } },
-              ] } } } },
-            ] },
-          ];
-          break;
         default:
           break;
       }
     }
   }
+
   // ROLE CONDITIONS
   switch (role) {
     case "admin":
       break;
     case "teacher":
-      query.OR = [
-        { exam: { lesson: { teacherId: currentUserId! } } },
-        { assignment: { lesson: { teacherId: currentUserId! } } },
-      ];
       break;
     case "student":
-      query.studentId = currentUserId!;
       break;
     case "parent":
-      query.student = { parentId: currentUserId! };
       break;
     default:
       break;
   }
 
   // Fetching the data from the database and setting the pagination constants
-  const [dataRes, count] = await prisma.$transaction([
+  const [data, count] = await prisma.$transaction([
     prisma.result.findMany({
       where: query,
       include: {
-        student: true,
         exam: {
-          include: { lesson: { select: { class: true, teacher: true } } },
+          select: {
+            title: true,
+            startTime: true,
+            lesson: {
+              select: {
+                teacher: { select: { name: true, surname: true } },
+                subject: { select: { name: true } },
+                class: { select: { name: true } },
+              },
+            },
+          },
         },
-        assignment: {
-          include: { lesson: { select: { class: true, teacher: true } } },
-        },
+        student: { select: { name: true, surname: true } },
       },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
@@ -155,43 +147,25 @@ async function ResultsList({
     prisma.result.count({ where: query }),
   ]);
 
-  // Creating special data object that combines all possible data from either exam or assignment
-  const data = dataRes
-    .map((item) => {
-      const assessment = item.exam || item.assignment;
-      if (!assessment) return null; // Guard clause
-      const isExam = "startTime" in assessment;
-      return {
-        id: item.id,
-        title: assessment.title,
-        studentName: item.student.name,
-        studentSurname: item.student.surname,
-        teacherName: assessment.lesson.teacher.name,
-        teacherSurname: assessment.lesson.teacher.surname,
-        score: item.score,
-        className: assessment.lesson.class.name,
-        startTime: isExam ? assessment.startTime : assessment.startDate,
-      };
-    })
-    .filter((item): item is ResultsList => item !== null); // Type guard to filter out nulls
-
   // Creating the function that renders a data row in the table
-  const renderRow = (item: ResultsList) => (
+  const renderRow = (item: ResultList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
       <td className="flex items-center gap-4 p-4">
-        <h3 className="font-semibold">{item.title}</h3>
+        <h3 className="font-semibold">{item.exam.title}</h3>
       </td>
-      <td>{item.studentName + " " + item.studentSurname}</td>
-      <td className="hidden md:table-cell">{item.score}</td>
+      <td className="hidden md:table-cell">{item.exam.lesson.subject.name}</td>
+      <td className="hidden md:table-cell">{item.exam.lesson.class.name}</td>
       <td className="hidden md:table-cell">
-        {item.teacherName + " " + item.teacherSurname}
+        {formatDate(item.exam.startTime)}
       </td>
-      <td className="hidden md:table-cell">{item.className}</td>
       <td className="hidden md:table-cell">
-        {new Intl.DateTimeFormat("en-US").format(item.startTime)}
+        {item.student.name[0]}. {item.student.surname}
+      </td>
+      <td className="hidden md:table-cell">
+        {item.exam.lesson.teacher.name[0]}. {item.exam.lesson.teacher.surname}
       </td>
       {(role === "admin" || role === "teacher") && (
         <td>
@@ -224,11 +198,11 @@ async function ResultsList({
         </div>
       </div>
       {/* LIST */}
-      <Table<ResultsList> columns={columns} renderRow={renderRow} data={data} />
+      <Table<ResultList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
       <Pagination page={p} count={count} />
     </div>
   );
 }
 
-export default ResultsList;
+export default ResultList;

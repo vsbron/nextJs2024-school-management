@@ -23,11 +23,8 @@ async function AttendanceList({
   searchParams: { [key: string]: string | undefined };
 }) {
   // Getting the user ID and the role
-  const { userId, sessionClaims } = auth();
+  const { sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
-  const currentUserId = userId;
-
-  console.log(currentUserId);
 
   // Defining columns for table
   const columns = [
