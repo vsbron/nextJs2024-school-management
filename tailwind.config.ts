@@ -16,6 +16,7 @@ const config: Config = {
       },
       colors: {
         schoolSky: "#c3ebfa",
+        schoolSkyDark: "#9cbcc8",
         schoolSkyLight: "#edf9fd",
         schoolPurple: "#cfceff",
         schoolPurpleLight: "#f1f0ff",

@@ -48,12 +48,13 @@ A comprehensive School Management App designed to create and manage schedules, a
 
 ## Improvements
 
+- Layout features more semantic HTML elements;
+- Backspace key brings user back to previous page;
+- Current path gets highlighted in the side menu;
 - Filled all the rest of the forms that were missing;
 - Improved some forms to be more self explanatory and to improve UI;
 - Added number of helper function to fix the date differences between UI and Database due to timezone;
-- Added navigation buttons on the Big Calendar component;
-- Added Backspace key handler;
-- Added current path indicator on the menu;
+- Big Calendar component now features navigation buttons;
 
 ### Live version
 

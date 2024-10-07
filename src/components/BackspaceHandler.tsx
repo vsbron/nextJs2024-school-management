@@ -12,7 +12,7 @@ const BackspaceHandler = () => {
       // Get the active element
       const activeElement = document.activeElement;
 
-      // Check if the active element is an input, textarea, or content-editable
+      // Check if the active element is an input or textarea
       const isInputElement =
         activeElement instanceof HTMLInputElement ||
         activeElement instanceof HTMLTextAreaElement;

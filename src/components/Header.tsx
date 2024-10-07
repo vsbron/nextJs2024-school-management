@@ -2,13 +2,13 @@ import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import Image from "next/image";
 
-async function Navbar() {
+async function Header() {
   // Getting the current user from the Clerk
   const user = await currentUser();
 
   // Returned JSX
   return (
-    <div className="flex items-center justify-between p-4">
+    <header className="flex items-center justify-between p-4">
       {/* ICONS & USER */}
       <div className="flex items-center gap-6 justify-end w-full py-1">
         <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
@@ -30,8 +30,8 @@ async function Navbar() {
         </div>
         <UserButton />
       </div>
-    </div>
+    </header>
   );
 }
 
-export default Navbar;
+export default Header;
