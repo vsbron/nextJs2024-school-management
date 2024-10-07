@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useFormState } from "react-dom";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ import { createResult, updateResult } from "@/lib/actions";
 import { ResultInputs, resultSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
+import { Class, Student } from "@prisma/client";
 
 function ResultForm({
   setOpen,
@@ -39,6 +40,9 @@ function ResultForm({
 
   // Getting the router
   const router = useRouter();
+
+  // Track the selected exam
+  const [selectedExam, setSelectedExam] = useState<any>(null);
 
   // Use effect to trigger the toast message
   useEffect(() => {
@@ -72,6 +76,14 @@ function ResultForm({
   // Getting the students & exams from the related data object
   const { students, exams } = relatedData;
 
+  // Filter students based on selected exam
+  const filteredStudents = selectedExam
+    ? students.filter(
+        (student: Student & { class: Class }) =>
+          student.classId === selectedExam.lesson.classId
+      )
+    : students;
+
   // Returned JSX
   return (
     <form onSubmit={submitHandler} className="flex flex-col gap-8">
@@ -86,6 +98,13 @@ function ResultForm({
             {...register("examId")}
             className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             defaultValue={data?.examId}
+            onChange={(e) => {
+              setSelectedExam(
+                exams.find(
+                  (exam: { id: number }) => exam.id === Number(e.target.value)
+                )
+              );
+            }}
           >
             {exams.map((exam: { id: string; title: string }) => (
               <option value={exam.id} key={exam.id}>
@@ -107,7 +126,7 @@ function ResultForm({
             className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
             defaultValue={data?.studentId}
           >
-            {students.map(
+            {filteredStudents.map(
               (student: { id: string; name: string; surname: true }) => (
                 <option value={student.id} key={student.id}>
                   {student.name[0]}. {student.surname}
