@@ -52,6 +52,8 @@ A comprehensive School Management App designed to create and manage schedules, a
 - Improved some forms to be more self explanatory and to improve UI;
 - Added number of helper function to fix the date differences between UI and Database due to timezone;
 - Added navigation buttons on the Big Calendar component;
+- Added Backspace key handler;
+- Added current path indicator on the menu;
 
 ### Live version
 

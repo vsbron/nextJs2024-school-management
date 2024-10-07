@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { Open_Sans } from "next/font/google";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+import BackspaceHandler from "@/components/BackspaceHandler";
 
 // Importing font
 const openSans = Open_Sans({ subsets: ["latin"] });
@@ -25,6 +26,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={openSans.className}>
           {children}
+          <BackspaceHandler />
           <ToastContainer position="bottom-right" theme="dark" />
         </body>
       </html>

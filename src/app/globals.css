@@ -95,3 +95,7 @@
   color: gray !important;
   margin-bottom: 5px;
 }
+
+.active-menu {
+  background-color: #f1f0ff !important;
+}

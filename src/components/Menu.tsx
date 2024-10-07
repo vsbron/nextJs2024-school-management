@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
+import ActiveLink from "./ActiveLink";
 
 export const menuItems = [
   {
@@ -127,19 +127,17 @@ async function Menu() {
           {i.items.map((menuItem) => {
             if (menuItem.visible.includes(role)) {
               return (
-                <Link
-                  href={menuItem.href}
-                  key={menuItem.label}
-                  className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-1.5 md:px-2 rounded-md hover:bg-schoolSkyLight"
-                >
-                  <Image
-                    src={menuItem.icon}
-                    alt={menuItem.label}
-                    width={20}
-                    height={20}
-                  />
-                  <span className="hidden lg:block">{menuItem.label}</span>
-                </Link>
+                <ActiveLink href={menuItem.href} key={menuItem.label}>
+                  <div className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-1.5 md:px-2 rounded-md hover:bg-schoolSkyLight cursor-pointer">
+                    <Image
+                      src={menuItem.icon}
+                      alt={menuItem.label}
+                      width={20}
+                      height={20}
+                    />
+                    <span className="hidden lg:block">{menuItem.label}</span>
+                  </div>
+                </ActiveLink>
               );
             }
           })}
