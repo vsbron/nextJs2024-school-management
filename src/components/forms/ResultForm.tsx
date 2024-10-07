@@ -10,7 +10,7 @@ import { createResult, updateResult } from "@/lib/actions";
 import { ResultInputs, resultSchema } from "@/lib/formSchemas";
 
 import InputField from "../InputField";
-import { Class, Student } from "@prisma/client";
+import { Class, Exam, Student } from "@prisma/client";
 
 function ResultForm({
   setOpen,
@@ -43,6 +43,20 @@ function ResultForm({
 
   // Track the selected exam
   const [selectedExam, setSelectedExam] = useState<any>(null);
+
+  // Use effect to set the selected exam based on the data provided
+  useEffect(() => {
+    // Get the initial selected exam ID from the examId field
+    const initialExamId = data?.examId || exams[0]?.id; // Fallback to first exam if no data
+
+    // Find the selected exam based on the ID
+    const selectedFormExam = exams.find(
+      (exam: Exam) => exam.id === initialExamId
+    );
+
+    // Set the selected exam in the state
+    setSelectedExam(selectedFormExam);
+  }, []); // Keeping the dependency array empty to run only on mount
 
   // Use effect to trigger the toast message
   useEffect(() => {
