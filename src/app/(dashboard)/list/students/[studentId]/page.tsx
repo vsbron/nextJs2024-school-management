@@ -2,26 +2,21 @@ import { Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { Class, Student } from "@prisma/client";
 
 import BigCalendarContainer from "@/components/BigCalendarContainer";
-import FormContainer from "@/components/FormContainer";
 import PerformanceChart from "@/components/PerformanceChart";
 import StudentAttendanceCard from "@/components/StudentAttendanceCard";
 import { getOrdinalSuffix } from "@/lib/utils";
+import InfoCard from "@/components/InfoCard";
 
 async function SingleStudentPage({
   params: { studentId },
 }: {
   params: { studentId: string };
 }) {
-  // Getting the role
-  const { sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
-
   // Fetching the student data from database
   const student:
     | (Student & { class: Class & { _count: { lessons: number } } })
@@ -41,70 +36,7 @@ async function SingleStudentPage({
         {/* TOP */}
         <div className="flex flex-col lg:flex-row gap-4">
           {/* USER INFO CARD */}
-          <div className="bg-schoolSky py-6 px-4 rounded-xl flex-1 flex flex-col xs:flex-row gap-4">
-            <div className="basis-1/3">
-              <Image
-                src={student.img || "/noAvatar.png"}
-                className="rounded-full object-cover"
-                alt="Student name"
-                width={144}
-                height={144}
-              />
-            </div>
-            <div className="basis-2/3 flex flex-col justify-between gap-4">
-              <div className="flex items-center gap-4">
-                <h1 className="text-xl font-semibold">
-                  {student.name} {student.surname}
-                </h1>
-                {role === "admin" && (
-                  <FormContainer table="student" type="update" data={student} />
-                )}
-              </div>
-              <p className="text-sm text-gray-500">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              </p>
-              <div className="flex items-center justify-between gap-y-2 flex-wrap text-xs font-medium">
-                <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
-                  <Image
-                    src="/blood.png"
-                    width={14}
-                    height={14}
-                    alt="Blood type"
-                  />
-                  <span>{student.bloodType}</span>
-                </div>
-                <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
-                  <Image
-                    src="/date.png"
-                    width={14}
-                    height={14}
-                    alt="Blood type"
-                  />
-                  <span>
-                    {new Intl.DateTimeFormat("en-US").format(student.birthday)}
-                  </span>
-                </div>
-                <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
-                  <Image
-                    src="/mail.png"
-                    width={14}
-                    height={14}
-                    alt="Blood type"
-                  />
-                  <span>{student.email}</span>
-                </div>
-                <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
-                  <Image
-                    src="/phone.png"
-                    width={14}
-                    height={14}
-                    alt="Phone number"
-                  />
-                  <span>{student.phone}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <InfoCard person={student} />
           {/* SMALL CARDS */}
           <div className="flex-1 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-4 justify-between flex-wrap">
             {/* CARD */}
@@ -201,7 +133,7 @@ async function SingleStudentPage({
               Student&apos;s parents
             </Link>
             <Link
-              href={`/list/lessons?classId=${student.classId}`}
+              href={`/list/exams?classId=${student.classId}`}
               className="p-2 rounded-md bg-schoolYellowLight"
             >
               Student&apos;s exams
