@@ -27,7 +27,7 @@ export default function DashboardLayout({
       {/* RIGHT */}
       <div className="w-[86%] md:w-[92%] lg:w-[84%] xl:w-[86%] bg-[#f7f8fa] overflow-scroll flex flex-col">
         <Header />
-        <main>{children}</main>
+        <main className="p-4 flex gap-4 flex-col xl:flex-row">{children}</main>
       </div>
     </div>
   );

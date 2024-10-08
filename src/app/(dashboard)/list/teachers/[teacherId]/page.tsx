@@ -6,7 +6,7 @@ import prisma from "@/lib/prisma";
 import { Teacher } from "@prisma/client";
 
 import BigCalendarContainer from "@/components/BigCalendarContainer";
-import PerformanceChart from "@/components/PerformanceChart";
+import PerformanceChart from "@/components/charts/PerformanceChart";
 import InfoCard from "@/components/InfoCard";
 
 async function SingleTeacherPage({

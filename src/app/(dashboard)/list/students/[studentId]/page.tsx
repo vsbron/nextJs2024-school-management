@@ -7,7 +7,7 @@ import prisma from "@/lib/prisma";
 import { Class, Student } from "@prisma/client";
 
 import BigCalendarContainer from "@/components/BigCalendarContainer";
-import PerformanceChart from "@/components/PerformanceChart";
+import PerformanceChart from "@/components/charts/PerformanceChart";
 import StudentAttendanceCard from "@/components/StudentAttendanceCard";
 import { getOrdinalSuffix } from "@/lib/utils";
 import InfoCard from "@/components/InfoCard";

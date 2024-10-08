@@ -1,18 +1,18 @@
 import { SearchParamsType } from "@/lib/types";
 
 import AnnouncementsContainer from "@/components/AnnouncementsContainer";
-import AttendanceChartContainer from "@/components/AttendanceChartContainer";
-import CountChartContainer from "@/components/CountChartContainer";
+import AttendanceChartContainer from "@/components/charts/AttendanceChartContainer";
+import CountChartContainer from "@/components/charts/CountChartContainer";
 import EventCalendarContainer from "@/components/EventCalendarContainer";
-import FinanceChart from "@/components/FinanceChart";
+import FinanceChart from "@/components/charts/FinanceChart";
+import { HomePageLeft, HomePageRight } from "@/components/HomePageLayout";
 import UserCard from "@/components/UserCard";
 
 function AdminPage({ searchParams }: { searchParams: SearchParamsType }) {
   // Returned JSX
   return (
-    <div className="flex flex-col md:flex-row gap-4 p-4">
-      {/* LEFT */}
-      <div className="w-full lg:w-2/3 flex flex-col gap-8">
+    <>
+      <HomePageLeft>
         {/* USER CARDS */}
         <div className="flex gap-4 justify-between flex-wrap">
           <UserCard type="students" />
@@ -36,14 +36,13 @@ function AdminPage({ searchParams }: { searchParams: SearchParamsType }) {
         <div className="w-full h-[500px]">
           <FinanceChart />
         </div>
-      </div>
+      </HomePageLeft>
 
-      {/* RIGHT */}
-      <aside className="w-full lg:w-1/3 flex flex-col gap-8">
+      <HomePageRight>
         <EventCalendarContainer searchParams={searchParams} />
         <AnnouncementsContainer />
-      </aside>
-    </div>
+      </HomePageRight>
+    </>
   );
 }
 
