@@ -15,12 +15,12 @@ function CountChart({ boys, girls }: CountChartType) {
     {
       name: "Girls",
       count: girls,
-      fill: "#fae27c",
+      fill: "#ffd7b2",
     },
     {
       name: "Boys",
       count: boys,
-      fill: "#c3ebfa",
+      fill: "#a2e1fa",
     },
   ];
 

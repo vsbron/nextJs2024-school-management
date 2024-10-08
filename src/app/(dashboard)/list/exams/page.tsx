@@ -186,11 +186,8 @@ async function ExamList({
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
           <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
-              <Image src="/filter.png" width={14} height={14} alt="" />
-            </button>
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolYellow">
-              <Image src="/sort.png" width={14} height={14} alt="" />
+            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolOrange">
+              <Image src="/sort.svg" width={14} height={14} alt="" />
             </button>
             {(role === "admin" || role === "teacher") && (
               <FormContainer table="exam" type="create" />

@@ -5,8 +5,8 @@ import { PieChart, Pie, ResponsiveContainer } from "recharts";
 
 // Data for performance
 const data = [
-  { name: "1st Semester", value: 92, fill: "#c3ebfa" },
-  { name: "2st Semester", value: 8, fill: "#fae27c" },
+  { name: "1st Semester", value: 92, fill: "#a2e1fa" },
+  { name: "2st Semester", value: 8, fill: "#ffd7b2" },
 ];
 
 function PerformanceChart() {

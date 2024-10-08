@@ -17,9 +17,9 @@ async function UserCard({ type }: { type: UserCardType }) {
 
   // Returned JSX
   return (
-    <div className="rounded-2xl odd:bg-schoolPurple even:bg-schoolYellow p-4 flex-1 min-w-[130px]">
+    <div className="rounded-2xl odd:bg-schoolPurple even:bg-schoolOrange p-4 flex-1 min-w-[130px]">
       <div className="flex justify-between items-center">
-        <span className="text-[10px] bg-white px-2 py-1 rounded-full text-green-600">
+        <span className="text-[10px] font-semibold bg-white px-2 py-1 rounded-full text-schoolGreenDark">
           2024/25
         </span>
         <Image src="/more.png" width={20} height={20} alt="More" />

@@ -119,13 +119,13 @@ function FinanceChart() {
           <Line
             type="monotone"
             dataKey="income"
-            stroke="#c3ebfa"
+            stroke="#a2e1fa"
             strokeWidth={5}
           />
           <Line
             type="monotone"
             dataKey="expense"
-            stroke="#cfceff"
+            stroke="#e0c1fc"
             strokeWidth={5}
           />
         </LineChart>

@@ -197,7 +197,7 @@ function FormModal<T>({
   const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
   const bgColor =
     type === "create"
-      ? "bg-schoolYellow"
+      ? "bg-schoolOrange"
       : type === "update"
       ? "bg-schoolSky"
       : "bg-schoolPurple";
@@ -244,7 +244,7 @@ function FormModal<T>({
         className={`${size} ${bgColor} flex items-center justify-center rounded-full`}
         onClick={() => setOpenModal(true)}
       >
-        <Image src={`/${type}.png`} width={16} height={16} alt="Icon" />
+        <Image src={`/${type}.svg`} width={16} height={16} alt="Icon" />
       </button>
       {openModal && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">

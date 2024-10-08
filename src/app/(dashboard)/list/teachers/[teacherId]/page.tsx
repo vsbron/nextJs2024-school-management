@@ -136,7 +136,7 @@ async function SingleTeacherPage({
             </Link>
             <Link
               href={`/list/lessons?teacherId=${teacher.id}`}
-              className="p-2 rounded-md bg-schoolYellowLight"
+              className="p-2 rounded-md bg-schoolOrangeLight"
             >
               Teacher&apos;s lessons
             </Link>
@@ -154,7 +154,7 @@ async function SingleTeacherPage({
             </Link>
             <Link
               href={`/list/subjects?teacherId=${teacher.id}`}
-              className="p-2 rounded-md bg-schoolYellowLight"
+              className="p-2 rounded-md bg-schoolOrangeLight"
             >
               Teacher&apos;s subjects
             </Link>

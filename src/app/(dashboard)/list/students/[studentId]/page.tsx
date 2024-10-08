@@ -116,31 +116,31 @@ async function SingleStudentPage({
           <div className="flex gap-2 flex-wrap text-xs text-gray-500">
             <Link
               href={`/list/lessons?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolYellowLight"
+              className="p-2 rounded-md bg-schoolSkyLight"
             >
               Student&apos;s lessons
             </Link>
             <Link
               href={`/list/teachers?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolPurpleLight"
+              className="p-2 rounded-md bg-schoolGreenLight"
             >
               Student&apos;s teachers
             </Link>
             <Link
               href={`/list/parents?parentId=${student.parentId}`}
-              className="p-2 rounded-md bg-schoolSkyLight"
+              className="p-2 rounded-md bg-schoolOrangeLight"
             >
               Student&apos;s parents
             </Link>
             <Link
               href={`/list/exams?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolYellowLight"
+              className="p-2 rounded-md bg-schoolPurpleLight"
             >
               Student&apos;s exams
             </Link>
             <Link
               href={`/list/lessons?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolPurpleLight"
+              className="p-2 rounded-md bg-schoolRedLight"
             >
               Student&apos;s assignments
             </Link>
@@ -152,19 +152,19 @@ async function SingleStudentPage({
             </Link>
             <Link
               href={`/list/events?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolYellowLight"
+              className="p-2 rounded-md bg-schoolGreenLight"
             >
               Student&apos;s events
             </Link>
             <Link
               href={`/list/announcements?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolPurpleLight"
+              className="p-2 rounded-md bg-schoolOrangeLight"
             >
               Student&apos;s announcements
             </Link>
             <Link
               href={`/list/attendance?studentId=${student.id}`}
-              className="p-2 rounded-md bg-schoolSkyLight"
+              className="p-2 rounded-md bg-schoolPurpleLight"
             >
               Student&apos;s attendance
             </Link>
