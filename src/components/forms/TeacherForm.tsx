@@ -152,6 +152,13 @@ function TeacherForm({
           error={errors?.address}
         />
         <InputField
+          label="Description"
+          register={register}
+          name="description"
+          defaultValue={data?.description}
+          error={errors?.description}
+        />
+        <InputField
           label="Blood Type"
           register={register}
           name="bloodType"

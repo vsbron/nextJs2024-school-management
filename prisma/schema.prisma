@@ -135,6 +135,7 @@ model Student {
   email       String?      @unique
   phone       String?      @unique
   address     String
+  description String?
   img         String?
   bloodType   String
   sex         UserSex
@@ -158,21 +159,22 @@ model Subject {
 }
 
 model Teacher {
-  id        String    @id
-  username  String    @unique
-  name      String
-  surname   String
-  email     String    @unique
-  phone     String    @unique
-  address   String
-  img       String?
-  bloodType String
-  sex       UserSex
-  createdAt DateTime  @default(now())
-  subjects  Subject[]
-  lessons   Lesson[]
-  classes   Class[]
-  birthday  DateTime
+  id          String    @id
+  username    String    @unique
+  name        String
+  surname     String
+  email       String    @unique
+  phone       String    @unique
+  address     String
+  description String?
+  img         String?
+  bloodType   String
+  sex         UserSex
+  createdAt   DateTime  @default(now())
+  subjects    Subject[]
+  lessons     Lesson[]
+  classes     Class[]
+  birthday    DateTime
 }
 
 enum UserSex {
