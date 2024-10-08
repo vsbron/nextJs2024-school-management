@@ -6,7 +6,7 @@ import { PieChart, Pie, ResponsiveContainer } from "recharts";
 // Data for performance
 const data = [
   { name: "1st Semester", value: 92, fill: "#a2e1fa" },
-  { name: "2st Semester", value: 8, fill: "#ffd7b2" },
+  { name: "2st Semester", value: 8, fill: "#ffe0b2" },
 ];
 
 function PerformanceChart() {
@@ -28,7 +28,7 @@ function PerformanceChart() {
             cx="50%"
             cy="50%"
             innerRadius={70}
-            fill="#8884d8"
+            fill="#e0c1fc"
           />
         </PieChart>
       </ResponsiveContainer>

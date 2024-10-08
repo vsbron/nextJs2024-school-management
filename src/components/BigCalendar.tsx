@@ -39,19 +39,19 @@ function BigCalendar({ data }: BigCalendarType) {
       {/* Week Switcher Buttons */}
       <div className="flex gap-2 justify-end mt-2 mb-2">
         <button
-          className="bg-blue-400 text-white px-1 py-0.5 text-sm rounded-md"
+          className="bg-schoolGreenDark hover:bg-schoolGreen text-white px-1 py-0.5 text-sm rounded-md"
           onClick={() => handleNavigate("PREV")}
         >
           Previous {view === Views.DAY ? "Day" : "Week"}
         </button>
         <button
-          className="bg-blue-400 text-white px-1 py-0.5  text-sm rounded-md"
+          className="bg-schoolGreenDark hover:bg-schoolGreen text-white px-1 py-0.5 text-sm rounded-md"
           onClick={() => handleNavigate("TODAY")}
         >
           {view === Views.DAY ? "Today" : "This Week"}
         </button>
         <button
-          className="bg-blue-400 text-white px-1 py-0.5  text-sm rounded-md"
+          className="bg-schoolGreenDark hover:bg-schoolGreen text-white px-1 py-0.5 text-sm rounded-md"
           onClick={() => handleNavigate("NEXT")}
         >
           Next {view === Views.DAY ? "Day" : "Week"}

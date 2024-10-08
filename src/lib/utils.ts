@@ -118,12 +118,12 @@ export function adjustToTimezone(date: Date) {
 
 // Helper function that returns random color name
 export function randomColor() {
-  // Array with color names
+  // Array with color suffixes
   const colors = ["Sky", "Green", "Orange", "Purple", "Red"];
 
   // Randomly choose color index
   const chosenColorIndex = Math.floor(Math.random() * colors.length);
 
-  // Return the color
+  // Return the color suffix
   return colors[chosenColorIndex];
 }

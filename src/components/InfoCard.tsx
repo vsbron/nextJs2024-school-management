@@ -15,8 +15,8 @@ function InfoCard({ person }: { person: Student | Teacher }) {
     <div className="bg-schoolSky py-6 px-4 rounded-xl flex-1 flex flex-col xs:flex-row gap-4">
       <Image
         src={person.img || "/noAvatar.svg"}
-        className="rounded-full object-cover"
-        alt="Student name"
+        className="rounded-full object-cover w-20 h-20 sm:w-36 sm:h-36"
+        alt={person.name + " " + person.surname}
         width={144}
         height={144}
       />
@@ -30,20 +30,20 @@ function InfoCard({ person }: { person: Student | Teacher }) {
           )}
         </div>
         <p className="text-sm text-gray-500">{person.description}</p>
-        <div className="flex items-center justify-between gap-y-2 flex-wrap text-xs font-medium">
-          <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
+        <div className="flex items-center justify-between gap-y-2 flex-wrap text-xs sm:text-sm font-medium">
+          <div className="w-full flex items-center gap-2 pr-2">
             <Image src="/phone.png" width={14} height={14} alt="Phone number" />
             <span>{person.phone}</span>
-          </div>
-          <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
-            <Image src="/date.png" width={14} height={14} alt="Birthday" />
-            <span>{formatDate(person.birthday)}</span>
           </div>
           <div className="w-full flex items-center gap-2 pr-2">
             <Image src="/mail.png" width={14} height={14} alt="Email" />
             <span>{person.email}</span>
           </div>
-          <div className="w-full flex items-center gap-2 pr-2">
+          <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
+            <Image src="/date.png" width={14} height={14} alt="Birthday" />
+            <span>{formatDate(person.birthday)}</span>
+          </div>
+          <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
             <Image src="/blood.png" width={14} height={14} alt="Blood type" />
             <span>{person.bloodType}</span>
           </div>

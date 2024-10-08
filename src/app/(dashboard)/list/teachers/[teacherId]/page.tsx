@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
 import prisma from "@/lib/prisma";
@@ -8,6 +7,7 @@ import BigCalendarContainer from "@/components/BigCalendarContainer";
 import PerformanceChart from "@/components/charts/PerformanceChart";
 import InfoCard from "@/components/InfoCard";
 import ShortcutLink from "@/components/ShortcutLink";
+import SmallCard from "@/components/SmallCard";
 
 async function SingleTeacherPage({
   params: { teacherId },
@@ -46,67 +46,31 @@ async function SingleTeacherPage({
           {/* SMALL CARDS */}
           <div className="flex-1 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-4 justify-between flex-wrap">
             {/* CARD */}
-            <div className="bg-white p-4 rounded-xl flex gap-4">
-              <Image
-                src="/singleAttendance.png"
-                className="w-10 h-10"
-                width={40}
-                height={40}
-                alt=""
-              />
-              <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">90%</h3>
-                <span className="text-sm text-gray-400">Attendance</span>
-              </div>
-            </div>
+            <SmallCard type="Attendance">
+              <h3 className="text-xl font-semibold">90%</h3>
+              <span className="text-sm text-gray-400">Attendance</span>
+            </SmallCard>
             {/* CARD */}
-            <div className="bg-white p-4 rounded-xl flex gap-4">
-              <Image
-                src="/singleBranch.png"
-                className="w-10 h-10"
-                width={40}
-                height={40}
-                alt=""
-              />
-              <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">
-                  {teacher._count.subjects}
-                </h3>
-                <span className="text-sm text-gray-400">Branches</span>
-              </div>
-            </div>
+            <SmallCard type="Branch">
+              <h3 className="text-xl font-semibold">
+                {teacher._count.subjects}
+              </h3>
+              <span className="text-sm text-gray-400">Branches</span>
+            </SmallCard>
             {/* CARD */}
-            <div className="bg-white p-4 rounded-xl flex gap-4">
-              <Image
-                src="/singleLesson.png"
-                className="w-10 h-10"
-                width={40}
-                height={40}
-                alt=""
-              />
-              <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">
-                  {teacher._count.lessons}
-                </h3>
-                <span className="text-sm text-gray-400">Lessons</span>
-              </div>
-            </div>
+            <SmallCard type="Lesson">
+              <h3 className="text-xl font-semibold">
+                {teacher._count.lessons}
+              </h3>
+              <span className="text-sm text-gray-400">Lessons</span>
+            </SmallCard>
             {/* CARD */}
-            <div className="bg-white p-4 rounded-xl flex gap-4">
-              <Image
-                src="/singleClass.png"
-                className="w-10 h-10"
-                width={40}
-                height={40}
-                alt=""
-              />
-              <div className="flex flex-col">
-                <h3 className="text-xl font-semibold">
-                  {teacher._count.classes}
-                </h3>
-                <span className="text-sm text-gray-400">Classes</span>
-              </div>
-            </div>
+            <SmallCard type="Class">
+              <h3 className="text-xl font-semibold">
+                {teacher._count.classes}
+              </h3>
+              <span className="text-sm text-gray-400">Classes</span>
+            </SmallCard>
           </div>
         </div>
         {/* BOTTOM */}

@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --school-sky: #a2e1fa;
+  --school-sky-light: #e5f7fd;
+  --school-sky-dark: #8bb8cf;
+  --school-green: #a8eac1;
+  --school-green-light: #dff5ec;
+  --school-green-dark: #7cc9a2;
+  --school-orange: #ffe0b2;
+  --school-orange-light: #fff5eb;
+  --school-purple: #e0c1fc;
+  --school-purple-light: #f2eaff;
+  --school-red: #ff9b9b;
+  --school-red-light: #ffe9e9;
+}
+
 /* Overriding small calendar css */
 .react-calendar {
   width: 100% !important;
@@ -13,8 +28,12 @@
   font-weight: 600 !important;
 }
 
+.react-calendar__tile--now {
+  background: var(--school-red-light) !important;
+  color: black !important;
+}
 .react-calendar__tile--active {
-  background: #a2e1fa !important;
+  background: var(--school-sky) !important;
   color: black !important;
 }
 
@@ -44,7 +63,7 @@
 
 .rbc-btn-group:last-child button.rbc-active {
   box-shadow: none !important;
-  background: #dbdafe !important;
+  background: var(--school-purple) !important;
 }
 
 .rbc-time-view {
@@ -77,7 +96,7 @@
 }
 
 .rbc-event {
-  background-color: #e2f8ff !important;
+  background-color: var(--school-sky) !important;
   border: none !important;
   color: black !important;
   padding: 8px 10px !important;
@@ -87,7 +106,7 @@
 }
 
 .rbc-event:focus {
-  background-color: #fefce8 !important;
+  background-color: var(--school-orange) !important;
   outline: none !important;
 }
 
@@ -97,5 +116,5 @@
 }
 
 .active-menu {
-  background-color: #f1f0ff !important;
+  background-color: var(--school-purple-light) !important;
 }

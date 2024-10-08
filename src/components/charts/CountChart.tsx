@@ -15,7 +15,7 @@ function CountChart({ boys, girls }: CountChartType) {
     {
       name: "Girls",
       count: girls,
-      fill: "#ffd7b2",
+      fill: "#ffe0b2",
     },
     {
       name: "Boys",
@@ -41,7 +41,7 @@ function CountChart({ boys, girls }: CountChartType) {
         </RadialBarChart>
       </ResponsiveContainer>
       <Image
-        src="/maleFemale.png"
+        src="/maleFemale.svg"
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         alt=""
         width={50}

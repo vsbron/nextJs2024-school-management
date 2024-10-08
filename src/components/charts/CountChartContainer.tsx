@@ -28,14 +28,14 @@ async function CountChartContainer() {
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-schoolSky rounded-full" />
           <h3 className="font-bold">{boys}</h3>
-          <h4 className="text-xs text-gray-300">
-            Boys ({Math.round((girls / (boys + girls)) * 100)}%)
+          <h4 className="text-xs text-gray-400">
+            Boys ({Math.round((boys / (boys + girls)) * 100)}%)
           </h4>
         </div>
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-schoolOrange rounded-full" />
           <h3 className="font-bold">{girls}</h3>
-          <h4 className="text-xs text-gray-300">
+          <h4 className="text-xs text-gray-400">
             Girls ({Math.round((girls / (boys + girls)) * 100)}%)
           </h4>
         </div>

@@ -33,6 +33,20 @@ const config: Config = {
       },
     },
   },
+  safelist: [
+    "bg-schoolRed",
+    "bg-schoolRedLight",
+    "bg-schoolGreen",
+    "bg-schoolGreenDark",
+    "bg-schoolGreenLight",
+    "bg-schoolSky",
+    "bg-schoolSkyDark",
+    "bg-schoolSkyLight",
+    "bg-schoolPurple",
+    "bg-schoolPurpleLight",
+    "bg-schoolOrange",
+    "bg-schoolOrangeLight",
+  ],
   plugins: [],
 };
 export default config;

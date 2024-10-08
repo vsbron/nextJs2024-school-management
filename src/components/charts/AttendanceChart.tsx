@@ -36,7 +36,7 @@ function AttendanceChart({ data }: { data: AttendanceChartType }) {
         />
         <Bar
           dataKey="present"
-          fill="#ffd7b2"
+          fill="#ffe0b2"
           legendType="circle"
           radius={[10, 10, 0, 0]}
         />
