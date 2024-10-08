@@ -114,7 +114,7 @@ async function TeacherList({
     >
       <td className="flex items-center gap-4 p-4">
         <Image
-          src={item.img || "/noAvatar.png"}
+          src={item.img || "/noAvatar.svg"}
           className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
           width={40}
           height={40}
@@ -140,7 +140,7 @@ async function TeacherList({
         <div className="flex items-center gap-2">
           <Link href={`/list/teachers/${item.id}`}>
             <button className="rounded-full w-7 h-7 flex items-center justify-center bg-schoolSky">
-              <Image src="/view.png" width={16} height={16} alt="" />
+              <Image src="/view.svg" width={16} height={16} alt="" />
             </button>
           </Link>
           {role === "admin" && (

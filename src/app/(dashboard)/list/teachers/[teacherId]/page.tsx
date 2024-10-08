@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -8,6 +7,7 @@ import { Teacher } from "@prisma/client";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
 import PerformanceChart from "@/components/charts/PerformanceChart";
 import InfoCard from "@/components/InfoCard";
+import ShortcutLink from "@/components/ShortcutLink";
 
 async function SingleTeacherPage({
   params: { teacherId },
@@ -49,9 +49,9 @@ async function SingleTeacherPage({
             <div className="bg-white p-4 rounded-xl flex gap-4">
               <Image
                 src="/singleAttendance.png"
-                className="w-6 h-6"
-                width={24}
-                height={24}
+                className="w-10 h-10"
+                width={40}
+                height={40}
                 alt=""
               />
               <div className="flex flex-col">
@@ -63,9 +63,9 @@ async function SingleTeacherPage({
             <div className="bg-white p-4 rounded-xl flex gap-4">
               <Image
                 src="/singleBranch.png"
-                className="w-6 h-6"
-                width={24}
-                height={24}
+                className="w-10 h-10"
+                width={40}
+                height={40}
                 alt=""
               />
               <div className="flex flex-col">
@@ -79,9 +79,9 @@ async function SingleTeacherPage({
             <div className="bg-white p-4 rounded-xl flex gap-4">
               <Image
                 src="/singleLesson.png"
-                className="w-6 h-6"
-                width={24}
-                height={24}
+                className="w-10 h-10"
+                width={40}
+                height={40}
                 alt=""
               />
               <div className="flex flex-col">
@@ -95,9 +95,9 @@ async function SingleTeacherPage({
             <div className="bg-white p-4 rounded-xl flex gap-4">
               <Image
                 src="/singleClass.png"
-                className="w-6 h-6"
-                width={24}
-                height={24}
+                className="w-10 h-10"
+                width={40}
+                height={40}
                 alt=""
               />
               <div className="flex flex-col">
@@ -122,42 +122,24 @@ async function SingleTeacherPage({
         <div className="bg-white p-4 rounded-xl">
           <h2 className="text-xl font-semibold mb-4">Shortcuts</h2>
           <div className="flex gap-2 flex-wrap text-xs text-gray-500">
-            <Link
-              href={`/list/classes?teacherId=${teacher.id}`}
-              className="p-2 rounded-md bg-schoolSkyLight"
-            >
+            <ShortcutLink href={`/list/classes?teacherId=${teacher.id}`}>
               Teacher&apos;s classes
-            </Link>
-            <Link
-              href={`/list/students?teacherId=${teacher.id}`}
-              className="p-2 rounded-md bg-schoolPurpleLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/students?teacherId=${teacher.id}`}>
               Teacher&apos;s students
-            </Link>
-            <Link
-              href={`/list/lessons?teacherId=${teacher.id}`}
-              className="p-2 rounded-md bg-schoolOrangeLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/lessons?teacherId=${teacher.id}`}>
               Teacher&apos;s lessons
-            </Link>
-            <Link
-              href={`/list/lessons?teacherId=${teacher.id}`}
-              className="p-2 rounded-md bg-schoolSkyLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/lessons?teacherId=${teacher.id}`}>
               Teacher&apos;s exams
-            </Link>
-            <Link
-              href={`/list/assignments?teacherId=${teacher.id}`}
-              className="p-2 rounded-md bg-schoolPurpleLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/assignments?teacherId=${teacher.id}`}>
               Teacher&apos;s assignments
-            </Link>
-            <Link
-              href={`/list/subjects?teacherId=${teacher.id}`}
-              className="p-2 rounded-md bg-schoolOrangeLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/subjects?teacherId=${teacher.id}`}>
               Teacher&apos;s subjects
-            </Link>
+            </ShortcutLink>
           </div>
         </div>
         {/* PERFORMANCE */}

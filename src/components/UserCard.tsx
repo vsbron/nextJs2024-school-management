@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { UserCardType } from "@/lib/types";
 import prisma from "@/lib/prisma";
+import { randomColor } from "@/lib/utils";
 
 async function UserCard({ type }: { type: UserCardType }) {
   // Creating the map for fetching the correct table
@@ -17,7 +18,9 @@ async function UserCard({ type }: { type: UserCardType }) {
 
   // Returned JSX
   return (
-    <div className="rounded-2xl odd:bg-schoolPurple even:bg-schoolOrange p-4 flex-1 min-w-[130px]">
+    <div
+      className={`rounded-2xl bg-school${randomColor()} p-4 flex-1 min-w-[130px]`}
+    >
       <div className="flex justify-between items-center">
         <span className="text-[10px] font-semibold bg-white px-2 py-1 rounded-full text-schoolGreenDark">
           2024/25

@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -7,10 +6,11 @@ import prisma from "@/lib/prisma";
 import { Class, Student } from "@prisma/client";
 
 import BigCalendarContainer from "@/components/BigCalendarContainer";
+import InfoCard from "@/components/InfoCard";
 import PerformanceChart from "@/components/charts/PerformanceChart";
+import ShortcutLink from "@/components/ShortcutLink";
 import StudentAttendanceCard from "@/components/StudentAttendanceCard";
 import { getOrdinalSuffix } from "@/lib/utils";
-import InfoCard from "@/components/InfoCard";
 
 async function SingleStudentPage({
   params: { studentId },
@@ -43,9 +43,9 @@ async function SingleStudentPage({
             <div className="bg-white p-4 rounded-xl flex gap-4">
               <Image
                 src="/singleAttendance.png"
-                className="w-6 h-6"
-                width={24}
-                height={24}
+                className="w-10 h-10"
+                width={40}
+                height={40}
                 alt=""
               />
               <Suspense fallback="Loading...">
@@ -56,9 +56,9 @@ async function SingleStudentPage({
             <div className="bg-white p-4 rounded-xl flex gap-4">
               <Image
                 src="/singleBranch.png"
-                className="w-6 h-6"
-                width={24}
-                height={24}
+                className="w-10 h-10"
+                width={40}
+                height={40}
                 alt=""
               />
               <div className="flex flex-col">
@@ -73,9 +73,9 @@ async function SingleStudentPage({
             <div className="bg-white p-4 rounded-xl flex gap-4">
               <Image
                 src="/singleLesson.png"
-                className="w-6 h-6"
-                width={24}
-                height={24}
+                className="w-10 h-10"
+                width={40}
+                height={40}
                 alt=""
               />
               <div className="flex flex-col">
@@ -89,9 +89,9 @@ async function SingleStudentPage({
             <div className="bg-white p-4 rounded-xl flex gap-4">
               <Image
                 src="/singleClass.png"
-                className="w-6 h-6"
-                width={24}
-                height={24}
+                className="w-10 h-10"
+                width={40}
+                height={40}
                 alt=""
               />
               <div className="flex flex-col">
@@ -114,60 +114,35 @@ async function SingleStudentPage({
         <div className="bg-white p-4 rounded-xl">
           <h2 className="text-xl font-semibold mb-4">Shortcuts</h2>
           <div className="flex gap-2 flex-wrap text-xs text-gray-500">
-            <Link
-              href={`/list/lessons?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolSkyLight"
-            >
+            <ShortcutLink href={`/list/lessons?classId=${student.classId}`}>
               Student&apos;s lessons
-            </Link>
-            <Link
-              href={`/list/teachers?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolGreenLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/teachers?classId=${student.classId}`}>
               Student&apos;s teachers
-            </Link>
-            <Link
-              href={`/list/parents?parentId=${student.parentId}`}
-              className="p-2 rounded-md bg-schoolOrangeLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/parents?parentId=${student.parentId}`}>
               Student&apos;s parents
-            </Link>
-            <Link
-              href={`/list/exams?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolPurpleLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/exams?classId=${student.classId}`}>
               Student&apos;s exams
-            </Link>
-            <Link
-              href={`/list/lessons?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolRedLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/lessons?classId=${student.classId}`}>
               Student&apos;s assignments
-            </Link>
-            <Link
-              href={`/list/results?studentId=${student.id}`}
-              className="p-2 rounded-md bg-schoolSkyLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/results?studentId=${student.id}`}>
               Student&apos;s results
-            </Link>
-            <Link
-              href={`/list/events?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolGreenLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/events?classId=${student.classId}`}>
               Student&apos;s events
-            </Link>
-            <Link
+            </ShortcutLink>
+            <ShortcutLink
               href={`/list/announcements?classId=${student.classId}`}
-              className="p-2 rounded-md bg-schoolOrangeLight"
             >
               Student&apos;s announcements
-            </Link>
-            <Link
-              href={`/list/attendance?studentId=${student.id}`}
-              className="p-2 rounded-md bg-schoolPurpleLight"
-            >
+            </ShortcutLink>
+            <ShortcutLink href={`/list/attendance?studentId=${student.id}`}>
               Student&apos;s attendance
-            </Link>
+            </ShortcutLink>
           </div>
         </div>
 

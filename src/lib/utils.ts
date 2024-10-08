@@ -115,3 +115,15 @@ export function formFormatDateTime(date: Date) {
 export function adjustToTimezone(date: Date) {
   return new Date(date.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
 }
+
+// Helper function that returns random color name
+export function randomColor() {
+  // Array with color names
+  const colors = ["Sky", "Green", "Orange", "Purple", "Red"];
+
+  // Randomly choose color index
+  const chosenColorIndex = Math.floor(Math.random() * colors.length);
+
+  // Return the color
+  return colors[chosenColorIndex];
+}

@@ -13,15 +13,13 @@ function InfoCard({ person }: { person: Student | Teacher }) {
 
   return (
     <div className="bg-schoolSky py-6 px-4 rounded-xl flex-1 flex flex-col xs:flex-row gap-4">
-      <div className="basis-1/3">
-        <Image
-          src={person.img || "/noAvatar.png"}
-          className="rounded-full object-cover"
-          alt="Student name"
-          width={144}
-          height={144}
-        />
-      </div>
+      <Image
+        src={person.img || "/noAvatar.svg"}
+        className="rounded-full object-cover"
+        alt="Student name"
+        width={144}
+        height={144}
+      />
       <div className="basis-2/3 flex flex-col justify-between gap-4">
         <div className="flex items-center gap-4">
           <h1 className="text-xl font-semibold">

@@ -103,7 +103,7 @@ async function StudentList({
     >
       <td className="flex items-center gap-4 p-4">
         <Image
-          src={item.img || "/noAvatar.png"}
+          src={item.img || "/noAvatar.svg"}
           className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
           width={40}
           height={40}
