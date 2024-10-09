@@ -17,7 +17,7 @@ async function CountChartContainer() {
       {/* TITLE */}
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Students</h2>
-        <Image src="/moreDark.png" width={20} height={20} alt="More" />
+        <Image src="/moreDark.svg" width={20} height={20} alt="More" />
       </div>
 
       {/* CHART */}

@@ -249,7 +249,7 @@ function FormModal<T>({
               onClick={() => setOpenModal(false)}
             >
               <Image
-                src="/close.png"
+                src="/close.svg"
                 width={14}
                 height={14}
                 alt="Close modal"

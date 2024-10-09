@@ -35,7 +35,7 @@ function SignInPage() {
           <div className="flex flex-col gap-1">
             <h1 className="text-xl font-bold flex items-center gap-2">
               <Image
-                src="/logo.png"
+                src="/logo.svg"
                 width={24}
                 height={24}
                 alt="School Management logo"

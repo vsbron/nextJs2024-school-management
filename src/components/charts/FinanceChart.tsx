@@ -80,7 +80,7 @@ function FinanceChart() {
     <div className="bg-white rounded-xl w-full h-full p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Finance</h2>
-        <Image src="/moreDark.png" width={20} height={20} alt="More" />
+        <Image src="/moreDark.svg" width={20} height={20} alt="More" />
       </div>
 
       {/* Chart component */}

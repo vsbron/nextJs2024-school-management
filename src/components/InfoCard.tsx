@@ -32,19 +32,19 @@ function InfoCard({ person }: { person: Student | Teacher }) {
         <p className="text-sm text-gray-500">{person.description}</p>
         <div className="flex items-center justify-between gap-y-2 flex-wrap text-xs sm:text-sm font-medium">
           <div className="w-full flex items-center gap-2 pr-2">
-            <Image src="/phone.png" width={14} height={14} alt="Phone number" />
+            <Image src="/phone.svg" width={18} height={18} alt="Phone number" />
             <span>{person.phone}</span>
           </div>
           <div className="w-full flex items-center gap-2 pr-2">
-            <Image src="/mail.png" width={14} height={14} alt="Email" />
+            <Image src="/mail.svg" width={18} height={18} alt="Email" />
             <span>{person.email}</span>
           </div>
           <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
-            <Image src="/date.png" width={14} height={14} alt="Birthday" />
+            <Image src="/date.svg" width={18} height={18} alt="Birthday" />
             <span>{formatDate(person.birthday)}</span>
           </div>
           <div className="w-full md:w-1/2 lg:w-full 2xl:w-1/2 flex items-center gap-2 pr-2">
-            <Image src="/blood.png" width={14} height={14} alt="Blood type" />
+            <Image src="/blood.svg" width={18} height={18} alt="Blood type" />
             <span>{person.bloodType}</span>
           </div>
         </div>

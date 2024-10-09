@@ -24,7 +24,7 @@ async function UserCard({ type }: { type: UserCardType }) {
         <span className="text-[10px] font-semibold bg-white px-2 py-1 rounded-full text-schoolGreenDark">
           2024/25
         </span>
-        <Image src="/more.png" width={20} height={20} alt="More" />
+        <Image src="/more.svg" width={20} height={20} alt="More" />
       </div>
       <h3 className="text-2xl font-semibold my-4">{data}</h3>
       <h4 className="capitalize text-sm font-medium text-gray-500">{type}</h4>

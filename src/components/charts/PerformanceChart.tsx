@@ -16,7 +16,7 @@ function PerformanceChart() {
       {/* TITLE */}
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Performance</h2>
-        <Image src="/moreDark.png" width={20} height={20} alt="More" />
+        <Image src="/moreDark.svg" width={20} height={20} alt="More" />
       </div>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart width={400} height={400}>

@@ -228,7 +228,7 @@ function TeacherForm({
                   onClick={() => open()}
                 >
                   <Image
-                    src="/upload.png"
+                    src="/upload.svg"
                     width={28}
                     height={28}
                     alt="Upload an avatar"
