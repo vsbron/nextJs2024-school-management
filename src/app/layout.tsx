@@ -14,6 +14,12 @@ const openSans = Open_Sans({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Management Dashboard",
   description: "Next.js School Management System",
+  icons: {
+    icon: "/site-favicon.ico",
+    shortcut: "/site-favicon.png",
+    apple: "/site-apple-touch-icon.png",
+  },
+  manifest: "/manifest.json", // Include the manifest file
 };
 
 export default function RootLayout({

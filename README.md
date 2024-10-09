@@ -60,6 +60,7 @@ A comprehensive School Management App designed to create and manage schedules, a
 - Big Calendar component now features navigation buttons;
 - Better, more detailed error messages;
 - When pagination page has no items after deleting item, you get transferred to the previous page;
+- Favicons were added;
 
 ### Live version
 
