@@ -3,13 +3,13 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { formatDate } from "@/lib/utils";
 import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { formatDate } from "@/lib/utils";
 
 // Type for the assignment list with data from different tables
 type AssignmentList = Assignment & {
@@ -191,7 +191,12 @@ async function AssignmentList({
         data={data}
       />
       {/* PAGINATION */}
-      <Pagination page={p} count={count} />
+      <Pagination
+        page={p}
+        count={count}
+        data={data}
+        queryParams={queryParams}
+      />
     </div>
   );
 }

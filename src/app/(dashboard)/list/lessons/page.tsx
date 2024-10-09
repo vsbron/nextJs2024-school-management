@@ -166,7 +166,12 @@ async function LessonList({
       {/* LIST */}
       <Table<LessonList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-      <Pagination page={p} count={count} />
+      <Pagination
+        page={p}
+        count={count}
+        data={data}
+        queryParams={queryParams}
+      />
     </div>
   );
 }

@@ -1,10 +1,22 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { useEffect } from "react";
 
-function Pagination({ page, count }: { page: number; count: number }) {
-  // Getting the router
+function Pagination({
+  page,
+  count,
+  data,
+  queryParams,
+}: {
+  page: number;
+  count: number;
+  data: any[];
+  queryParams: { [key: string]: string | undefined };
+}) {
+  // Getting the router and pathname
   const router = useRouter();
+  const pathname = usePathname();
 
   // Calculating whether we have next or previous pages
   const hasPrev = ITEMS_PER_PAGE * (page - 1) > 0;
@@ -14,8 +26,20 @@ function Pagination({ page, count }: { page: number; count: number }) {
   const handlePage = (newPage: number) => {
     const params = new URLSearchParams(window.location.search);
     params.set("page", newPage.toString());
-    router.push(`${window.location.pathname}?${params}`);
+    router.push(`${pathname}?${params}`);
   };
+
+  // Effect to handle empty page scenario
+  useEffect(() => {
+    if (data.length === 0 && page > 1) {
+      const previousPage = (page - 1).toString();
+      const queryString = new URLSearchParams({
+        ...queryParams,
+        page: previousPage,
+      }).toString();
+      router.push(`${pathname}?${queryString}`);
+    }
+  }, [data.length, page, queryParams, pathname, router]);
 
   // Returned JSX
   return (

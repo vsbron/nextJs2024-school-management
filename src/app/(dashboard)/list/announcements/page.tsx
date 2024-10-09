@@ -155,6 +155,7 @@ async function AnnouncementList({
           </div>
         </div>
       </div>
+
       {/* LIST */}
       <Table<AnnouncementList>
         columns={columns}
@@ -162,7 +163,12 @@ async function AnnouncementList({
         data={data}
       />
       {/* PAGINATION */}
-      <Pagination page={p} count={count} />
+      <Pagination
+        page={p}
+        count={count}
+        data={data}
+        queryParams={queryParams}
+      />
     </div>
   );
 }
