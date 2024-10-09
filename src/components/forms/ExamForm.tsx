@@ -34,7 +34,7 @@ function ExamForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createExam : updateExam,
-    { success: false, error: false }
+    { success: false, error: false, message: "" }
   );
 
   // Getting the router
@@ -56,9 +56,9 @@ function ExamForm({
         router.refresh();
       } else {
         toast(
-          `There was some kind of error while ${
+          `There was an error while ${
             type === "create" ? "creating" : "updating"
-          } the exam`
+          } the exam. ${state.message}`
         );
       }
     }

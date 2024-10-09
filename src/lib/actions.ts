@@ -16,10 +16,10 @@ import {
   SubjectInputs,
   TeacherInputs,
 } from "./formSchemas";
-import { adjustToTimezone } from "./utils";
+import { adjustToTimezone, handleError } from "./utils";
 
 // Type for the current state
-type CurrentStateType = { success: boolean; error: boolean };
+type CurrentStateType = { success: boolean; error: boolean; message?: string };
 
 /*** ANNOUNCEMENTS ***/
 // Server action for creating a new Announcement
@@ -38,7 +38,11 @@ export const createAnnouncement = async (
       });
 
       if (!teacherClass) {
-        return { success: false, error: true };
+        return {
+          success: false,
+          error: true,
+          message: "This is not your class",
+        };
       }
     }
 
@@ -54,11 +58,16 @@ export const createAnnouncement = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return {
+      success: false,
+      error: true,
+      message: errorMessage,
+    };
   }
 };
 // Server action for updating existing Announcement
@@ -77,7 +86,11 @@ export const updateAnnouncement = async (
       });
 
       if (!teacherClass) {
-        return { success: false, error: true };
+        return {
+          success: false,
+          error: true,
+          message: "This is not your class",
+        };
       }
     }
     // Adding the new data to the database
@@ -93,11 +106,12 @@ export const updateAnnouncement = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting an Announcement
@@ -112,9 +126,12 @@ export const deleteAnnouncement = async (
     // Deleting the data from the database
     await prisma.announcement.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -135,7 +152,11 @@ export const createAssignment = async (
       });
 
       if (!teacherLesson) {
-        return { success: false, error: true };
+        return {
+          success: false,
+          error: true,
+          message: "This is not your lesson",
+        };
       }
     }
 
@@ -151,11 +172,12 @@ export const createAssignment = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Assignment
@@ -174,7 +196,11 @@ export const updateAssignment = async (
       });
 
       if (!teacherLesson) {
-        return { success: false, error: true };
+        return {
+          success: false,
+          error: true,
+          message: "This is not your lesson",
+        };
       }
     }
     // Adding the new data to the database
@@ -190,11 +216,12 @@ export const updateAssignment = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting an Assignment
@@ -218,9 +245,12 @@ export const deleteAssignment = async (
       },
     });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -243,11 +273,12 @@ export const createAttendance = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Attendance
@@ -269,11 +300,12 @@ export const updateAttendance = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting an Attendance
@@ -288,9 +320,12 @@ export const deleteAttendance = async (
     // Deleting the data from the database
     await prisma.attendance.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -304,11 +339,12 @@ export const createClass = async (
     await prisma.class.create({ data });
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Class
@@ -320,11 +356,12 @@ export const updateClass = async (
     await prisma.class.update({ where: { id: data.id }, data });
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting a Class
@@ -338,9 +375,12 @@ export const deleteClass = async (
     // Deleting the data from the database
     await prisma.class.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -361,7 +401,11 @@ export const createEvent = async (
       });
 
       if (!teacherClass) {
-        return { success: false, error: true };
+        return {
+          success: false,
+          error: true,
+          message: "This is not your class",
+        };
       }
     }
 
@@ -378,11 +422,12 @@ export const createEvent = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Event
@@ -401,7 +446,11 @@ export const updateEvent = async (
       });
 
       if (!teacherClass) {
-        return { success: false, error: true };
+        return {
+          success: false,
+          error: true,
+          message: "This is not your class",
+        };
       }
     }
     // Adding the new data to the database
@@ -418,11 +467,12 @@ export const updateEvent = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting an Event
@@ -437,9 +487,12 @@ export const deleteEvent = async (
     // Deleting the data from the database
     await prisma.event.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -460,7 +513,11 @@ export const createExam = async (
       });
 
       if (!teacherLesson) {
-        return { success: false, error: true };
+        return {
+          success: false,
+          error: true,
+          message: "This is not your lesson",
+        };
       }
     }
 
@@ -476,11 +533,12 @@ export const createExam = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Exam
@@ -499,7 +557,11 @@ export const updateExam = async (
       });
 
       if (!teacherLesson) {
-        return { success: false, error: true };
+        return {
+          success: false,
+          error: true,
+          message: "This is not your lesson",
+        };
       }
     }
     // Adding the new data to the database
@@ -515,11 +577,12 @@ export const updateExam = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting an Exam
@@ -543,9 +606,12 @@ export const deleteExam = async (
       },
     });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -570,11 +636,12 @@ export const createLesson = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Lesson
@@ -596,11 +663,12 @@ export const updateLesson = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting an Lesson
@@ -615,9 +683,12 @@ export const deleteLesson = async (
     // Deleting the data from the database
     await prisma.lesson.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -650,11 +721,12 @@ export const createParent = async (
     });
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true, message: e };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Parent
@@ -664,7 +736,11 @@ export const updateParent = async (
 ) => {
   // Guard clause
   if (!data.id) {
-    return { success: false, error: true };
+    return {
+      success: false,
+      error: true,
+      message: "There's no such parent ID",
+    };
   }
 
   try {
@@ -691,11 +767,12 @@ export const updateParent = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true, message: e };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting a Parent
@@ -712,9 +789,12 @@ export const deleteParent = async (
     // Deleting the data from the database
     await prisma.parent.delete({ where: { id: id } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -736,11 +816,12 @@ export const createResult = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Result
@@ -761,11 +842,12 @@ export const updateResult = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting a Result
@@ -780,9 +862,12 @@ export const deleteResult = async (
     // Deleting the data from the database
     await prisma.result.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -799,7 +884,11 @@ export const createStudent = async (
       include: { _count: { select: { students: true } } },
     });
     if (classItem && classItem.capacity === classItem._count.students) {
-      return { success: false, error: true };
+      return {
+        success: false,
+        error: true,
+        message: "This class is full",
+      };
     }
     // Creating user at Clerk service
     const user = await clerkClient.users.createUser({
@@ -831,11 +920,12 @@ export const createStudent = async (
     });
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true, message: e };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Student
@@ -845,7 +935,11 @@ export const updateStudent = async (
 ) => {
   // Guard clause
   if (!data.id) {
-    return { success: false, error: true };
+    return {
+      success: false,
+      error: true,
+      message: "There's no such student ID",
+    };
   }
 
   try {
@@ -880,11 +974,12 @@ export const updateStudent = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting a Student
@@ -901,9 +996,12 @@ export const deleteStudent = async (
     // Deleting the data from the database
     await prisma.student.delete({ where: { id: id } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -926,11 +1024,12 @@ export const createSubject = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Subject
@@ -952,11 +1051,12 @@ export const updateSubject = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting a Subject
@@ -970,9 +1070,12 @@ export const deleteSubject = async (
     // Deleting the data from the database
     await prisma.subject.delete({ where: { id: parseInt(id) } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };
 
@@ -1015,11 +1118,12 @@ export const createTeacher = async (
     });
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true, message: e };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for updating existing Teacher
@@ -1029,7 +1133,11 @@ export const updateTeacher = async (
 ) => {
   // Guard clause
   if (!data.id) {
-    return { success: false, error: true };
+    return {
+      success: false,
+      error: true,
+      message: "There's no such teacher ID",
+    };
   }
 
   try {
@@ -1066,11 +1174,12 @@ export const updateTeacher = async (
 
     // Return success state
     return { success: true, error: false };
-  } catch (e) {
-    console.error(e);
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
 
     // Return error state
-    return { success: false, error: true };
+    return { success: false, error: true, message: errorMessage };
   }
 };
 // Server action for deleting a Teacher
@@ -1087,8 +1196,11 @@ export const deleteTeacher = async (
     // Deleting the data from the database
     await prisma.teacher.delete({ where: { id: id } });
     return { success: true, error: false }; // Return success state
-  } catch (e) {
-    console.error(e);
-    return { success: false, error: true }; // Return error state
+  } catch (e: unknown) {
+    // Handle error
+    const errorMessage = handleError({ e });
+
+    // Return error state
+    return { success: false, error: true, message: errorMessage };
   }
 };

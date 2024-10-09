@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import { randomColor } from "@/lib/utils";
 import { auth } from "@clerk/nextjs/server";
 
 async function Announcements() {
@@ -32,7 +31,7 @@ async function Announcements() {
   // Returned JSX
   return data.map((announcement) => (
     <div
-      className={`bg-school${randomColor()}Light rounded-xl p-4`}
+      className={`odd:bg-schoolOrangeLight even:bg-schoolPurpleLight rounded-xl p-4`}
       key={announcement.id}
     >
       <div className="flex items-center justify-between">

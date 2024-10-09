@@ -35,7 +35,7 @@ function AnnouncementForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createAnnouncement : updateAnnouncement,
-    { success: false, error: false }
+    { success: false, error: false, message: "" }
   );
 
   // Getting the router
@@ -57,9 +57,9 @@ function AnnouncementForm({
         router.refresh();
       } else {
         toast(
-          `There was some kind of error while ${
+          `There was an error while ${
             type === "create" ? "creating" : "updating"
-          } the announcement`
+          } the announcement. ${state.message}`
         );
       }
     }

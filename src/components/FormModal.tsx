@@ -205,6 +205,7 @@ function FormModal<T>({
   const [state, formAction] = useFormState(deleteActionMap[table], {
     success: false,
     error: false,
+    message: "",
   });
 
   // Getting the router
@@ -225,13 +226,7 @@ function FormModal<T>({
         router.refresh();
       } else {
         toast(
-          `There was some kind of error while ${
-            type === "create"
-              ? "creating"
-              : type === "update"
-              ? "updating"
-              : "deleting"
-          } the ${table}`
+          `There was an error while deleting the ${table}. ${state.message}`
         );
       }
     }

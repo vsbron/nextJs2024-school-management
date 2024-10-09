@@ -53,9 +53,9 @@ function ParentForm({
         router.refresh();
       } else {
         toast(
-          `There was some kind of error while ${
+          `There was an error while ${
             type === "create" ? "creating" : "updating"
-          } the parent`
+          } the parent. ${state.message}`
         );
       }
     }

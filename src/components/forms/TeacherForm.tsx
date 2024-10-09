@@ -37,7 +37,7 @@ function TeacherForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createTeacher : updateTeacher,
-    { success: false, error: false }
+    { success: false, error: false, message: "" }
   );
 
   // Getting the router
@@ -59,9 +59,9 @@ function TeacherForm({
         router.refresh();
       } else {
         toast(
-          `There was some kind of error while ${
+          `There was an error while ${
             type === "create" ? "creating" : "updating"
-          } the teacher`
+          } the teacher. ${state.message}`
         );
       }
     }
@@ -245,9 +245,7 @@ function TeacherForm({
       </div>
 
       {/* Error message */}
-      {state.error && (
-        <span className="text-red-500">There was some kind of error</span>
-      )}
+      {state.error && <span className="text-red-500">There was an error</span>}
 
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}

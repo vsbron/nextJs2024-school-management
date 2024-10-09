@@ -32,7 +32,7 @@ function SubjectForm({
   // Getting the state and action from the useFormState
   const [state, formAction] = useFormState(
     type === "create" ? createSubject : updateSubject,
-    { success: false, error: false }
+    { success: false, error: false, message: "" }
   );
 
   // Getting the router
@@ -54,9 +54,9 @@ function SubjectForm({
         router.refresh();
       } else {
         toast(
-          `There was some kind of error while ${
+          `There was an error while ${
             type === "create" ? "creating" : "updating"
-          } the subject`
+          } the subject. ${state.message}`
         );
       }
     }

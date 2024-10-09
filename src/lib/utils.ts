@@ -127,3 +127,25 @@ export function randomColor() {
   // Return the color suffix
   return colors[chosenColorIndex];
 }
+
+// Helper function that is called in catch block when dealing with server actions
+export const handleError = ({ e }: { e: unknown }): string => {
+  console.error(e);
+
+  // Getting the actual error message
+  let errorMessage = "An unknown error occurred";
+
+  // Check if the error is from Clerk or other service and has a specific structure
+  if (e && typeof e === "object" && "errors" in e) {
+    const errorArray = (e as { errors: { message: string }[] }).errors;
+
+    if (errorArray.length > 0) {
+      errorMessage = `${errorArray[0].message}`; // Use the first error message
+    }
+  } else {
+    // Generic error handler
+    errorMessage = `${handleError({ e })}`;
+  }
+
+  return errorMessage;
+};
