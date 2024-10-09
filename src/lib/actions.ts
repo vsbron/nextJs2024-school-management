@@ -20,6 +20,14 @@ import { adjustToTimezone, handleError } from "./utils";
 
 // Type for the current state
 type CurrentStateType = { success: boolean; error: boolean; message?: string };
+type UserIDAndRoleTypes = { userId: string | null; role: string | undefined };
+
+// Helper function for getting the ID and the role
+const getCurrentIdAndRoleFromAuth = (): UserIDAndRoleTypes => {
+  const { userId, sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  return { userId, role };
+};
 
 /*** ANNOUNCEMENTS ***/
 // Server action for creating a new Announcement
@@ -27,9 +35,8 @@ export const createAnnouncement = async (
   currentState: CurrentStateType,
   data: AnnouncementInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  // Getting the user ID and the role
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     if (role === "teacher") {
@@ -57,7 +64,7 @@ export const createAnnouncement = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -75,9 +82,8 @@ export const updateAnnouncement = async (
   currentState: CurrentStateType,
   data: AnnouncementInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  // Getting the user ID and the role
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     if (role === "teacher") {
@@ -105,7 +111,7 @@ export const updateAnnouncement = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -125,7 +131,8 @@ export const deleteAnnouncement = async (
   try {
     // Deleting the data from the database
     await prisma.announcement.delete({ where: { id: parseInt(id) } });
-    return { success: true, error: false }; // Return success state
+
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -141,9 +148,8 @@ export const createAssignment = async (
   currentState: CurrentStateType,
   data: AssignmentInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  // Getting the user ID and the role
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     if (role === "teacher") {
@@ -171,7 +177,7 @@ export const createAssignment = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -185,9 +191,8 @@ export const updateAssignment = async (
   currentState: CurrentStateType,
   data: AssignmentInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  // Getting the user ID and the role
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     if (role === "teacher") {
@@ -215,7 +220,7 @@ export const updateAssignment = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -233,8 +238,7 @@ export const deleteAssignment = async (
   const id = data.get("id") as string;
 
   // Getting the user ID and the role
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     // Deleting the data from the database
@@ -244,7 +248,7 @@ export const deleteAssignment = async (
         ...(role === "teacher" ? { lesson: { teacherId: userId! } } : {}),
       },
     });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -272,7 +276,7 @@ export const createAttendance = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -299,7 +303,7 @@ export const updateAttendance = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -319,7 +323,7 @@ export const deleteAttendance = async (
   try {
     // Deleting the data from the database
     await prisma.attendance.delete({ where: { id: parseInt(id) } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -338,7 +342,7 @@ export const createClass = async (
   try {
     await prisma.class.create({ data });
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -355,7 +359,7 @@ export const updateClass = async (
   try {
     await prisma.class.update({ where: { id: data.id }, data });
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -374,7 +378,7 @@ export const deleteClass = async (
   try {
     // Deleting the data from the database
     await prisma.class.delete({ where: { id: parseInt(id) } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -390,9 +394,8 @@ export const createEvent = async (
   currentState: CurrentStateType,
   data: EventInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  // Getting the user ID and the role
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     if (role === "teacher") {
@@ -421,7 +424,7 @@ export const createEvent = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -435,9 +438,8 @@ export const updateEvent = async (
   currentState: CurrentStateType,
   data: EventInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  // Getting the user ID and the role
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     if (role === "teacher") {
@@ -466,7 +468,7 @@ export const updateEvent = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -486,7 +488,7 @@ export const deleteEvent = async (
   try {
     // Deleting the data from the database
     await prisma.event.delete({ where: { id: parseInt(id) } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -502,9 +504,8 @@ export const createExam = async (
   currentState: CurrentStateType,
   data: ExamInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  // Getting the user ID and the role
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     if (role === "teacher") {
@@ -532,7 +533,7 @@ export const createExam = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -546,9 +547,8 @@ export const updateExam = async (
   currentState: CurrentStateType,
   data: ExamInputs
 ) => {
-  // Getting the user ID
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  // Getting the user ID and the role
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     if (role === "teacher") {
@@ -576,7 +576,7 @@ export const updateExam = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -594,8 +594,7 @@ export const deleteExam = async (
   const id = data.get("id") as string;
 
   // Getting the user ID and the role
-  const { userId, sessionClaims } = auth();
-  const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const { userId, role } = getCurrentIdAndRoleFromAuth();
 
   try {
     // Deleting the data from the database
@@ -605,7 +604,7 @@ export const deleteExam = async (
         ...(role === "teacher" ? { lesson: { teacherId: userId! } } : {}),
       },
     });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -635,7 +634,7 @@ export const createLesson = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -662,7 +661,7 @@ export const updateLesson = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -682,7 +681,7 @@ export const deleteLesson = async (
   try {
     // Deleting the data from the database
     await prisma.lesson.delete({ where: { id: parseInt(id) } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -720,7 +719,7 @@ export const createParent = async (
       },
     });
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -766,7 +765,7 @@ export const updateParent = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -788,7 +787,7 @@ export const deleteParent = async (
 
     // Deleting the data from the database
     await prisma.parent.delete({ where: { id: id } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -815,7 +814,7 @@ export const createResult = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -841,7 +840,7 @@ export const updateResult = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -861,7 +860,7 @@ export const deleteResult = async (
   try {
     // Deleting the data from the database
     await prisma.result.delete({ where: { id: parseInt(id) } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -919,7 +918,7 @@ export const createStudent = async (
       },
     });
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -973,7 +972,7 @@ export const updateStudent = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -995,7 +994,7 @@ export const deleteStudent = async (
 
     // Deleting the data from the database
     await prisma.student.delete({ where: { id: id } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -1023,7 +1022,7 @@ export const createSubject = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -1050,7 +1049,7 @@ export const updateSubject = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -1069,7 +1068,7 @@ export const deleteSubject = async (
   try {
     // Deleting the data from the database
     await prisma.subject.delete({ where: { id: parseInt(id) } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -1117,7 +1116,7 @@ export const createTeacher = async (
       },
     });
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -1173,7 +1172,7 @@ export const updateTeacher = async (
     });
 
     // Return success state
-    return { success: true, error: false };
+    return { success: true, error: false, message: "" };
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
@@ -1195,7 +1194,7 @@ export const deleteTeacher = async (
 
     // Deleting the data from the database
     await prisma.teacher.delete({ where: { id: id } });
-    return { success: true, error: false }; // Return success state
+    return { success: true, error: false, message: "" }; // Return success state
   } catch (e: unknown) {
     // Handle error
     const errorMessage = handleError({ e });
