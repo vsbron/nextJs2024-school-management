@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { currentUser } from "@clerk/nextjs/server";
 import ActiveLink from "./ActiveLink";
 
@@ -7,79 +6,79 @@ export const menuItems = [
     title: "MENU",
     items: [
       {
-        icon: "/nav/home.png",
+        icon: "home",
         label: "Home",
         href: "/",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: "/nav/teacher.png",
+        icon: "teacher",
         label: "Teachers",
         href: "/list/teachers",
         visible: ["admin", "teacher"],
       },
       {
-        icon: "/nav/student.png",
+        icon: "student",
         label: "Students",
         href: "/list/students",
         visible: ["admin", "teacher"],
       },
       {
-        icon: "/nav/parent.png",
+        icon: "parent",
         label: "Parents",
         href: "/list/parents",
         visible: ["admin", "teacher"],
       },
       {
-        icon: "/nav/subject.png",
+        icon: "subject",
         label: "Subjects",
         href: "/list/subjects",
         visible: ["admin"],
       },
       {
-        icon: "/nav/class.png",
+        icon: "class",
         label: "Classes",
         href: "/list/classes",
         visible: ["admin", "teacher"],
       },
       {
-        icon: "/nav/lesson.png",
+        icon: "lesson",
         label: "Lessons",
         href: "/list/lessons",
         visible: ["admin", "teacher"],
       },
       {
-        icon: "/nav/exam.png",
+        icon: "exam",
         label: "Exams",
         href: "/list/exams",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: "/nav/assignment.png",
+        icon: "assignment",
         label: "Assignments",
         href: "/list/assignments",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: "/nav/result.png",
+        icon: "result",
         label: "Results",
         href: "/list/results",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: "/nav/attendance.png",
+        icon: "attendance",
         label: "Attendance",
         href: "/list/attendance",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: "/nav/calendar.png",
+        icon: "calendar",
         label: "Events",
         href: "/list/events",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: "/nav/announcement.png",
+        icon: "announcement",
         label: "Announcements",
         href: "/list/announcements",
         visible: ["admin", "teacher", "student", "parent"],
@@ -90,13 +89,13 @@ export const menuItems = [
     title: "OTHER",
     items: [
       {
-        icon: "/nav/profile.png",
+        icon: "profile",
         label: "Profile",
         href: "/profile",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: "/nav/logout.png",
+        icon: "logout",
         label: "Logout",
         href: "/logout",
         visible: ["admin", "teacher", "student", "parent"],
@@ -123,12 +122,9 @@ async function Menu() {
               return (
                 <ActiveLink href={menuItem.href} key={menuItem.label}>
                   <div className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-1.5 md:px-2 rounded-md hover:bg-schoolSkyLight cursor-pointer">
-                    <Image
-                      src={menuItem.icon}
-                      alt={menuItem.label}
-                      width={20}
-                      height={20}
-                    />
+                    <svg className="w-5 h-5 fill-gray-500">
+                      <use xlinkHref={`/setNavbar.svg#${menuItem.icon}`}></use>
+                    </svg>
                     <span className="hidden lg:block">{menuItem.label}</span>
                   </div>
                 </ActiveLink>

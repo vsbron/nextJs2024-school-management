@@ -12,12 +12,14 @@ async function Header() {
       {/* ICONS & USER */}
       <div className="flex items-center gap-6 justify-end w-full py-1">
         <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
-          <Image src="/nav/message.png" alt="Message" width={20} height={20} />
+          <svg className="w-5 h-5 fill-gray-500">
+            <use xlinkHref={`/setNavbar.svg#chat`}></use>
+          </svg>
         </div>
         <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer relative">
           <Image
             src="/nav/announcement.png"
-            alt="Message"
+            alt="Announcement"
             width={20}
             height={20}
           />
