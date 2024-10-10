@@ -111,7 +111,7 @@ async function Menu() {
 
   // Returned JSX
   return (
-    <div className="mt-4 text-sm">
+    <div className="mt-4 text-sm flex flex-col gap-2">
       {menuItems.map((i) => (
         <div className="flex flex-col gap-2" key={i.title}>
           <span className="hidden lg:block text-gray-400 font-semibold mt-4 px-2">

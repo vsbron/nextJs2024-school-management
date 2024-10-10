@@ -3,17 +3,16 @@ import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
+import { colHidden, colHiddenEarly, mainCol } from "@/lib/constants";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { SearchParamsProp } from "@/lib/types";
 import { Class, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
+import ListPageContainer from "@/components/ListPageContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import TableButtons from "@/components/TableButtons";
 import TableHeader from "@/components/TableHeader";
-import TableHeading from "@/components/TableHeading";
-import TableSearch from "@/components/TableSearch";
 
 // Type for the teacher list with data from different tables
 type TeacherList = Teacher & { subjects: Subject[]; classes: Class[] };
@@ -25,43 +24,14 @@ async function TeacherList({ searchParams }: SearchParamsProp) {
 
   // Defining columns for table
   const columns = [
-    {
-      header: "Info",
-      accessor: "info",
-      className: "px-4",
-    },
-    {
-      header: "Teacher Id",
-      accessor: "teacherId",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Subjects",
-      accessor: "subjects",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Classes",
-      accessor: "classes",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Phone",
-      accessor: "phone",
-      className: "hidden lg:table-cell",
-    },
-    {
-      header: "Address",
-      accessor: "address",
-      className: "hidden lg:table-cell",
-    },
+    { header: "Info", accessor: "info", className: mainCol },
+    { header: "Teacher Id", accessor: "teacherId", className: colHidden },
+    { header: "Subjects", accessor: "subjects", className: colHidden },
+    { header: "Classes", accessor: "classes", className: colHidden },
+    { header: "Phone", accessor: "phone", className: colHiddenEarly },
+    { header: "Address", accessor: "address", className: colHiddenEarly },
     ...(role === "admin" || role === "teacher"
-      ? [
-          {
-            header: "Actions",
-            accessor: "action",
-          },
-        ]
+      ? [{ header: "Actions", accessor: "action" }]
       : []),
   ];
 
@@ -112,10 +82,10 @@ async function TeacherList({ searchParams }: SearchParamsProp) {
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex items-center gap-4 p-4">
+      <td className="flex items-center gap-4 py-1 sm:p-4">
         <Image
           src={item.img || "/noAvatar.svg"}
-          className="md:hidden xl:block w-10 h-10 rounded-full object-cover"
+          className="md:hidden xl:block w-8 h-8 xs:w-10 xs:h-10 rounded-full object-cover"
           width={40}
           height={40}
           alt={item.name}
@@ -155,15 +125,9 @@ async function TeacherList({ searchParams }: SearchParamsProp) {
 
   // Returned JSX
   return (
-    <div className="bg-white py-4 xs:p-4 xs:rounded-xl flex-1 xs:m-4 mt-0">
+    <ListPageContainer>
       {/* TOP */}
-      <div className="flex items-center justify-between">
-        <TableHeading>All teachers</TableHeading>
-        <TableHeader>
-          <TableSearch />
-          <TableButtons role={role} table="teacher" />
-        </TableHeader>
-      </div>
+      <TableHeader title="All Teachers" role={role} table="teacher" />
       {/* LIST */}
       <Table<TeacherList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
@@ -173,7 +137,7 @@ async function TeacherList({ searchParams }: SearchParamsProp) {
         data={data}
         queryParams={queryParams}
       />
-    </div>
+    </ListPageContainer>
   );
 }
 

@@ -1,17 +1,16 @@
 import { auth } from "@clerk/nextjs/server";
 
+import { colHidden, colHiddenEarly, mainCol } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { SearchParamsProp } from "@/lib/types";
 import { Parent, Prisma, Student } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
+import ListPageContainer from "@/components/ListPageContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import TableButtons from "@/components/TableButtons";
 import TableHeader from "@/components/TableHeader";
-import TableHeading from "@/components/TableHeading";
-import TableSearch from "@/components/TableSearch";
 
 // Type for the student list with data from different tables
 type ParentList = Parent & { students: Student[] };
@@ -23,31 +22,11 @@ async function ParentList({ searchParams }: SearchParamsProp) {
 
   // Defining columns for table
   const columns = [
-    {
-      header: "Info",
-      accessor: "info",
-      className: "px-4",
-    },
-    {
-      header: "Students",
-      accessor: "students",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Email",
-      accessor: "email",
-      className: "hidden lg:table-cell",
-    },
-    {
-      header: "Phone",
-      accessor: "phone",
-      className: "hidden lg:table-cell",
-    },
-    {
-      header: "Address",
-      accessor: "address",
-      className: "hidden lg:table-cell",
-    },
+    { header: "Info", accessor: "info", className: mainCol },
+    { header: "Students", accessor: "students", className: colHidden },
+    { header: "Email", accessor: "email", className: colHiddenEarly },
+    { header: "Phone", accessor: "phone", className: colHiddenEarly },
+    { header: "Address", accessor: "address", className: colHiddenEarly },
     ...(role === "admin" ? [{ header: "Actions", accessor: "action" }] : []),
   ];
   // Destructuring the searchParams and setting our current page
@@ -94,12 +73,14 @@ async function ParentList({ searchParams }: SearchParamsProp) {
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex items-center gap-4 p-4">
+      <td className="xs:flex flex-col items-start py-2 xs:p-4">
         <div className="flex flex-col">
           <h3 className="font-semibold">
             {item.name} {item.surname}
           </h3>
-          <p className="text-sm text-gray-500">{item.email}</p>
+          <p className="text-sm text-gray-500 hidden md:table-cell">
+            {item.email}
+          </p>
         </div>
       </td>
       <td className="hidden md:table-cell">
@@ -121,15 +102,9 @@ async function ParentList({ searchParams }: SearchParamsProp) {
 
   // Returned JSX
   return (
-    <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
+    <ListPageContainer>
       {/* TOP */}
-      <div className="flex items-center justify-between">
-        <TableHeading>All parents</TableHeading>
-        <TableHeader>
-          <TableSearch />
-          <TableButtons role={role} table="parent" />
-        </TableHeader>
-      </div>
+      <TableHeader title="All Parents" role={role} table="parent" />
       {/* LIST */}
       <Table<ParentList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
@@ -139,7 +114,7 @@ async function ParentList({ searchParams }: SearchParamsProp) {
         data={data}
         queryParams={queryParams}
       />
-    </div>
+    </ListPageContainer>
   );
 }
 

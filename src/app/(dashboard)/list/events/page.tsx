@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 
+import { colHidden, mainCol } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { SearchParamsProp } from "@/lib/types";
@@ -7,12 +8,10 @@ import { formatDateTime } from "@/lib/utils";
 import { Class, Event, Prisma } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
+import ListPageContainer from "@/components/ListPageContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import TableButtons from "@/components/TableButtons";
 import TableHeader from "@/components/TableHeader";
-import TableHeading from "@/components/TableHeading";
-import TableSearch from "@/components/TableSearch";
 
 // Type for the event list with data from different tables
 type EventList = Event & { class: Class | null };
@@ -25,33 +24,11 @@ async function EventList({ searchParams }: SearchParamsProp) {
 
   // Defining columns for table
   const columns = [
-    {
-      header: "Title",
-      accessor: "title",
-      className: "px-4",
-    },
-    {
-      header: "Class",
-      accessor: "class",
-    },
-    {
-      header: "Start Time",
-      accessor: "startTime",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "End Time",
-      accessor: "endTime",
-      className: "hidden md:table-cell",
-    },
-    ...(role === "admin"
-      ? [
-          {
-            header: "Actions",
-            accessor: "action",
-          },
-        ]
-      : []),
+    { header: "Title", accessor: "title", className: mainCol },
+    { header: "Class", accessor: "class" },
+    { header: "Start Time", accessor: "startTime", className: colHidden },
+    { header: "End Time", accessor: "endTime", className: colHidden },
+    ...(role === "admin" ? [{ header: "Actions", accessor: "action" }] : []),
   ];
 
   // Destructuring the searchParams and setting our current page
@@ -127,9 +104,9 @@ async function EventList({ searchParams }: SearchParamsProp) {
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex flex-col items-start p-4">
+      <td className="xs:flex flex-col items-start py-2 xs:p-4">
         <h3 className="font-semibold">{item.title}</h3>
-        <p className="text-gray-500">{item.description}</p>
+        <p className="text-gray-500 hidden md:table-cell">{item.description}</p>
       </td>
       <td>{item.class?.name || "-"}</td>
       <td className="hidden md:table-cell">{formatDateTime(item.startTime)}</td>
@@ -147,15 +124,9 @@ async function EventList({ searchParams }: SearchParamsProp) {
 
   // Returned JSX
   return (
-    <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
+    <ListPageContainer>
       {/* TOP */}
-      <div className="flex items-center justify-between">
-        <TableHeading>All Events</TableHeading>
-        <TableHeader>
-          <TableSearch />
-          <TableButtons role={role} table="event" />
-        </TableHeader>
-      </div>
+      <TableHeader title="All Events" role={role} table="event" />
       {/* LIST */}
       <Table<EventList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
@@ -165,7 +136,7 @@ async function EventList({ searchParams }: SearchParamsProp) {
         data={data}
         queryParams={queryParams}
       />
-    </div>
+    </ListPageContainer>
   );
 }
 

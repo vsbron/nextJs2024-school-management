@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 
+import { colHidden, mainCol } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { SearchParamsProp } from "@/lib/types";
@@ -7,12 +8,10 @@ import { formatDate } from "@/lib/utils";
 import { Announcement, Class, Prisma } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
+import ListPageContainer from "@/components/ListPageContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import TableButtons from "@/components/TableButtons";
 import TableHeader from "@/components/TableHeader";
-import TableHeading from "@/components/TableHeading";
-import TableSearch from "@/components/TableSearch";
 
 // Type for the announcement list with data from different tables
 type AnnouncementList = Announcement & { class: Class | null };
@@ -25,28 +24,10 @@ async function AnnouncementList({ searchParams }: SearchParamsProp) {
 
   // Defining columns for table
   const columns = [
-    {
-      header: "Title",
-      accessor: "title",
-      className: "px-4",
-    },
-    {
-      header: "Class",
-      accessor: "class",
-    },
-    {
-      header: "Date",
-      accessor: "date",
-      className: "hidden md:table-cell",
-    },
-    ...(role === "admin"
-      ? [
-          {
-            header: "Actions",
-            accessor: "action",
-          },
-        ]
-      : []),
+    { header: "Title", accessor: "title", className: mainCol },
+    { header: "Class", accessor: "class", className: colHidden },
+    { header: "Date", accessor: "date" },
+    ...(role === "admin" ? [{ header: "Actions", accessor: "action" }] : []),
   ];
 
   // Destructuring the searchParams and setting our current page
@@ -117,12 +98,12 @@ async function AnnouncementList({ searchParams }: SearchParamsProp) {
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex flex-col items-start p-4">
+      <td className="xs:flex flex-col items-start py-2 xs:p-4">
         <h3 className="font-semibold">{item.title}</h3>
-        <p className="text-gray-500">{item.description}</p>
+        <p className="text-gray-500 hidden md:table-cell">{item.description}</p>
       </td>
-      <td>{item.class?.name || "-"}</td>
-      <td className="hidden md:table-cell">{formatDate(item.date)}</td>
+      <td className="hidden md:table-cell">{item.class?.name || "-"}</td>
+      <td>{formatDate(item.date)}</td>
       {role === "admin" && (
         <td>
           <div className="flex items-center gap-2">
@@ -136,15 +117,9 @@ async function AnnouncementList({ searchParams }: SearchParamsProp) {
 
   // Returned JSX
   return (
-    <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
+    <ListPageContainer>
       {/* TOP */}
-      <div className="flex items-center justify-between flex-col sm:flex-row">
-        <TableHeading>All Announcements</TableHeading>
-        <TableHeader>
-          <TableSearch />
-          <TableButtons role={role} table="announcement" />
-        </TableHeader>
-      </div>
+      <TableHeader title="All Announcements" role={role} table="announcement" />
 
       {/* LIST */}
       <Table<AnnouncementList>
@@ -159,7 +134,7 @@ async function AnnouncementList({ searchParams }: SearchParamsProp) {
         data={data}
         queryParams={queryParams}
       />
-    </div>
+    </ListPageContainer>
   );
 }
 

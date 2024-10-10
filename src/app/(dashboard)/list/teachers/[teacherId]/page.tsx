@@ -35,7 +35,7 @@ async function SingleTeacherPage({
   if (!teacher) return notFound;
 
   return (
-    <div className="flex-1 p-4 flex flex-col xl:flex-row gap-4">
+    <div className="flex-1 xs:p-4 flex flex-col xl:flex-row gap-4">
       {/* LEFT */}
       <div className="w-full xl:w-2/3">
         {/* TOP */}

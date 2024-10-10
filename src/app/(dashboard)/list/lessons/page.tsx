@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 
+import { colHidden, mainCol } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { SearchParamsProp } from "@/lib/types";
@@ -7,12 +8,10 @@ import { formatDateTime } from "@/lib/utils";
 import { Class, Lesson, Prisma, Subject, Teacher } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
+import ListPageContainer from "@/components/ListPageContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import TableButtons from "@/components/TableButtons";
 import TableHeader from "@/components/TableHeader";
-import TableHeading from "@/components/TableHeading";
-import TableSearch from "@/components/TableSearch";
 
 // Type for the lesson list with data from different tables
 type LessonList = Lesson & {
@@ -29,33 +28,12 @@ async function LessonList({ searchParams }: SearchParamsProp) {
 
   // Defining columns for table
   const columns = [
-    {
-      header: "Subject",
-      accessor: "subject",
-      className: "px-4",
-    },
-    {
-      header: "Start Time",
-      accessor: "startTime",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "End Time",
-      accessor: "endTime",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Teacher",
-      accessor: "teacher",
-      className: "hidden md:table-cell",
-    },
+    { header: "Subject", accessor: "subject", className: mainCol },
+    { header: "Start Time", accessor: "startTime", className: colHidden },
+    { header: "End Time", accessor: "endTime", className: colHidden },
+    { header: "Teacher", accessor: "teacher", className: colHidden },
     ...(role === "admin" || role === "teacher"
-      ? [
-          {
-            header: "Actions",
-            accessor: "action",
-          },
-        ]
+      ? [{ header: "Actions", accessor: "action" }]
       : []),
   ];
 
@@ -123,7 +101,7 @@ async function LessonList({ searchParams }: SearchParamsProp) {
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex items-center gap-4 p-4">
+      <td className="xs:flex flex-col items-start py-2 xs:p-4">
         <h3 className="font-semibold">
           {item.subject.name} ({item.class.name})
         </h3>
@@ -146,15 +124,9 @@ async function LessonList({ searchParams }: SearchParamsProp) {
 
   // Returned JSX
   return (
-    <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
+    <ListPageContainer>
       {/* TOP */}
-      <div className="flex items-center justify-between">
-        <TableHeading>All lessons</TableHeading>
-        <TableHeader>
-          <TableSearch />
-          <TableButtons role={role} table="lesson" />
-        </TableHeader>
-      </div>
+      <TableHeader title="All Lessons" role={role} table="lesson" />
       {/* LIST */}
       <Table<LessonList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
@@ -164,7 +136,7 @@ async function LessonList({ searchParams }: SearchParamsProp) {
         data={data}
         queryParams={queryParams}
       />
-    </div>
+    </ListPageContainer>
   );
 }
 

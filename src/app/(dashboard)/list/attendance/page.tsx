@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 
+import { colHidden, mainCol } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { SearchParamsProp } from "@/lib/types";
@@ -7,12 +8,10 @@ import { formatDate } from "@/lib/utils";
 import { Attendance, Class, Prisma, Student, Subject } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
+import ListPageContainer from "@/components/ListPageContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import TableButtons from "@/components/TableButtons";
 import TableHeader from "@/components/TableHeader";
-import TableHeading from "@/components/TableHeading";
-import TableSearch from "@/components/TableSearch";
 
 // Type for the assignment list with data from different tables
 type AttendanceList = Attendance & {
@@ -27,34 +26,11 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
 
   // Defining columns for table
   const columns = [
-    {
-      header: "Student",
-      accessor: "studentId",
-      className: "px-4",
-    },
-    {
-      header: "Lesson",
-      accessor: "lesson",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Date",
-      accessor: "date",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Present",
-      accessor: "present",
-      className: "hidden md:table-cell",
-    },
-    ...(role === "admin"
-      ? [
-          {
-            header: "Actions",
-            accessor: "action",
-          },
-        ]
-      : []),
+    { header: "Student", accessor: "studentId", className: mainCol },
+    { header: "Lesson", accessor: "lesson", className: colHidden },
+    { header: "Date", accessor: "date", className: colHidden },
+    { header: "Present", accessor: "present", className: colHidden },
+    ...(role === "admin" ? [{ header: "Actions", accessor: "action" }] : []),
   ];
 
   const { page, ...queryParams } = searchParams;
@@ -110,7 +86,7 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex items-center gap-4 p-4">
+      <td className="xs:flex flex-col items-start py-2 xs:p-4">
         <h3 className="font-semibold">
           {item.student.name} {item.student.surname}
         </h3>
@@ -133,15 +109,9 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
 
   // Returned JSX
   return (
-    <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
+    <ListPageContainer>
       {/* TOP */}
-      <div className="flex items-center justify-between">
-        <TableHeading>All Attendances</TableHeading>
-        <TableHeader>
-          <TableSearch />
-          <TableButtons role={role} table="attendance" />
-        </TableHeader>
-      </div>
+      <TableHeader title="All Attendances" role={role} table="attendance" />
       {/* LIST */}
       <Table<AttendanceList>
         columns={columns}
@@ -155,7 +125,7 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
         data={data}
         queryParams={queryParams}
       />
-    </div>
+    </ListPageContainer>
   );
 }
 

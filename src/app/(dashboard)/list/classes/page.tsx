@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 
+import { colHidden, mainCol } from "@/lib/constants";
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { SearchParamsProp } from "@/lib/types";
@@ -14,12 +15,10 @@ import {
 } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
+import ListPageContainer from "@/components/ListPageContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import TableButtons from "@/components/TableButtons";
 import TableHeader from "@/components/TableHeader";
-import TableHeading from "@/components/TableHeading";
-import TableSearch from "@/components/TableSearch";
 
 // Type for the class list with data from different tables
 type ClassList = Class & {
@@ -37,33 +36,11 @@ async function ClassList({ searchParams }: SearchParamsProp) {
 
   // Defining columns for table
   const columns = [
-    {
-      header: "Class",
-      accessor: "class",
-      className: "px-4",
-    },
-    {
-      header: "Capacity",
-      accessor: "capacity",
-    },
-    {
-      header: "Grade",
-      accessor: "grade",
-      className: "hidden md:table-cell",
-    },
-    {
-      header: "Supervisor",
-      accessor: "supervisor",
-      className: "hidden md:table-cell",
-    },
-    ...(role === "admin"
-      ? [
-          {
-            header: "Actions",
-            accessor: "action",
-          },
-        ]
-      : []),
+    { header: "Class", accessor: "class", className: mainCol },
+    { header: "Capacity", accessor: "capacity" },
+    { header: "Grade", accessor: "grade", className: colHidden },
+    { header: "Supervisor", accessor: "supervisor", className: colHidden },
+    ...(role === "admin" ? [{ header: "Actions", accessor: "action" }] : []),
   ];
 
   // Destructuring the searchParams and setting our current page
@@ -119,7 +96,7 @@ async function ClassList({ searchParams }: SearchParamsProp) {
       key={item.id}
       className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-schoolPurpleLight"
     >
-      <td className="flex items-center gap-4 p-4">
+      <td className="xs:flex flex-col items-start py-2 xs:p-4">
         <h3 className="font-semibold">{item.name}</h3>
       </td>
       <td>{item.capacity}</td>
@@ -140,15 +117,10 @@ async function ClassList({ searchParams }: SearchParamsProp) {
 
   // Returned JSX
   return (
-    <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
+    <ListPageContainer>
       {/* TOP */}
-      <div className="flex items-center justify-between">
-        <TableHeading>All classes</TableHeading>
-        <TableHeader>
-          <TableSearch />
-          <TableButtons role={role} table="class" />
-        </TableHeader>
-      </div>
+      <TableHeader title="All Classes" role={role} table="class" />
+
       {/* LIST */}
       <Table<ClassList> columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
@@ -158,7 +130,7 @@ async function ClassList({ searchParams }: SearchParamsProp) {
         data={data}
         queryParams={queryParams}
       />
-    </div>
+    </ListPageContainer>
   );
 }
 

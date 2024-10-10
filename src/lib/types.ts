@@ -85,12 +85,11 @@ type TableTypes =
   | "student"
   | "subject"
   | "teacher";
-export type TableButtonsProps = {
+export type TableHeaderProps = {
+  title: string;
   role: string | undefined;
   table: TableTypes;
 };
-export type TableHeaderProps = { children: React.ReactNode };
-export type TableHeadingProps = { children: string };
 
 /** OTHER **/
 export type PaginationProps = {
