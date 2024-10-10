@@ -2,21 +2,20 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 
 import prisma from "@/lib/prisma";
+import { SingleStudentPageProps } from "@/lib/types";
+import { getOrdinalSuffix } from "@/lib/utils";
 import { Class, Student } from "@prisma/client";
 
 import BigCalendarContainer from "@/components/BigCalendarContainer";
-import InfoCard from "@/components/InfoCard";
+import UserCard from "@/components/UserCard";
 import PerformanceChart from "@/components/charts/PerformanceChart";
 import ShortcutLink from "@/components/ShortcutLink";
 import StudentAttendanceCard from "@/components/StudentAttendanceCard";
-import { getOrdinalSuffix } from "@/lib/utils";
 import SmallCard from "@/components/SmallCard";
 
 async function SingleStudentPage({
   params: { studentId },
-}: {
-  params: { studentId: string };
-}) {
+}: SingleStudentPageProps) {
   // Fetching the student data from database
   const student:
     | (Student & { class: Class & { _count: { lessons: number } } })
@@ -36,7 +35,7 @@ async function SingleStudentPage({
         {/* TOP */}
         <div className="flex flex-col lg:flex-row gap-4">
           {/* USER INFO CARD */}
-          <InfoCard person={student} />
+          <UserCard person={student} />
           {/* SMALL CARDS */}
           <div className="flex-1 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-4 justify-between flex-wrap">
             {/* CARD */}

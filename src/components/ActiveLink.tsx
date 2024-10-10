@@ -2,14 +2,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { ActiveLinkProps } from "@/lib/types";
+
 // Special component that gets "active" class to a current link path
-function ActiveLink({
-  href,
-  children,
-}: {
-  href: string;
-  children: React.ReactNode;
-}) {
+function ActiveLink({ href, children }: ActiveLinkProps) {
   // Getting the pathname
   const pathname = usePathname();
 

@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { SearchParamsProp } from "@/lib/types";
 import {
   Announcement,
   Class,
@@ -27,11 +28,7 @@ type ClassList = Class & {
   supervisor: Teacher | null;
 };
 
-async function ClassList({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+async function ClassList({ searchParams }: SearchParamsProp) {
   // Getting the user's role
   const { sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

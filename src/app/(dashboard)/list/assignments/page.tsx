@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { SearchParamsProp } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { Assignment, Class, Prisma, Subject, Teacher } from "@prisma/client";
 
@@ -16,11 +17,7 @@ type AssignmentList = Assignment & {
   lesson: { subject: Subject; class: Class; teacher: Teacher };
 };
 
-async function AssignmentList({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+async function AssignmentList({ searchParams }: SearchParamsProp) {
   // Getting the user ID and the role
   const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

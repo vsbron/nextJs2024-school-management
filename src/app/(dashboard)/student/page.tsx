@@ -1,18 +1,14 @@
 import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
-import { SearchParamsType } from "@/lib/types";
+import { SearchParamsProp } from "@/lib/types";
 
 import AnnouncementsContainer from "@/components/AnnouncementsContainer";
 import BigCalendarContainer from "@/components/BigCalendarContainer";
 import EventCalendarContainer from "@/components/EventCalendarContainer";
 import { HomePageLeft, HomePageRight } from "@/components/HomePageLayout";
 
-async function StudentPage({
-  searchParams,
-}: {
-  searchParams: SearchParamsType;
-}) {
+async function StudentPage({ searchParams }: SearchParamsProp) {
   // Getting the user ID
   const { userId } = auth();
 

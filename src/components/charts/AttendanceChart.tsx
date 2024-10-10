@@ -10,9 +10,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import { AttendanceChartType } from "@/lib/types";
+import { AttendanceChartData } from "@/lib/types";
 
-function AttendanceChart({ data }: { data: AttendanceChartType }) {
+function AttendanceChart({ data }: AttendanceChartData) {
   // Returned JSX
   return (
     /* Chart component */

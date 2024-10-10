@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { SearchParamsProp } from "@/lib/types";
 import { Exam, Prisma, Result, Student } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
@@ -13,11 +14,7 @@ import TableSearch from "@/components/TableSearch";
 // Type for the result list with data from different tables
 type ResultsList = Result & { exam: Exam; student: Student };
 
-async function ResultsList({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+async function ResultsList({ searchParams }: SearchParamsProp) {
   // Getting the user ID and the role
   const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

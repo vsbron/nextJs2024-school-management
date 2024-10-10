@@ -5,15 +5,15 @@ import { Teacher } from "@prisma/client";
 
 import BigCalendarContainer from "@/components/BigCalendarContainer";
 import PerformanceChart from "@/components/charts/PerformanceChart";
-import InfoCard from "@/components/InfoCard";
+import UserCard from "@/components/UserCard";
 import ShortcutLink from "@/components/ShortcutLink";
 import SmallCard from "@/components/SmallCard";
 
+type SingleTeacherParams = {params: {teacherId: string}}
+
 async function SingleTeacherPage({
   params: { teacherId },
-}: {
-  params: { teacherId: string };
-}) {
+}: SingleTeacherParams) {
   // Fetching the teacher data from database
   const teacher:
     | (Teacher & {
@@ -42,7 +42,7 @@ async function SingleTeacherPage({
         {/* TOP */}
         <div className="flex flex-col lg:flex-row gap-4">
           {/* USER INFO CARD */}
-          <InfoCard person={teacher} />
+          <UserCard person={teacher} />
           {/* SMALL CARDS */}
           <div className="flex-1 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 gap-4 justify-between flex-wrap">
             {/* CARD */}

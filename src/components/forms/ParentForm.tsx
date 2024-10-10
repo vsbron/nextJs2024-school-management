@@ -1,26 +1,18 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { ParentInputs, parentSchema } from "@/lib/formSchemas";
-
-import InputField from "../InputField";
+import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { useFormState } from "react-dom";
-import { createParent, updateParent } from "@/lib/actions";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-function ParentForm({
-  setOpen,
-  type,
-  data,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+import { createParent, updateParent } from "@/lib/actions";
+import { ParentInputs, parentSchema } from "@/lib/formSchemas";
+import { FormProps } from "@/lib/types";
+
+import InputField from "../InputField";
+
+function ParentForm({ setOpen, type, data }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -8,22 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { createAssignment, updateAssignment } from "@/lib/actions";
 import { AssignmentInputs, assignmentSchema } from "@/lib/formSchemas";
+import { FormProps } from "@/lib/types";
 import { formFormatDate } from "@/lib/utils";
 import { Class, Subject } from "@prisma/client";
 
 import InputField from "../InputField";
 
-function AssignmentForm({
-  setOpen,
-  type,
-  data,
-  relatedData,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+function AssignmentForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

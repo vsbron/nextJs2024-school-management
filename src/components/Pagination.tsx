@@ -1,19 +1,11 @@
 "use client";
-import { usePathname, useRouter } from "next/navigation";
-import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
-function Pagination({
-  page,
-  count,
-  data,
-  queryParams,
-}: {
-  page: number;
-  count: number;
-  data: any[];
-  queryParams: { [key: string]: string | undefined };
-}) {
+import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { PaginationProps } from "@/lib/types";
+
+function Pagination({ page, count, data, queryParams }: PaginationProps) {
   // Getting the router and pathname
   const router = useRouter();
   const pathname = usePathname();

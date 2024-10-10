@@ -1,29 +1,20 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import Image from "next/image";
 import { CldUploadWidget } from "next-cloudinary";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
 
 import { createStudent, updateStudent } from "@/lib/actions";
 import { StudentInputs, studentSchema } from "@/lib/formSchemas";
+import { FormProps } from "@/lib/types";
 
 import InputField from "../InputField";
 
-function StudentForm({
-  setOpen,
-  type,
-  data,
-  relatedData,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

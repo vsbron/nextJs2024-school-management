@@ -1,28 +1,19 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useFormState } from "react-dom";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { createLesson, updateLesson } from "@/lib/actions";
 import { LessonInputs, lessonSchema } from "@/lib/formSchemas";
+import { FormProps } from "@/lib/types";
+import { formFormatDateTime } from "@/lib/utils";
 
 import InputField from "../InputField";
-import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
-import { useFormState } from "react-dom";
-import { formFormatDateTime } from "@/lib/utils";
-import { createLesson, updateLesson } from "@/lib/actions";
 
-function LessonForm({
-  setOpen,
-  type,
-  data,
-  relatedData,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+function LessonForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

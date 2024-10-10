@@ -1,12 +1,8 @@
 import Image from "next/image";
 
-function SmallCard({
-  type,
-  children,
-}: {
-  type: string;
-  children: React.ReactNode;
-}) {
+import { SmallCardProps } from "@/lib/types";
+
+function SmallCard({ type, children }: SmallCardProps) {
   return (
     <div className="bg-white p-4 rounded-xl flex gap-4">
       <Image

@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
@@ -9,21 +9,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { formFormatDateTime } from "@/lib/utils";
 import { createExam, updateExam } from "@/lib/actions";
 import { ExamInputs, examSchema } from "@/lib/formSchemas";
+import { FormProps } from "@/lib/types";
 import { Class, Subject } from "@prisma/client";
 
 import InputField from "../InputField";
 
-function ExamForm({
-  setOpen,
-  type,
-  data,
-  relatedData,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+function ExamForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

@@ -1,28 +1,19 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useFormState } from "react-dom";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { createResult, updateResult } from "@/lib/actions";
 import { ResultInputs, resultSchema } from "@/lib/formSchemas";
-
-import InputField from "../InputField";
+import { FormProps } from "@/lib/types";
 import { Class, Exam, Student } from "@prisma/client";
 
-function ResultForm({
-  setOpen,
-  type,
-  data,
-  relatedData,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+import InputField from "../InputField";
+
+function ResultForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { SearchParamsProp } from "@/lib/types";
 import { Prisma, Subject, Teacher } from "@prisma/client";
 
 import Pagination from "@/components/Pagination";
@@ -13,11 +14,7 @@ import FormContainer from "@/components/FormContainer";
 // Type for the subject list with data from different tables
 type SubjectList = Subject & { teachers: Teacher[] };
 
-async function SubjectList({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+async function SubjectList({ searchParams }: SearchParamsProp) {
   // Getting the user's role
   const { sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

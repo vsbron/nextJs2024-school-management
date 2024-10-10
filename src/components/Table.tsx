@@ -1,12 +1,6 @@
-function Table<T>({
-  columns,
-  renderRow,
-  data,
-}: {
-  columns: { header: string; accessor: string; className?: string }[];
-  renderRow: (item: T) => React.ReactNode;
-  data: T[];
-}) {
+import { TableProps } from "@/lib/types";
+
+function Table<T>({ columns, renderRow, data }: TableProps<T>) {
   // Returned JSX
   return (
     <table className="w-full mt-4">

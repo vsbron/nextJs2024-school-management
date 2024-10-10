@@ -4,14 +4,14 @@ import { addDays, subDays } from "date-fns";
 import { Calendar, momentLocalizer, View, Views } from "react-big-calendar";
 import moment from "moment";
 
-import { BigCalendarType } from "@/lib/types";
+import { BigCalendarData } from "@/lib/types";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 // Getting the localizer from Moment library
 const localizer = momentLocalizer(moment);
 
-function BigCalendar({ data }: BigCalendarType) {
+function BigCalendar({ data }: BigCalendarData) {
   // Creating a state for the calendar view mode and current date
   const [view, setView] = useState<View>(Views.WORK_WEEK);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());

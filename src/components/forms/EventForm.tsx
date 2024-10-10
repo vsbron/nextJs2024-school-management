@@ -1,28 +1,19 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
-import { useFormState } from "react-dom";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { createEvent, updateEvent } from "@/lib/actions";
 import { EventInputs, eventSchema } from "@/lib/formSchemas";
+import { FormProps } from "@/lib/types";
 import { formFormatDateTime } from "@/lib/utils";
 
 import InputField from "../InputField";
 
-function EventForm({
-  setOpen,
-  type,
-  data,
-  relatedData,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+function EventForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

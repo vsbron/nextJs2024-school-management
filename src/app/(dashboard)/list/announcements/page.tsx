@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { SearchParamsProp } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { Announcement, Class, Prisma } from "@prisma/client";
 
@@ -14,11 +15,7 @@ import TableSearch from "@/components/TableSearch";
 // Type for the announcement list with data from different tables
 type AnnouncementList = Announcement & { class: Class | null };
 
-async function AnnouncementList({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+async function AnnouncementList({ searchParams }: SearchParamsProp) {
   // Getting the user ID and the role
   const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

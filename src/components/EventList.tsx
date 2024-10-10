@@ -1,7 +1,9 @@
-import prisma from "@/lib/prisma";
 import { auth } from "@clerk/nextjs/server";
 
-async function EventList({ dateParam }: { dateParam: string | undefined }) {
+import prisma from "@/lib/prisma";
+import { EventListProps } from "@/lib/types";
+
+async function EventList({ dateParam }: EventListProps) {
   // Getting the user ID and the Role
   const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

@@ -1,29 +1,20 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useFormState } from "react-dom";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { createAttendance, updateAttendance } from "@/lib/actions";
 import { AttendanceInputs, attendanceSchema } from "@/lib/formSchemas";
+import { FormProps } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { Class, Lesson, Student } from "@prisma/client";
 
 import InputField from "../InputField";
 
-function AttendanceForm({
-  setOpen,
-  type,
-  data,
-  relatedData,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+function AttendanceForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

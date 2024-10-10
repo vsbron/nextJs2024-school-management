@@ -1,3 +1,5 @@
+import { ErrorType } from "./types";
+
 // Helper function that returns the first day of the work week
 const currentWorkWeek = () => {
   const today = new Date();
@@ -129,7 +131,7 @@ export function randomColor() {
 }
 
 // Helper function that is called in catch block when dealing with server actions
-export const handleError = ({ e }: { e: unknown }): string => {
+export const handleError = ({ e }: ErrorType): string => {
   console.error(e);
 
   // Getting the actual error message

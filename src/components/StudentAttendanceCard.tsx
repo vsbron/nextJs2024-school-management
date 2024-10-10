@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
+import { StudentAttendanceCardProps } from "@/lib/types";
 
-async function StudentAttendanceCard({ id }: { id: string }) {
+async function StudentAttendanceCard({ id }: StudentAttendanceCardProps) {
   // Getting the attendance data
   const attendance = await prisma.attendance.findMany({
     where: {

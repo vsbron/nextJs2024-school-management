@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { SearchParamsProp } from "@/lib/types";
 import { Parent, Prisma, Student } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
@@ -13,11 +14,7 @@ import TableSearch from "@/components/TableSearch";
 // Type for the student list with data from different tables
 type ParentList = Parent & { students: Student[] };
 
-async function ParentList({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+async function ParentList({ searchParams }: SearchParamsProp) {
   // Getting the user's role
   const { sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

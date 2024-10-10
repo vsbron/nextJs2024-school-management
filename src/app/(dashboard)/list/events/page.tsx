@@ -3,22 +3,19 @@ import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { SearchParamsProp } from "@/lib/types";
+import { formatDateTime } from "@/lib/utils";
 import { Class, Event, Prisma } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { formatDateTime } from "@/lib/utils";
 
 // Type for the event list with data from different tables
 type EventList = Event & { class: Class | null };
 
-async function EventList({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+async function EventList({ searchParams }: SearchParamsProp) {
   // Getting the user ID and the role
   const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

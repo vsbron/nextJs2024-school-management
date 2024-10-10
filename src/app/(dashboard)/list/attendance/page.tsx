@@ -1,15 +1,16 @@
 import Image from "next/image";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { ITEMS_PER_PAGE } from "@/lib/settings";
+import { SearchParamsProp } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 import { Attendance, Class, Prisma, Student, Subject } from "@prisma/client";
 
 import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import TableSearch from "@/components/TableSearch";
-import { auth } from "@clerk/nextjs/server";
-import { formatDate } from "@/lib/utils";
 
 // Type for the assignment list with data from different tables
 type AttendanceList = Attendance & {
@@ -17,11 +18,7 @@ type AttendanceList = Attendance & {
   lesson: { subject: Subject; class: Class };
 };
 
-async function AttendanceList({
-  searchParams,
-}: {
-  searchParams: { [key: string]: string | undefined };
-}) {
+async function AttendanceList({ searchParams }: SearchParamsProp) {
   // Getting the user ID and the role
   const { sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;

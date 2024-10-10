@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -8,20 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { createSubject, updateSubject } from "@/lib/actions";
 import { SubjectInputs, subjectSchema } from "@/lib/formSchemas";
+import { FormProps } from "@/lib/types";
 
 import InputField from "../InputField";
 
-function SubjectForm({
-  setOpen,
-  type,
-  data,
-  relatedData,
-}: {
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  type: "create" | "update";
-  data?: any;
-  relatedData?: any;
-}) {
+function SubjectForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
   const {
     register,

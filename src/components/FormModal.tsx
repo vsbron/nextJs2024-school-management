@@ -239,7 +239,7 @@ function FormModal<T>({
         className={`${size} ${bgColor} flex items-center justify-center rounded-full`}
         onClick={() => setOpenModal(true)}
       >
-        <Image src={`/${type}.svg`} width={16} height={16} alt="Icon" />
+        <Image src={`/${type}.svg`} width={18} height={18} alt="Icon" />
       </button>
       {openModal && (
         <div className="w-screen h-screen absolute left-0 top-0 bg-black bg-opacity-60 z-50 flex items-center justify-center">

@@ -1,4 +1,4 @@
-import { SearchParamsType } from "@/lib/types";
+import { SearchParamsProp } from "@/lib/types";
 
 import AnnouncementsContainer from "@/components/AnnouncementsContainer";
 import AttendanceChartContainer from "@/components/charts/AttendanceChartContainer";
@@ -6,19 +6,19 @@ import CountChartContainer from "@/components/charts/CountChartContainer";
 import EventCalendarContainer from "@/components/EventCalendarContainer";
 import FinanceChart from "@/components/charts/FinanceChart";
 import { HomePageLeft, HomePageRight } from "@/components/HomePageLayout";
-import UserCard from "@/components/UserCard";
+import InfoCard from "@/components/InfoCard";
 
-function AdminPage({ searchParams }: { searchParams: SearchParamsType }) {
+function AdminPage({ searchParams }: SearchParamsProp) {
   // Returned JSX
   return (
     <>
       <HomePageLeft>
         {/* USER CARDS */}
         <div className="flex gap-4 justify-between flex-wrap">
-          <UserCard type="students" />
-          <UserCard type="teachers" />
-          <UserCard type="parents" />
-          <UserCard type="admins" />
+          <InfoCard type="students" />
+          <InfoCard type="teachers" />
+          <InfoCard type="parents" />
+          <InfoCard type="admins" />
         </div>
 
         {/* MIDDLE CHARTS */}

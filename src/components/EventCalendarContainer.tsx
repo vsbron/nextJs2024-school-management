@@ -1,15 +1,11 @@
 import Image from "next/image";
 
-import { SearchParamsType } from "@/lib/types";
+import { SearchParamsProp } from "@/lib/types";
 
 import EventCalendar from "./EventCalendar";
 import EventList from "./EventList";
 
-async function EventCalendarContainer({
-  searchParams,
-}: {
-  searchParams: SearchParamsType;
-}) {
+async function EventCalendarContainer({ searchParams }: SearchParamsProp) {
   // Getting the date from search params
   const { date } = searchParams;
 
