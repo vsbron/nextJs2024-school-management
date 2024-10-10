@@ -11,7 +11,10 @@ import { AnnouncementInputs, announcementSchema } from "@/lib/formSchemas";
 import { FormProps } from "@/lib/types";
 import { formFormatDate } from "@/lib/utils";
 
-import InputField from "../InputField";
+import FormTitle from "./FormTitle";
+import FormWrapper from "./FormWrapper";
+import InputField from "./InputField";
+import InputFieldsWrapper from "./InputFieldsWrapper";
 
 function AnnouncementForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
@@ -66,12 +69,12 @@ function AnnouncementForm({ setOpen, type, data, relatedData }: FormProps) {
 
   // Returned JSX
   return (
-    <form onSubmit={submitHandler} className="flex flex-col gap-8">
+    <FormWrapper onSubmit={submitHandler}>
       <h2 className="text-lg font-semibold">
         {type === "create" ? "Create a new" : "Update the"} Announcement
       </h2>
-      <span className="text-sm text-gray-400 font-medium">Information</span>
-      <div className="flex justify-between flex-wrap gap-4">
+      <FormTitle>Information</FormTitle>
+      <InputFieldsWrapper>
         <InputField
           label="Title"
           register={register}
@@ -125,7 +128,7 @@ function AnnouncementForm({ setOpen, type, data, relatedData }: FormProps) {
             hidden
           />
         )}
-      </div>
+      </InputFieldsWrapper>
 
       {/* Error message */}
       {state.error && (
@@ -136,7 +139,7 @@ function AnnouncementForm({ setOpen, type, data, relatedData }: FormProps) {
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>
-    </form>
+    </FormWrapper>
   );
 }
 

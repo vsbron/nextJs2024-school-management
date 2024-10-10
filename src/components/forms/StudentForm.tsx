@@ -12,7 +12,10 @@ import { createStudent, updateStudent } from "@/lib/actions";
 import { StudentInputs, studentSchema } from "@/lib/formSchemas";
 import { FormProps } from "@/lib/types";
 
-import InputField from "../InputField";
+import FormTitle from "./FormTitle";
+import FormWrapper from "./FormWrapper";
+import InputField from "./InputField";
+import InputFieldsWrapper from "./InputFieldsWrapper";
 
 function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
@@ -68,14 +71,12 @@ function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
 
   // Returned JSX
   return (
-    <form onSubmit={submitHandler} className="flex flex-col gap-8">
+    <FormWrapper onSubmit={submitHandler}>
       <h2 className="text-lg font-semibold">
         {type === "create" ? "Create a new" : "Update the"} Student
       </h2>
-      <span className="text-sm text-gray-400 font-medium">
-        Authentication Information
-      </span>
-      <div className="flex justify-between flex-wrap gap-4">
+      <FormTitle>Authentication Information</FormTitle>
+      <InputFieldsWrapper>
         <InputField
           label="Username"
           register={register}
@@ -108,11 +109,9 @@ function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
             hidden
           />
         )}
-      </div>
-      <span className="text-sm text-gray-400 font-medium">
-        Personal Information
-      </span>
-      <div className="flex justify-between flex-wrap gap-4">
+      </InputFieldsWrapper>
+      <FormTitle>Personal Information</FormTitle>
+      <InputFieldsWrapper>
         <InputField
           label="First Name"
           register={register}
@@ -266,7 +265,7 @@ function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
             <Image src={img.secure_url} width={100} height={100} alt="" />
           )}
         </div>
-      </div>
+      </InputFieldsWrapper>
 
       {/* Error message */}
       {state.error && <span className="text-red-500">There was an error</span>}
@@ -274,7 +273,7 @@ function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>
-    </form>
+    </FormWrapper>
   );
 }
 

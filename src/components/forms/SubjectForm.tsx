@@ -10,7 +10,10 @@ import { createSubject, updateSubject } from "@/lib/actions";
 import { SubjectInputs, subjectSchema } from "@/lib/formSchemas";
 import { FormProps } from "@/lib/types";
 
-import InputField from "../InputField";
+import FormTitle from "./FormTitle";
+import FormWrapper from "./FormWrapper";
+import InputField from "./InputField";
+import InputFieldsWrapper from "./InputFieldsWrapper";
 
 function SubjectForm({ setOpen, type, data, relatedData }: FormProps) {
   // Getting the form functions from React Hook Form
@@ -63,15 +66,15 @@ function SubjectForm({ setOpen, type, data, relatedData }: FormProps) {
 
   // Returned JSX
   return (
-    <form onSubmit={submitHandler} className="flex flex-col gap-8">
+    <FormWrapper onSubmit={submitHandler}>
       {/* Header */}
       <h2 className="text-lg font-semibold">
         {type === "create" ? "Create a new" : "Update the"} Subject
       </h2>
 
       {/* Inputs */}
-      <span className="text-sm text-gray-400 font-medium">Information</span>
-      <div className="flex justify-between flex-wrap gap-4">
+      <FormTitle>Information</FormTitle>
+      <InputFieldsWrapper>
         <InputField
           label="Subject name"
           register={register}
@@ -113,7 +116,7 @@ function SubjectForm({ setOpen, type, data, relatedData }: FormProps) {
             </p>
           )}
         </div>
-      </div>
+      </InputFieldsWrapper>
 
       {/* Error message */}
       {state.error && (
@@ -124,7 +127,7 @@ function SubjectForm({ setOpen, type, data, relatedData }: FormProps) {
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>
-    </form>
+    </FormWrapper>
   );
 }
 

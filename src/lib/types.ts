@@ -60,6 +60,11 @@ export type FormProps = {
   data?: any;
   relatedData?: any;
 };
+export type FormTitleProps = { children: string };
+export type FormWrapperProps = {
+  onSubmit: (formData: any) => void | Promise<void>;
+  children: React.ReactNode;
+};
 export type InputProps = {
   label: string;
   type?: string;
@@ -70,6 +75,7 @@ export type InputProps = {
   hidden?: boolean;
   inputAttrs?: React.InputHTMLAttributes<HTMLInputElement>;
 };
+export type InputFieldWrapperProps = { children: React.ReactNode };
 
 /** TABLES **/
 type TableTypes =

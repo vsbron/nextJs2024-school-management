@@ -10,7 +10,10 @@ import { createParent, updateParent } from "@/lib/actions";
 import { ParentInputs, parentSchema } from "@/lib/formSchemas";
 import { FormProps } from "@/lib/types";
 
-import InputField from "../InputField";
+import FormTitle from "./FormTitle";
+import FormWrapper from "./FormWrapper";
+import InputField from "./InputField";
+import InputFieldsWrapper from "./InputFieldsWrapper";
 
 function ParentForm({ setOpen, type, data }: FormProps) {
   // Getting the form functions from React Hook Form
@@ -60,17 +63,15 @@ function ParentForm({ setOpen, type, data }: FormProps) {
 
   // Returned JSX
   return (
-    <form onSubmit={submitHandler} className="flex flex-col gap-8">
+    <FormWrapper onSubmit={submitHandler}>
       {/* Header */}
       <h2 className="text-lg font-semibold">
         {type === "create" ? "Create a new" : "Update the"} Parent
       </h2>
 
       {/* Inputs */}
-      <span className="text-sm text-gray-400 font-medium">
-        Authentication Information
-      </span>
-      <div className="flex justify-between flex-wrap gap-4">
+      <FormTitle>Authentication Information</FormTitle>
+      <InputFieldsWrapper>
         <InputField
           label="Username"
           register={register}
@@ -93,12 +94,10 @@ function ParentForm({ setOpen, type, data }: FormProps) {
           defaultValue={data?.password}
           error={errors?.password}
         />
-      </div>
-      <span className="text-sm text-gray-400 font-medium">
-        Personal Information
-      </span>
+      </InputFieldsWrapper>
+      <FormTitle>Personal Information</FormTitle>
 
-      <div className="flex justify-between flex-wrap gap-4">
+      <InputFieldsWrapper>
         <InputField
           label="First Name"
           register={register}
@@ -137,11 +136,11 @@ function ParentForm({ setOpen, type, data }: FormProps) {
             hidden
           />
         )}
-      </div>
+      </InputFieldsWrapper>
       <button className="bg-blue-400 text-white p-2 rounded-md">
         {type === "create" ? "Create" : "Update"}
       </button>
-    </form>
+    </FormWrapper>
   );
 }
 
