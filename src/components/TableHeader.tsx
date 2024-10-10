@@ -5,7 +5,7 @@ import Image from "next/image";
 
 function TableHeader({ title, role, table }: TableHeaderProps) {
   return (
-    <>
+    <div className="flex flex-col sm:flex-row items-center justify-between">
       <h2 className="text-md md:text-lg font-semibold mb-2 sm:m-0">{title}</h2>
       <div className="p-0 flex items-center gap-2 w-full sm:w-auto">
         <TableSearch />
@@ -16,7 +16,7 @@ function TableHeader({ title, role, table }: TableHeaderProps) {
           {role === "admin" && <FormContainer table={table} type="create" />}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

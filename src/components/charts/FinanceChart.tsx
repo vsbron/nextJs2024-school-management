@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import {
   LineChart,
   Line,
@@ -80,7 +79,6 @@ function FinanceChart() {
     <div className="bg-white rounded-xl w-full h-full p-4">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Finance</h2>
-        <Image src="/moreDark.svg" width={20} height={20} alt="More" />
       </div>
 
       {/* Chart component */}

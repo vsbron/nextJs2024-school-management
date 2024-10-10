@@ -94,12 +94,6 @@ export const menuItems = [
         href: "/profile",
         visible: ["admin", "teacher", "student", "parent"],
       },
-      {
-        icon: "logout",
-        label: "Logout",
-        href: "/logout",
-        visible: ["admin", "teacher", "student", "parent"],
-      },
     ],
   },
 ];

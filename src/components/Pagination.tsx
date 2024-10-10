@@ -37,7 +37,7 @@ function Pagination({ page, count, data, queryParams }: PaginationProps) {
   return (
     <div className="py-4 xs:p-4 flex items-center justify-between text-gray-500">
       <button
-        className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="py-1 px-2 xs:py-2 xs:px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={() => handlePage(page + -1)}
         disabled={!hasPrev}
       >
@@ -47,22 +47,28 @@ function Pagination({ page, count, data, queryParams }: PaginationProps) {
         {Array.from({ length: Math.ceil(count / ITEMS_PER_PAGE) }).map(
           (_, index) => {
             const pageIndex = index + 1;
-            return (
-              <button
-                key={index}
-                className={`px-2 rounded-sm ${
-                  pageIndex === page ? "bg-schoolSky" : ""
-                }`}
-                onClick={() => handlePage(pageIndex)}
-              >
-                {pageIndex}
-              </button>
-            );
+
+            // Only display the current page, previous page, and next page
+            if (pageIndex >= page - 1 && pageIndex <= page + 1) {
+              return (
+                <button
+                  key={index}
+                  className={`px-2 rounded-sm ${
+                    pageIndex === page ? "bg-schoolSky" : ""
+                  }`}
+                  onClick={() => handlePage(pageIndex)}
+                >
+                  {pageIndex}
+                </button>
+              );
+            }
+
+            return null;
           }
         )}
       </div>
       <button
-        className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+        className="py-1 px-2 xs:py-2 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={() => handlePage(page + 1)}
         disabled={!hasNext}
       >

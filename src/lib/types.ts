@@ -31,7 +31,11 @@ export type SearchParamsProp = {
 };
 
 /** COMPONENTS **/
-export type ActiveLinkProps = { href: string; children: React.ReactNode };
+export type ActiveLinkProps = {
+  href: string;
+  onClick?: string | undefined;
+  children: React.ReactNode;
+};
 export type HomePageSideProps = { children: React.ReactNode };
 export type InfoCardTypes = {
   type: "admins" | "teachers" | "students" | "parents";

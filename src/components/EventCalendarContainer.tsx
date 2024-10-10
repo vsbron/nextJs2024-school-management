@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Link from "next/link";
 
 import { SearchParamsProp } from "@/lib/types";
 
@@ -15,7 +15,9 @@ async function EventCalendarContainer({ searchParams }: SearchParamsProp) {
       <EventCalendar />
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold my-4">Events</h2>
-        <Image src="/moreDark.svg" width={20} height={20} alt="More" />
+        <span className="text-xs text-gray-500">
+          <Link href={`/list/events`}>View All</Link>
+        </span>
       </div>
       <div className="flex flex-col gap-4">
         <EventList dateParam={date} />

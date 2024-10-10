@@ -1,7 +1,7 @@
-import Image from "next/image";
+import Link from "next/link";
 
-import { InfoCardTypes } from "@/lib/types";
 import prisma from "@/lib/prisma";
+import { InfoCardTypes } from "@/lib/types";
 
 async function InfoCard({ type }: InfoCardTypes) {
   // Creating the map for fetching the correct table
@@ -11,6 +11,8 @@ async function InfoCard({ type }: InfoCardTypes) {
     students: prisma.student,
     parents: prisma.parent,
   };
+
+  const needLink = type === "admins" ? false : true;
 
   // Getting the data from correct table
   const data = await modelMap[type].count();
@@ -24,7 +26,9 @@ async function InfoCard({ type }: InfoCardTypes) {
         <span className="text-[10px] font-semibold bg-white px-2 py-1 rounded-full text-schoolGreenDark">
           2024/25
         </span>
-        <Image src="/more.svg" width={20} height={20} alt="More" />
+        <span className="text-xs text-gray-500">
+          {needLink && <Link href={`/list/${type}`}>View All</Link>}
+        </span>
       </div>
       <h3 className="text-2xl font-semibold my-1 xs:my-4">{data}</h3>
       <h4 className="capitalize text-sm font-medium text-gray-500">{type}</h4>
