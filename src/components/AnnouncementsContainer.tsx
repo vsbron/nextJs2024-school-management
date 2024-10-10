@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Announcements from "./Announcements";
 
 function AnnouncementsContainer() {
@@ -6,7 +7,9 @@ function AnnouncementsContainer() {
     <div className="bg-white p-4 rounded-md">
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-semibold">Announcements</h2>
-        <span className="text-xs text-gray-400 cursor-pointer">View all</span>
+        <span className="text-xs text-gray-400 cursor-pointer">
+          <Link href="/list/announcements/">View all</Link>
+        </span>
       </div>
       <div className="flex flex-col gap-4 mt-4">
         <Announcements />

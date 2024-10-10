@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
@@ -6,10 +5,13 @@ import { ITEMS_PER_PAGE } from "@/lib/settings";
 import { SearchParamsProp } from "@/lib/types";
 import { Prisma, Subject, Teacher } from "@prisma/client";
 
+import FormContainer from "@/components/FormContainer";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
+import TableButtons from "@/components/TableButtons";
+import TableHeader from "@/components/TableHeader";
+import TableHeading from "@/components/TableHeading";
 import TableSearch from "@/components/TableSearch";
-import FormContainer from "@/components/FormContainer";
 
 // Type for the subject list with data from different tables
 type SubjectList = Subject & { teachers: Teacher[] };
@@ -105,18 +107,11 @@ async function SubjectList({ searchParams }: SearchParamsProp) {
     <div className="bg-white p-4 rounded-xl flex-1 m-4 mt-0">
       {/* TOP */}
       <div className="flex items-center justify-between">
-        <h2 className="hidden md:block text-lg font-semibold">All subjects</h2>
-        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+        <TableHeading>All subjects</TableHeading>
+        <TableHeader>
           <TableSearch />
-          <div className="flex items-center gap-4 self-end">
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-schoolOrange">
-              <Image src="/sort.svg" width={14} height={14} alt="" />
-            </button>
-            {role === "admin" && (
-              <FormContainer table="subject" type="create" />
-            )}
-          </div>
-        </div>
+          <TableButtons role={role} table="subject" />
+        </TableHeader>
       </div>
       {/* LIST */}
       <Table<SubjectList> columns={columns} renderRow={renderRow} data={data} />

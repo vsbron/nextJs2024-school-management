@@ -7,7 +7,7 @@ async function Header() {
 
   // Returned JSX
   return (
-    <header className="flex items-center justify-between p-4 bg-white sticky top-0 z-10 border-b-4 border-stone-50">
+    <header className="flex items-center justify-between py-2 px-4 xs:p-4 bg-white sticky top-0 z-10 border-b-4 border-stone-50">
       {/* ICONS & USER */}
       <div className="flex items-center gap-6 justify-end w-full py-1">
         <div className="bg-white rounded-full w-5 h-5 cursor-pointer">

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import prisma from "@/lib/prisma";
+import { SingleTeacherPageProps } from "@/lib/types";
 import { Teacher } from "@prisma/client";
 
 import BigCalendarContainer from "@/components/BigCalendarContainer";
@@ -9,11 +10,9 @@ import UserCard from "@/components/UserCard";
 import ShortcutLink from "@/components/ShortcutLink";
 import SmallCard from "@/components/SmallCard";
 
-type SingleTeacherParams = {params: {teacherId: string}}
-
 async function SingleTeacherPage({
   params: { teacherId },
-}: SingleTeacherParams) {
+}: SingleTeacherPageProps) {
   // Fetching the teacher data from database
   const teacher:
     | (Teacher & {

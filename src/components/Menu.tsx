@@ -121,7 +121,7 @@ async function Menu() {
             if (menuItem.visible.includes(role)) {
               return (
                 <ActiveLink href={menuItem.href} key={menuItem.label}>
-                  <div className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-1.5 md:px-2 rounded-md hover:bg-schoolSkyLight cursor-pointer">
+                  <div className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-1.5 md:px-2 cursor-pointer">
                     <svg className="w-5 h-5 fill-gray-500">
                       <use xlinkHref={`/setNavbar.svg#${menuItem.icon}`}></use>
                     </svg>

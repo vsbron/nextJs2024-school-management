@@ -1,16 +1,4 @@
-import { FieldError } from "react-hook-form";
-
-// Types for the input props
-type InputProps = {
-  label: string;
-  type?: string;
-  register: any;
-  name: string;
-  defaultValue?: string;
-  error?: FieldError;
-  hidden?: boolean;
-  inputAttrs?: React.InputHTMLAttributes<HTMLInputElement>;
-};
+import { InputProps } from "@/lib/types";
 
 function InputField({
   label,

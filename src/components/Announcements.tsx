@@ -31,7 +31,7 @@ async function Announcements() {
   // Returned JSX
   return data.map((announcement) => (
     <div
-      className={`odd:bg-schoolOrangeLight even:bg-schoolPurpleLight rounded-xl p-4`}
+      className={`odd:bg-schoolOrangeLight even:bg-schoolPurpleLight rounded-xl py-2 px-4 xs:p-4`}
       key={announcement.id}
     >
       <div className="flex items-center justify-between">

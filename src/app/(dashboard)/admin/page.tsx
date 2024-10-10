@@ -14,7 +14,7 @@ function AdminPage({ searchParams }: SearchParamsProp) {
     <>
       <HomePageLeft>
         {/* USER CARDS */}
-        <div className="flex gap-4 justify-between flex-wrap">
+        <div className="flex gap-1 xs:gap-4 justify-between flex-wrap">
           <InfoCard type="students" />
           <InfoCard type="teachers" />
           <InfoCard type="parents" />

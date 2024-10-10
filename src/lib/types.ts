@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import { Student, Teacher } from "@prisma/client";
+import { FieldError } from "react-hook-form";
 
 /** CHARTS & CALENDARS */
 export type AttendanceChartData = {
@@ -42,37 +43,13 @@ export type UserCardProps = { person: Student | Teacher };
 
 /** FORM **/
 export type FormModalProps<T> = {
-  table:
-    | "announcement"
-    | "assignment"
-    | "attendance"
-    | "class"
-    | "event"
-    | "exam"
-    | "lesson"
-    | "parent"
-    | "result"
-    | "student"
-    | "subject"
-    | "teacher";
+  table: TableTypes;
   type: "create" | "update" | "delete";
   data?: T;
   id?: string | number;
 };
 export type FormContainerProps<T> = {
-  table:
-    | "announcement"
-    | "assignment"
-    | "attendance"
-    | "class"
-    | "event"
-    | "exam"
-    | "lesson"
-    | "parent"
-    | "result"
-    | "student"
-    | "subject"
-    | "teacher";
+  table: TableTypes;
   type: "create" | "update" | "delete";
   data?: T;
   id?: string | number;
@@ -83,6 +60,37 @@ export type FormProps = {
   data?: any;
   relatedData?: any;
 };
+export type InputProps = {
+  label: string;
+  type?: string;
+  register: any;
+  name: string;
+  defaultValue?: string;
+  error?: FieldError;
+  hidden?: boolean;
+  inputAttrs?: React.InputHTMLAttributes<HTMLInputElement>;
+};
+
+/** TABLES **/
+type TableTypes =
+  | "announcement"
+  | "assignment"
+  | "attendance"
+  | "class"
+  | "event"
+  | "exam"
+  | "lesson"
+  | "parent"
+  | "result"
+  | "student"
+  | "subject"
+  | "teacher";
+export type TableButtonsProps = {
+  role: string | undefined;
+  table: TableTypes;
+};
+export type TableHeaderProps = { children: React.ReactNode };
+export type TableHeadingProps = { children: string };
 
 /** OTHER **/
 export type PaginationProps = {
@@ -95,6 +103,7 @@ export type RouteAccessMap = {
   [key: string]: string[];
 };
 export type SingleStudentPageProps = { params: { studentId: string } };
+export type SingleTeacherPageProps = { params: { teacherId: string } };
 export type TableProps<T> = {
   columns: { header: string; accessor: string; className?: string }[];
   renderRow: (item: T) => React.ReactNode;

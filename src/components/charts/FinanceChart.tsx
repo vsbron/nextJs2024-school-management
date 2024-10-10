@@ -84,7 +84,7 @@ function FinanceChart() {
       </div>
 
       {/* Chart component */}
-      <ResponsiveContainer width="100%" height="90%">
+      <ResponsiveContainer width="100%" height="80%">
         <LineChart
           width={500}
           height={300}

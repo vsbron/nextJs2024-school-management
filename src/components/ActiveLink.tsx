@@ -14,7 +14,12 @@ function ActiveLink({ href, children }: ActiveLinkProps) {
 
   // Returned JSX
   return (
-    <Link href={href} className={`${isActive ? "active-menu" : ""}`}>
+    <Link
+      href={href}
+      className={`rounded-md hover:bg-schoolSkyLight  ${
+        isActive ? "active-menu" : ""
+      }`}
+    >
       {children}
     </Link>
   );

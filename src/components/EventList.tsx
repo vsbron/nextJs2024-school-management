@@ -39,7 +39,7 @@ async function EventList({ dateParam }: EventListProps) {
 
   return data.map((event) => (
     <div
-      className="p-5 rounded-md border-2 border-color-gray-100 border-t-4 odd:border-t-schoolSky even:border-t-schoolPurple"
+      className="px-4 py-2 xs:p-5 rounded-md border-2 border-color-gray-100 border-t-4 odd:border-t-schoolSky even:border-t-schoolPurple"
       key={event.id}
     >
       <div className="flex items-center justify-between">
@@ -52,7 +52,7 @@ async function EventList({ dateParam }: EventListProps) {
           })}
         </span>
       </div>
-      <p className="mt-2 text-gray-400 text-sm">{event.description}</p>
+      <p className="mt-1 xs:mt-2 text-gray-400 text-sm">{event.description}</p>
     </div>
   ));
 }
