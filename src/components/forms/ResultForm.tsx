@@ -104,7 +104,7 @@ function ResultForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Exam</label>
           <select
             {...register("examId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.examId}
             onChange={(e) => {
               setSelectedExam(
@@ -131,7 +131,7 @@ function ResultForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Student</label>
           <select
             {...register("studentId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.studentId}
           >
             {filteredStudents.map(

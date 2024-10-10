@@ -85,7 +85,7 @@ function LessonForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Subject</label>
           <select
             {...register("subjectId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.subjectId}
           >
             {subjects.map((subject: { id: string; name: string }) => (
@@ -106,7 +106,7 @@ function LessonForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Class</label>
           <select
             {...register("classId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.classId}
           >
             {classes.map((classItem: { id: string; name: string }) => (
@@ -144,7 +144,7 @@ function LessonForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Lesson</label>
           <select
             {...register("teacherId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.teacherId}
           >
             {teachers.map(

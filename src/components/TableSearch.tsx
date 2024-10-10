@@ -30,7 +30,7 @@ function TableSearch() {
       <input
         type="text"
         placeholder="Search..."
-        className="w-full py-2 pr-2 bg-transparent outline-none"
+        className="w-full py-1 xs:py-2 pr-2 bg-transparent outline-none"
       />
     </form>
   );

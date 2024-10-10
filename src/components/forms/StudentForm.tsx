@@ -173,7 +173,7 @@ function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Sex</label>
           <select
             {...register("sex")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.sex}
           >
             <option value="MALE">Male</option>
@@ -191,7 +191,7 @@ function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Grade</label>
           <select
             {...register("gradeId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.gradeId}
           >
             {grades.map((grade: { id: number; level: number }) => (
@@ -212,7 +212,7 @@ function StudentForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Class</label>
           <select
             {...register("classId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.classId}
           >
             {classes.map(

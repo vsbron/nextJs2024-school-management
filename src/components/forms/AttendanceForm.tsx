@@ -112,7 +112,7 @@ function AttendanceForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Lesson</label>
           <select
             {...register("lessonId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.lessonId}
             onChange={(e) => {
               setSelectedLesson(
@@ -149,7 +149,7 @@ function AttendanceForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Student</label>
           <select
             {...register("studentId")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.studentId}
           >
             {filteredStudents.map(
@@ -170,7 +170,7 @@ function AttendanceForm({ setOpen, type, data, relatedData }: FormProps) {
           <label className="text-xs text-gray-500">Present</label>
           <select
             {...register("present")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.present}
           >
             <option value="YES">Yes</option>

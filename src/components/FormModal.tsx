@@ -194,7 +194,7 @@ function FormModal<T>({
   const [openModal, setOpenModal] = useState(false);
 
   // Defining size and bg color for the buttons
-  const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
+  const size = type === "create" ? "w-7 h-7 sm:w-8 sm:h-8" : "w-7 h-7";
   const bgColor =
     type === "create"
       ? "bg-schoolOrange"

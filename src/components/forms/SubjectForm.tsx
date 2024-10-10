@@ -99,7 +99,7 @@ function SubjectForm({ setOpen, type, data, relatedData }: FormProps) {
           <select
             multiple
             {...register("teachers")}
-            className="bg-white ring-[1.5px] ring-gray-300 p-2 rounded-md text-sm w-full"
+            className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"
             defaultValue={data?.teachers}
           >
             {teachers.map(
