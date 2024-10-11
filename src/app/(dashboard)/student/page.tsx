@@ -22,7 +22,9 @@ async function StudentPage({ searchParams }: SearchParamsProp) {
     <>
       <HomePageLeft>
         <div className="h-full bg-white p-4 rounded-xl">
-          <h2 className="text-xl font-semibold">Schedule (4a)</h2>
+          <h2 className="text-xl font-semibold">
+            Schedule ({classItem[0].name})
+          </h2>
           <BigCalendarContainer type="classId" id={classItem[0].id} />
         </div>
       </HomePageLeft>

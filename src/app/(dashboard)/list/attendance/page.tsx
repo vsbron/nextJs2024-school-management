@@ -68,6 +68,9 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
 
     // ROLE CONDITIONS
     switch (role) {
+      case "student":
+        query.studentId = currentUserId!;
+        break;
       case "parent":
         query.student = {
           parentId: currentUserId!,
