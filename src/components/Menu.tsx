@@ -21,7 +21,7 @@ export const menuItems = [
         icon: "student",
         label: "Students",
         href: "/list/students",
-        visible: ["admin", "teacher"],
+        visible: ["admin", "teacher", "parent"],
       },
       {
         icon: "parent",
@@ -45,7 +45,7 @@ export const menuItems = [
         icon: "lesson",
         label: "Lessons",
         href: "/list/lessons",
-        visible: ["admin", "teacher"],
+        visible: ["admin", "teacher", "parent"],
       },
       {
         icon: "exam",

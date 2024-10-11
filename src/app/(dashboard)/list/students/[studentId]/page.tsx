@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { SingleStudentPageProps } from "@/lib/types";
@@ -16,6 +17,10 @@ import SmallCard from "@/components/SmallCard";
 async function SingleStudentPage({
   params: { studentId },
 }: SingleStudentPageProps) {
+  // Getting the user's role
+  const { sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
   // Fetching the student data from database
   const student:
     | (Student & { class: Class & { _count: { lessons: number } } })
@@ -82,12 +87,20 @@ async function SingleStudentPage({
             <ShortcutLink href={`/list/lessons?classId=${student.classId}`}>
               Student&apos;s lessons
             </ShortcutLink>
-            <ShortcutLink href={`/list/teachers?classId=${student.classId}`}>
-              Student&apos;s teachers
-            </ShortcutLink>
-            <ShortcutLink href={`/list/parents?parentId=${student.parentId}`}>
-              Student&apos;s parents
-            </ShortcutLink>
+            {role !== "parent" && (
+              <>
+                <ShortcutLink
+                  href={`/list/teachers?classId=${student.classId}`}
+                >
+                  Student&apos;s teachers
+                </ShortcutLink>
+                <ShortcutLink
+                  href={`/list/parents?parentId=${student.parentId}`}
+                >
+                  Student&apos;s parents
+                </ShortcutLink>
+              </>
+            )}
             <ShortcutLink href={`/list/exams?classId=${student.classId}`}>
               Student&apos;s exams
             </ShortcutLink>

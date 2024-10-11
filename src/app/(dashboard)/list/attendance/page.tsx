@@ -21,8 +21,9 @@ type AttendanceList = Attendance & {
 
 async function AttendanceList({ searchParams }: SearchParamsProp) {
   // Getting the user ID and the role
-  const { sessionClaims } = auth();
+  const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const currentUserId = userId;
 
   // Defining columns for table
   const columns = [
@@ -63,6 +64,17 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
         default:
           break;
       }
+    }
+
+    // ROLE CONDITIONS
+    switch (role) {
+      case "parent":
+        query.student = {
+          parentId: currentUserId!,
+        };
+        break;
+      default:
+        break;
     }
   }
 

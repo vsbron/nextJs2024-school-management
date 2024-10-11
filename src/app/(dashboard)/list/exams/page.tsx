@@ -86,22 +86,10 @@ async function ExamList({ searchParams }: SearchParamsProp) {
       query.lesson.teacherId = currentUserId!;
       break;
     case "student":
-      query.lesson.class = {
-        students: {
-          some: {
-            id: currentUserId!,
-          },
-        },
-      };
+      query.lesson.class = { students: { some: { id: currentUserId! } } };
       break;
     case "parent":
-      query.lesson.class = {
-        students: {
-          some: {
-            parentId: currentUserId!,
-          },
-        },
-      };
+      query.lesson.class = { students: { some: { parentId: currentUserId! } } };
       break;
     default:
       break;

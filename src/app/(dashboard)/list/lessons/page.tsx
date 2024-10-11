@@ -75,6 +75,9 @@ async function LessonList({ searchParams }: SearchParamsProp) {
     case "teacher":
       query.teacherId = currentUserId!;
       break;
+    case "parent":
+      query.class = { students: { some: { parentId: currentUserId! } } };
+      break;
     default:
       break;
   }

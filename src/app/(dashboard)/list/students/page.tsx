@@ -19,8 +19,9 @@ type StudentList = Student & { class: Class };
 
 async function StudentList({ searchParams }: SearchParamsProp) {
   // Getting the user's role
-  const { sessionClaims } = auth();
+  const { userId, sessionClaims } = auth();
   const role = (sessionClaims?.metadata as { role?: string })?.role;
+  const currentUserId = userId;
 
   // Defining columns for table
   const columns = [
@@ -59,6 +60,15 @@ async function StudentList({ searchParams }: SearchParamsProp) {
           break;
       }
     }
+  }
+
+  // ROLE CONDITIONS
+  switch (role) {
+    case "parent":
+      query.parentId = currentUserId!;
+      break;
+    default:
+      break;
   }
 
   // Fetching the data from the database and setting the pagination constants
