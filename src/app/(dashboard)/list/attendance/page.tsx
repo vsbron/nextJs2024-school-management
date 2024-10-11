@@ -53,6 +53,7 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
         case "search":
           query.OR = [
             { student: { name: { contains: value, mode: "insensitive" } } },
+            { student: { surname: { contains: value, mode: "insensitive" } } },
             {
               lesson: {
                 subject: { name: { contains: value, mode: "insensitive" } },

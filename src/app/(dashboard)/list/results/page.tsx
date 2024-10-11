@@ -48,13 +48,9 @@ async function ResultsList({ searchParams }: SearchParamsProp) {
           break;
         // Filtering by search input
         case "search":
-          // prettier-ignore
           query.OR = [
             { exam: { title: { contains: value, mode: "insensitive" } } },
-            { OR: [
-              { student: { name: { contains: value, mode: "insensitive" } } },
-              { student: {surname: { contains: value, mode: "insensitive" } } },
-            ] },
+            { student: { surname: { contains: value, mode: "insensitive" } } },
           ];
           break;
         default:

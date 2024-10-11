@@ -39,7 +39,6 @@ async function ParentList({ searchParams }: SearchParamsProp) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
       if (!value) return;
-
       // Switch statement to cover all available search params
       switch (key) {
         // Filtering by parent id
@@ -48,7 +47,10 @@ async function ParentList({ searchParams }: SearchParamsProp) {
           break;
         // Filtering by search input
         case "search":
-          query.name = { contains: value, mode: "insensitive" };
+          query.OR = [
+            { name: { contains: value, mode: "insensitive" } },
+            { surname: { contains: value, mode: "insensitive" } },
+          ];
         default:
           break;
       }

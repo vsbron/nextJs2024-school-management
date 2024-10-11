@@ -64,7 +64,9 @@ async function ClassList({ searchParams }: SearchParamsProp) {
         case "search":
           query.OR = [
             { name: { contains: value, mode: "insensitive" } },
-            { supervisor: { name: { contains: value, mode: "insensitive" } } },
+            {
+              supervisor: { surname: { contains: value, mode: "insensitive" } },
+            },
           ];
         default:
           break;

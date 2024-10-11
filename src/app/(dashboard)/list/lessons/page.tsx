@@ -62,7 +62,7 @@ async function LessonList({ searchParams }: SearchParamsProp) {
         case "search":
           query.OR = [
             { subject: { name: { contains: value, mode: "insensitive" } } },
-            { teacher: { name: { contains: value, mode: "insensitive" } } },
+            { teacher: { surname: { contains: value, mode: "insensitive" } } },
           ];
         default:
           break;

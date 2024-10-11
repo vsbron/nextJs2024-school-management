@@ -70,7 +70,7 @@ async function AssignmentList({ searchParams }: SearchParamsProp) {
             },
             {
               lesson: {
-                teacher: { name: { contains: value, mode: "insensitive" } },
+                teacher: { surname: { contains: value, mode: "insensitive" } },
               },
             },
           ];

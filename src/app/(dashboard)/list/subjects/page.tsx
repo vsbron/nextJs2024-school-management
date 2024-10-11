@@ -46,7 +46,14 @@ async function SubjectList({ searchParams }: SearchParamsProp) {
           break;
         // Filtering by search input
         case "search":
-          query.name = { contains: value, mode: "insensitive" };
+          query.OR = [
+            { name: { contains: value, mode: "insensitive" } },
+            {
+              teachers: {
+                some: { surname: { contains: value, mode: "insensitive" } },
+              },
+            },
+          ];
         default:
           break;
       }

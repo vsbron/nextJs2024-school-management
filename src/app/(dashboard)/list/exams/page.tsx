@@ -65,7 +65,12 @@ async function ExamList({ searchParams }: SearchParamsProp) {
             { title: { contains: value, mode: "insensitive" } },
             {
               lesson: {
-                teacher: { name: { contains: value, mode: "insensitive" } },
+                subject: { name: { contains: value, mode: "insensitive" } },
+              },
+            },
+            {
+              lesson: {
+                teacher: { surname: { contains: value, mode: "insensitive" } },
               },
             },
           ];

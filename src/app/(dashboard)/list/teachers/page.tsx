@@ -45,7 +45,6 @@ async function TeacherList({ searchParams }: SearchParamsProp) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
       if (!value) return;
-
       // Switch statement to cover all available search params
       switch (key) {
         // Filtering by class id
