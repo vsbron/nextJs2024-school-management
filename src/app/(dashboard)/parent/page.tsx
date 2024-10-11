@@ -16,13 +16,18 @@ async function ParentPage({ searchParams }: SearchParamsProp) {
   const classItem = await prisma.class.findMany({
     where: { students: { some: { parentId: userId! } } },
   });
+  const parentItem = await prisma.parent.findMany({
+    where: { id: userId! },
+  });
 
   // Returned JSX
   return (
     <>
       <HomePageLeft>
         <div className="h-full bg-white p-4 rounded-xl">
-          <h2 className="text-xl font-semibold">Schedule (John Doe)</h2>
+          <h2 className="text-xl font-semibold">
+            Schedule ({parentItem[0].name} {parentItem[0].surname})
+          </h2>
           <BigCalendarContainer type="classId" id={classItem[0].id} />
         </div>
       </HomePageLeft>

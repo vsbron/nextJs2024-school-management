@@ -26,7 +26,9 @@ async function ResultsList({ searchParams }: SearchParamsProp) {
     { header: "Exam", accessor: "exam", className: mainCol },
     { header: "Student", accessor: "student", className: colHidden },
     { header: "Score", accessor: "score", className: colHidden },
-    ...(role === "admin" ? [{ header: "Actions", accessor: "action" }] : []),
+    ...(role === "admin" || role === "teacher"
+      ? [{ header: "Actions", accessor: "action" }]
+      : []),
   ];
 
   // Destructuring the searchParams and setting our current page
@@ -101,7 +103,7 @@ async function ResultsList({ searchParams }: SearchParamsProp) {
         {item.student.name[0]}. {item.student.surname}
       </td>
       <td className="hidden md:table-cell">{item.score}</td>
-      {role === "admin" && (
+      {(role === "admin" || role === "teacher") && (
         <td>
           <div className="flex items-center gap-2">
             <FormContainer table="result" type="update" data={item} />

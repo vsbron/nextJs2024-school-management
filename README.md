@@ -48,21 +48,23 @@ A comprehensive School Management App designed to create and manage schedules, a
 
 ## Improvements
 
-- Layout features more semantic HTML elements;
-- Backspace key brings user back to previous page;
-- Current path gets highlighted in the side menu;
-- Filled all the rest of the forms that were missing;
-- New UI components were added;
-- Mobile layout was improved and supports all resolutions down to 360px;
-- Color scheme was changed;
-- Icons were replaced for vector-based icons;
-- Improved some forms to be more self explanatory and to improve UI;
-- Added number of helper function to fix the date differences between UI and Database due to timezone;
-- Big Calendar component now features navigation buttons;
-- Better, more detailed error messages;
-- Search mechanism is improved on all list pages. Warning message is displayed when no items found;
-- When pagination page has no items after deleting item, you get transferred to the previous page;
-- Favicons were added;
+- **Enhanced Layout:** Utilized more semantic HTML elements for improved accessibility and structure.
+- **Updated Color Scheme:** Color scheme has been updated to improve visual appeal.
+- **Vector-based Icons:** Icons have been replaced with scalable vector-based alternatives for better clarity and performance.
+- **New UI Components:** Introduced new user interface components for a more polished and user-friendly experience.
+- **Mobile Optimization:** Refined the mobile layout to support resolutions down to 360px for full responsiveness.
+- **Form Completion:** All missing forms have been filled and completed, ensuring full functionality.
+- **Form Enhancements:** Improved form descriptions for clarity and a more intuitive user interface.
+- **Dynamic Path Highlighting:** The current navigation path is highlighted in the side menu for better user orientation.
+- **Navigation Improvements:** The backspace key now takes the user to the previous page, improving usability.
+- **Favicon Support:** Favicons have been added for a more polished browser experience.
+- **Time Zone Adjustments:** Implemented helper functions to resolve date discrepancies between the UI and database caused by time zone differences.
+- **Calendar Navigation:** Added navigation buttons to the Big Calendar component for easier event management.
+- **Improved Search Functionality:** Enhanced search features on list pages, with warning messages displayed when no results are found.
+- **Role-based Filtering:** Optimized filters on list pages, allowing different roles to explore relevant data more efficiently.
+- **Expanded Teacher Permissions:** Teachers can now manage a wider range of data, enhancing their control over assignments and lessons.
+- **Pagination Fixes:** When deleting an item, users are automatically redirected to the previous page if no items remain on the current page.
+- **Error Handling:** Error messages have been made more descriptive to assist users in troubleshooting issues.
 
 ### Live version
 

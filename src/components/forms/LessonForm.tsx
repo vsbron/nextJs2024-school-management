@@ -141,7 +141,7 @@ function LessonForm({ setOpen, type, data, relatedData }: FormProps) {
 
         {/* Select field for the Teachers */}
         <div className="flex flex-col gap-2 w-full md:w-1/4">
-          <label className="text-xs text-gray-500">Lesson</label>
+          <label className="text-xs text-gray-500">Teacher</label>
           <select
             {...register("teacherId")}
             className="bg-white ring-[1.5px] ring-gray-300 px-2 py-1 xs:p-2 rounded-md text-sm w-full"

@@ -31,7 +31,9 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
     { header: "Lesson", accessor: "lesson", className: colHidden },
     { header: "Date", accessor: "date", className: colHidden },
     { header: "Present", accessor: "present", className: colHidden },
-    ...(role === "admin" ? [{ header: "Actions", accessor: "action" }] : []),
+    ...(role === "admin" || role === "teacher"
+      ? [{ header: "Actions", accessor: "action" }]
+      : []),
   ];
 
   const { page, ...queryParams } = searchParams;
@@ -116,7 +118,7 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
       </td>
       <td className="hidden md:table-cell">{formatDate(item.date)}</td>
       <td className="hidden md:table-cell">{item.present ? "Yes" : "No"}</td>
-      {role === "admin" && (
+      {(role === "admin" || role === "teacher") && (
         <td>
           <div className="flex items-center gap-2">
             <FormContainer table="attendance" type="update" data={item} />
