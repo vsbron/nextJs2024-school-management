@@ -33,8 +33,25 @@ async function ResultsList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // QUERY FILTERING
   const query: Prisma.ResultWhereInput = {};
+
+  // ROLE CONDITIONS
+  switch (role) {
+    case "teacher":
+      query.exam = { lesson: { teacherId: currentUserId! } };
+      break;
+    case "student":
+      query.studentId = currentUserId!;
+      break;
+    case "parent":
+      query.student = { parentId: currentUserId! };
+      break;
+    default:
+      break;
+  }
+
+  // URL PARAMS CONDITIONS
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -44,6 +61,7 @@ async function ResultsList({ searchParams }: SearchParamsProp) {
       switch (key) {
         // Filtering by student id
         case "studentId":
+          query.exam = undefined;
           query.studentId = value;
           break;
         // Filtering by search input
@@ -57,22 +75,6 @@ async function ResultsList({ searchParams }: SearchParamsProp) {
           break;
       }
     }
-  }
-  // ROLE CONDITIONS
-  switch (role) {
-    // case "teacher":
-    //   query.exam = { lesson: { teacherId: currentUserId! } };
-    //   break;
-    case "student":
-      query.studentId = currentUserId!;
-      break;
-    case "parent":
-      query.student = {
-        parentId: currentUserId!,
-      };
-      break;
-    default:
-      break;
   }
 
   // Fetching the data from the database and setting the pagination constants

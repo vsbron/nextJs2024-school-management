@@ -41,8 +41,22 @@ async function LessonList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // QUERY FILTERING
   const query: Prisma.LessonWhereInput = {};
+
+  // ROLE CONDITIONS
+  switch (role) {
+    case "teacher":
+      query.teacherId = currentUserId!;
+      break;
+    case "parent":
+      query.class = { students: { some: { parentId: currentUserId! } } };
+      break;
+    default:
+      break;
+  }
+
+  // URL PARAMS CONDITIONS
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -56,6 +70,7 @@ async function LessonList({ searchParams }: SearchParamsProp) {
           break;
         // Filtering by class id
         case "classId":
+          query.teacherId = undefined;
           query.classId = parseInt(value);
           break;
         // Filtering by search input
@@ -70,18 +85,6 @@ async function LessonList({ searchParams }: SearchParamsProp) {
     }
   }
 
-  // ROLE CONDITIONS - switch version
-  switch (role) {
-    case "teacher":
-      query.teacherId = currentUserId!;
-      break;
-    case "parent":
-      query.class = { students: { some: { parentId: currentUserId! } } };
-      break;
-    default:
-      break;
-  }
-
   // Fetching the data from the database and setting the pagination constants
   const [data, count] = await prisma.$transaction([
     prisma.lesson.findMany({
@@ -91,7 +94,7 @@ async function LessonList({ searchParams }: SearchParamsProp) {
         class: true,
         teacher: true,
       },
-      orderBy: { startTime: "desc" },
+      orderBy: { subject: { name: "asc" } },
       take: ITEMS_PER_PAGE,
       skip: ITEMS_PER_PAGE * (p - 1),
     }),

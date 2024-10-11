@@ -31,8 +31,10 @@ async function SubjectList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // ROLE CONDITIONS
   const query: Prisma.SubjectWhereInput = {};
+
+  // URL PARAMS CONDITIONS
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause

@@ -47,8 +47,10 @@ async function ClassList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // QUERY FILTERING
   const query: Prisma.ClassWhereInput = {};
+
+  // URL PARAMS CONDITIONS
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause

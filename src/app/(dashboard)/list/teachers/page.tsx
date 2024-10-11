@@ -39,8 +39,10 @@ async function TeacherList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // QUERY FILTERING
   const query: Prisma.TeacherWhereInput = {};
+
+  // URL PARAMS CONDITIONS
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -57,6 +59,7 @@ async function TeacherList({ searchParams }: SearchParamsProp) {
             { name: { contains: value, mode: "insensitive" } },
             { surname: { contains: value, mode: "insensitive" } },
           ];
+          break;
         default:
           break;
       }

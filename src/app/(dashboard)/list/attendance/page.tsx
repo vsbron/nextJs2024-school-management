@@ -37,8 +37,25 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // QUERY FILTERING
   const query: Prisma.AttendanceWhereInput = {};
+
+  // ROLE CONDITIONS
+  switch (role) {
+    case "teacher":
+      query.lesson = { teacherId: currentUserId! };
+      break;
+    case "student":
+      query.studentId = currentUserId!;
+      break;
+    case "parent":
+      query.student = { parentId: currentUserId! };
+      break;
+    default:
+      break;
+  }
+
+  // URL PARAMS CONDITIONS
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -48,6 +65,7 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
       switch (key) {
         // Filtering by student id
         case "studentId":
+          query.lesson = undefined;
           query.studentId = value;
           break;
         // Filtering by search input
@@ -64,20 +82,6 @@ async function AttendanceList({ searchParams }: SearchParamsProp) {
         default:
           break;
       }
-    }
-
-    // ROLE CONDITIONS
-    switch (role) {
-      case "student":
-        query.studentId = currentUserId!;
-        break;
-      case "parent":
-        query.student = {
-          parentId: currentUserId!,
-        };
-        break;
-      default:
-        break;
     }
   }
 

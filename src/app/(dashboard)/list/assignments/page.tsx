@@ -40,10 +40,26 @@ async function AssignmentList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // QUERY FILTERING
   const query: Prisma.AssignmentWhereInput = {};
   query.lesson = {};
 
+  // ROLE CONDITIONS
+  switch (role) {
+    case "teacher":
+      query.lesson.teacherId = currentUserId!;
+      break;
+    case "student":
+      query.lesson.class = { students: { some: { id: currentUserId! } } };
+      break;
+    case "parent":
+      query.lesson.class = { students: { some: { parentId: currentUserId! } } };
+      break;
+    default:
+      break;
+  }
+
+  // URL PARAMS CONDITIONS
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -78,21 +94,6 @@ async function AssignmentList({ searchParams }: SearchParamsProp) {
           break;
       }
     }
-  }
-
-  // ROLE CONDITIONS
-  switch (role) {
-    case "teacher":
-      query.lesson.teacherId = currentUserId!;
-      break;
-    case "student":
-      query.lesson.class = { students: { some: { id: currentUserId! } } };
-      break;
-    case "parent":
-      query.lesson.class = { students: { some: { parentId: currentUserId! } } };
-      break;
-    default:
-      break;
   }
 
   // Fetching the data from the database and setting the pagination constants

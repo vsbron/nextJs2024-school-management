@@ -34,29 +34,10 @@ async function AnnouncementList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // QUERY FILTERING
   const query: Prisma.AnnouncementWhereInput = {};
-  if (queryParams) {
-    for (const [key, value] of Object.entries(queryParams)) {
-      // Guard clause
-      if (!value) return;
 
-      // Switch statement to cover all available search params
-      switch (key) {
-        // Filtering by class id
-        case "classId":
-          query.OR = [{ class: { id: parseInt(value) } }, { class: null }];
-          break;
-        // Filtering by search input
-        case "search":
-          query.title = { contains: value, mode: "insensitive" };
-        default:
-          break;
-      }
-    }
-  }
-
-  // ROLE CONDITIONS - switch version
+  // ROLE CONDITIONS
   switch (role) {
     case "teacher":
       query.OR = [
@@ -78,6 +59,27 @@ async function AnnouncementList({ searchParams }: SearchParamsProp) {
       break;
     default:
       break;
+  }
+
+  // URL PARAMS CONDITIONS
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      // Guard clause
+      if (!value) return;
+
+      // Switch statement to cover all available search params
+      switch (key) {
+        // Filtering by class id
+        case "classId":
+          query.OR = [{ class: { id: parseInt(value) } }, { class: null }];
+          break;
+        // Filtering by search input
+        case "search":
+          query.title = { contains: value, mode: "insensitive" };
+        default:
+          break;
+      }
+    }
   }
 
   // Fetching the data from the database and setting the pagination constants

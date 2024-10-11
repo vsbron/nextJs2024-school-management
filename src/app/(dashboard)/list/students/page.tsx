@@ -38,8 +38,19 @@ async function StudentList({ searchParams }: SearchParamsProp) {
   const { page, ...queryParams } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // URL PARAMS CONDITIONS
+  // QUERY FILTERING
   const query: Prisma.StudentWhereInput = {};
+
+  // ROLE CONDITIONS
+  switch (role) {
+    case "parent":
+      query.parentId = currentUserId!;
+      break;
+    default:
+      break;
+  }
+
+  // URL PARAMS CONDITIONS
   if (queryParams) {
     for (const [key, value] of Object.entries(queryParams)) {
       // Guard clause
@@ -60,15 +71,6 @@ async function StudentList({ searchParams }: SearchParamsProp) {
           break;
       }
     }
-  }
-
-  // ROLE CONDITIONS
-  switch (role) {
-    case "parent":
-      query.parentId = currentUserId!;
-      break;
-    default:
-      break;
   }
 
   // Fetching the data from the database and setting the pagination constants

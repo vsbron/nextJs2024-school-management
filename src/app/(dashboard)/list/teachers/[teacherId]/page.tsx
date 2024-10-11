@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { auth } from "@clerk/nextjs/server";
 
 import prisma from "@/lib/prisma";
 import { SingleTeacherPageProps } from "@/lib/types";
@@ -13,6 +14,10 @@ import SmallCard from "@/components/SmallCard";
 async function SingleTeacherPage({
   params: { teacherId },
 }: SingleTeacherPageProps) {
+  // Getting the user's role
+  const { sessionClaims } = auth();
+  const role = (sessionClaims?.metadata as { role?: string })?.role;
+
   // Fetching the teacher data from database
   const teacher:
     | (Teacher & {
@@ -94,15 +99,17 @@ async function SingleTeacherPage({
             <ShortcutLink href={`/list/lessons?teacherId=${teacher.id}`}>
               Teacher&apos;s lessons
             </ShortcutLink>
-            <ShortcutLink href={`/list/lessons?teacherId=${teacher.id}`}>
+            <ShortcutLink href={`/list/exams?teacherId=${teacher.id}`}>
               Teacher&apos;s exams
             </ShortcutLink>
             <ShortcutLink href={`/list/assignments?teacherId=${teacher.id}`}>
               Teacher&apos;s assignments
             </ShortcutLink>
-            <ShortcutLink href={`/list/subjects?teacherId=${teacher.id}`}>
-              Teacher&apos;s subjects
-            </ShortcutLink>
+            {role !== "teacher" && (
+              <ShortcutLink href={`/list/subjects?teacherId=${teacher.id}`}>
+                Teacher&apos;s subjects
+              </ShortcutLink>
+            )}
           </div>
         </div>
         {/* PERFORMANCE */}
