@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { currentUser } from "@clerk/nextjs/server";
+
 import ActiveLink from "./ActiveLink";
 
 export const menuItems = [
@@ -127,6 +129,19 @@ async function Menu() {
           })}
         </div>
       ))}
+      <div className="hidden lg:block text-xs mt-8 text-gray-400">
+        Built by VSBroN as a portfolio project
+        <br />
+        This project is available on{" "}
+        <Link
+          className="underline hover:no-underline"
+          href="https://github.com/vsbron/nextJs2024-school-management"
+          target="_blank"
+        >
+          GitHub
+        </Link>
+        <br />© 2024. All rights reserved
+      </div>
     </div>
   );
 }

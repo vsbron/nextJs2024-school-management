@@ -66,6 +66,11 @@ A comprehensive School Management App designed to create and manage schedules, a
 - **Pagination Fixes:** When deleting an item, users are automatically redirected to the previous page if no items remain on the current page.
 - **Error Handling:** Error messages have been made more descriptive to assist users in troubleshooting issues.
 
+## Room for Improvements
+
+- Profile page (update personal details);
+- Enhance form's UI;
+
 ### Live version
 
 - No live version (project requires docker and creating a database from a seed file)
